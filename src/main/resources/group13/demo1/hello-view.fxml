@@ -16,5 +16,6 @@
     <Label text="Jacob"/>
     <Label text="Nathan"/>
     <Label text="Lisa"/>
+    <Label text="vijay"/>
     <Button text="Hello!" onAction="#onHelloButtonClick"/>
 </VBox>
