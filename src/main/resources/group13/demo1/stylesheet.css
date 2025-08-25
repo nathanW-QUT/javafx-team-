@@ -1,0 +1,34 @@
+#helloView Button {
+    -fx-pref-height: 45px;
+    -fx-pref-width: 80px;
+
+}
+
+.button:hover {
+
+}
+
+.text-field {
+
+
+}
+
+.label {
+
+}
+
+.root {
+
+}
+
+#SideBar{
+    -fx-border-color: black;       /* border color */
+    -fx-border-width: 2;           /* thickness */
+    -fx-border-radius: 1;          /* rounded corners */
+    -fx-padding: 5;
+}
+#SideBar Button{
+    -fx-pref-height: 20px;
+    -fx-pref-width: 50px;
+
+}
