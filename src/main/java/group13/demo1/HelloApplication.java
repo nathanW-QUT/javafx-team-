@@ -22,7 +22,6 @@ public class HelloApplication extends Application {
         stage.show();
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
-
     }
 
     public static void main(String[] args) {
