@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.HelloController" >
+    <left>
+        <VBox spacing="10" alignment="TOP_CENTER" fx:id="SideBar">
+            <Button fx:id="nextButton" text="Home" onAction="#onHomeButtonClick"/>
+            <Button text="back" onAction="#onClickLogOut"/>
+            <Button text="Exit" onAction="#onClickLogOut"/>
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane>
+            <Label text="Home page example"/>
+        </StackPane>
+    </center>
+</BorderPane>
+
+
