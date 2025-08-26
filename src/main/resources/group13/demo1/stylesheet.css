@@ -23,7 +23,7 @@
 
 #SideBar{
     -fx-border-color: black;       /* border color */
-    -fx-border-width: 7;           /* thickness */
+    -fx-border-width: 2;           /* thickness */
     -fx-border-radius: 6;          /* rounded corners */
     -fx-padding: 5;
 }
