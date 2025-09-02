@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.HelloController" >
+    <VBox spacing="40" alignment="TOP_CENTER" fx:id="SideBar">
+        <Button fx:id="nextButton" text="Home" onAction="#onHomeButtonClick"/>
+        <Button text="Timer" onAction="#onClickGoTimer"/>
+        <Button text="Tasks" onAction="#onClickGoTasks"/>
+        <Button text="Exit" onAction="#onClickLogOut"/>
+    </VBox>
+</StackPane>

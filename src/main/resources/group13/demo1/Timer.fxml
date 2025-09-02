@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.Timer" >
+    <left>
+        <fx:include source="Sidebar.fxml"/>
+
+
+    </left>
+
+    <center>
+        <StackPane>
+
+            <Label text="Timer" StackPane.alignment="TOP_CENTER"/>
+
+            <HBox spacing="10" alignment="CENTER" StackPane.alignment="CENTER">
+                <Button text="Start Timer"/>
+                <Button text="Start Timer"/>
+
+            </HBox>
+
+            <Button fx:id="nextButton" text="Log Distraction" styleClass="floating-button" onAction="#onClickLogDistraction" />
+        </StackPane>
+    </center>
+</BorderPane>

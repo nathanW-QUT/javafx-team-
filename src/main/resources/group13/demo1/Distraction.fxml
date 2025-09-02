@@ -9,16 +9,19 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.HelloController" >
     <left>
-        <fx:include source="Sidebar.fxml"/>
+       <fx:include source="Sidebar.fxml"/>
     </left>
 
     <center>
         <StackPane>
 
-            <Label text="Home page example"/>
-            <Button fx:id="nextButton" text="Log Distraction" onAction="#onClickLogDistraction" styleClass="floating-button"/>
+            <Label text="Distraction Logger"/>
+
+
+            <Button fx:id="nextButton" text="Log Distraction"
+                    onAction="#onHomeButtonClick"
+                    StackPane.alignment="BOTTOM_RIGHT"
+                    style="-fx-padding: 10;"/>
         </StackPane>
     </center>
 </BorderPane>
-
-
