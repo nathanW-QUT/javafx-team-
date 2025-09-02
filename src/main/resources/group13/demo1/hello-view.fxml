@@ -11,6 +11,6 @@
     <Label text="Label"/>
     <HBox spacing="15.0" alignment="CENTER">
         <Button text="log in"/>
-        <Button text="sign up"/
+        <Button text="sign up"/>
     </HBox>
 </VBox>
