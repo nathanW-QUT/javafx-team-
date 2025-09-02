@@ -20,4 +20,3 @@
     <Button text="Hello!" onAction="#onHelloButtonClick"/>
 </VBox>
 
-
