@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="group13.demo1.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
 
-    <Label fx:id="welcomeText"/>
-    <Label text="Kiernan"/>
-    <Label text="Jacob"/>
-    <Label text="Nathan"/>
-    <Label text="Lisa"/>
-    <Label text="vijay"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
+<VBox alignment="CENTER" spacing="15.0" fillWidth="false">
+    <TextField text="TextField"/>
+    <Label text="Label"/>
+    <HBox spacing="15.0" alignment="CENTER">
+        <Button text="log in"/>
+        <Button text="sign up"/
+    </HBox>
 </VBox>
