@@ -1,5 +1,6 @@
-package group13.demo1;
+package group13.demo1.controller;
 
+import group13.demo1.HelloApplication;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -12,7 +13,6 @@ import javafx.util.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import java.io.Console;
 import java.io.IOException;
 
 public class Timer {

@@ -1,5 +1,6 @@
-package group13.demo1;
+package group13.demo1.controller;
 
+import group13.demo1.HelloApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -53,6 +54,7 @@ public class HelloController  {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
+
     @FXML
     private void onClickGoTasks() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();

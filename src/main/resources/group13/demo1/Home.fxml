@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="group13.demo1.HelloController" >
+            fx:controller="group13.demo1.controller.HelloController" >
     <left>
         <fx:include source="Sidebar.fxml"/>
     </left>
