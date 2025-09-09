@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.myapp.controller.RegisterController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="10" prefWidth="300">
+            <Label text="Register" style="-fx-font-size: 20px;"/>
+            <TextField fx:id="usernameField" promptText="Choose a username"/>
+            <PasswordField fx:id="passwordField" promptText="Choose a password"/>
+            <Button text="Register" onAction="#handleRegister"/>
+            <Label fx:id="statusLabel"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <Button text="Back to Login" onAction="#handleBack" BorderPane.alignment="BOTTOM_LEFT"/>
+    </bottom>
+</BorderPane>
