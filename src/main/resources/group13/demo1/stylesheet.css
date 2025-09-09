@@ -1,0 +1,47 @@
+#helloView Button {
+    -fx-pref-height: 45px;
+    -fx-pref-width: 80px;
+
+}
+
+.button:hover {
+
+}
+
+.text-field {
+
+
+}
+
+.label {
+
+}
+
+.root {
+
+}
+
+#SideBar{
+    -fx-border-color: black;       /* border color */
+    -fx-border-width: 2;           /* thickness */
+    -fx-border-radius: 6;          /* rounded corners */
+    -fx-padding: 5;
+    -fx-spacing: 40;
+    -fx-alignment: top-center;
+    -fx-pref-height: 100%;
+
+}
+#SideBar Button{
+    -fx-pref-height: 20px;
+    -fx-pref-width: 50px;
+
+}
+.floating-button {
+    -fx-translate-x: -150; /* push left/right */
+    -fx-translate-y: -100; /* push up/down */
+}
+#TasksButton {
+    -fx-pref-width: 100px;
+    -fx-pref-Height: 100px;
+
+}
