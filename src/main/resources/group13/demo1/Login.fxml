@@ -8,22 +8,23 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.Login">
 
-    <!-- Centered login fields -->
+
     <center>
         <VBox spacing="15" alignment="CENTER" maxWidth="300">
-            <TextField promptText="Username" />
-            <PasswordField promptText="Password" />
+            <TextField fx:id="usernameField" promptText="Username" />
+            <PasswordField fx:id="passwordField" promptText="Password" />
+            <Label fx:id="statusLabel"/>
         </VBox>
     </center>
 
-    <!-- Bottom buttons -->
+
     <bottom>
         <BorderPane >
             <left>
                 <Button fx:id="nextButton" text="Back" onAction="#onClickLogOut" />
             </left>
             <center>
-                <Button text="Login" onAction="#onHomeButtonClick" />
+                <Button text="Login" onAction="#handleLogin" />
             </center>
         </BorderPane>
     </bottom>
