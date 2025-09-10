@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import java.io.IOException;
 
 
-public class RegisterController {
+public class  RegisterController {
     private Button nextButton;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
