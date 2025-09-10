@@ -7,7 +7,9 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
+
             fx:controller="group13.demo1.controller.RegisterController" >
+
 
     <center>
         <VBox spacing="15" alignment="CENTER" maxWidth="300">
