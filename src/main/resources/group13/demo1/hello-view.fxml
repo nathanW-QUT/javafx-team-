@@ -13,11 +13,7 @@
     </padding>
 
     <Label fx:id="welcomeText"/>
-    <Label text="Kiernan"/>
-    <Label text="Jacob"/>
-    <Label text="Nathan"/>
-    <Label text="Lisa"/>
-    <Label text="vijay"/>
+    <Label text="Distraction Logger"/>
 
 
     <HBox spacing="100.0" alignment="CENTER"  >

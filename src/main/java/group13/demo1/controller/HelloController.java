@@ -28,6 +28,8 @@ public class HelloController  {
         scene.getStylesheets().add(stylesheet);
     }
 
+
+
     @FXML
     private void onClickLogDistraction() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
@@ -59,6 +61,15 @@ public class HelloController  {
     private void onClickGoTasks() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Tasks.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+        stage.setScene(scene);
+        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+    }
+    @FXML
+    private void onClickGoHistory() throws IOException {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("TimerHistory.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
         stage.setScene(scene);
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
