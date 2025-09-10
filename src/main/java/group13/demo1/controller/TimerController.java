@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 import java.time.LocalDateTime;
+import group13.demo1.controller.QuickLogController;
 
 public class TimerController {
 
@@ -22,7 +23,8 @@ public class TimerController {
     private boolean running = false;
     private long startTime; //  nanoseconds
     private long elapsedTime = 0; //  milliseconds
-
+    private DistractionDAO DistractionDAO;
+    private final QuickLogController distractionController = new QuickLogController();
     private AnimationTimer timer;
 
     public TimerController() {
@@ -90,9 +92,14 @@ public class TimerController {
         timerDAO.addTimer(record);
     }
 
+    //@FXML
+    //public void onClickLogDistraction(ActionEvent event) {
+       // System.out.println("Distraction logged!");
+   // }
+
     @FXML
-    public void onClickLogDistraction(ActionEvent event) {
-        System.out.println("Distraction logged!");
+    private void onClickLogDistraction() {
+        distractionController.logDistraction();
     }
 
 
