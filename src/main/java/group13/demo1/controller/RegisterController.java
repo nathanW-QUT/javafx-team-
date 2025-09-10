@@ -10,6 +10,7 @@ import java.io.IOException;
 
 
 public class RegisterController {
+    @FXML
     private Button nextButton;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;

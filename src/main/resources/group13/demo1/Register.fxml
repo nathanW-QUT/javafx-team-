@@ -7,19 +7,29 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="group13.demo1.controller.RegisterController">
+
+            fx:controller="group13.demo1.controller.RegisterController" >
+
 
     <center>
-        <VBox alignment="CENTER" spacing="10" prefWidth="300">
-            <Label text="Register" style="-fx-font-size: 20px;"/>
-            <TextField fx:id="usernameField" promptText="Choose a username"/>
-            <PasswordField fx:id="passwordField" promptText="Choose a password"/>
-            <Button text="Register" onAction="#handleRegister"/>
+        <VBox spacing="15" alignment="CENTER" maxWidth="300">
+            <TextField fx:id="usernameField" promptText="Username" />
+            <PasswordField fx:id="passwordField" promptText="Password" />
             <Label fx:id="statusLabel"/>
         </VBox>
     </center>
 
+
     <bottom>
-        <Button text="Back to Login" onAction="#handleBack" BorderPane.alignment="BOTTOM_LEFT"/>
+        <BorderPane >
+            <left>
+                <Button fx:id="nextButton" text="Back" onAction="#handleBack" />
+            </left>
+            <center>
+                <Button text="Register" onAction="#handleRegister" />
+            </center>
+        </BorderPane>
     </bottom>
+
+
 </BorderPane>
