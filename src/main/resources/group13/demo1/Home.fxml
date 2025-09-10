@@ -15,7 +15,7 @@
     <center>
         <StackPane>
 
-            <Label text="Home page example"/>
+            <Label fx:id="welcomeText" text="Home page example"/>
             <Button fx:id="nextButton" text="Log Distraction" onAction="#onClickLogDistraction" styleClass="floating-button"/>
         </StackPane>
     </center>

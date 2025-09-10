@@ -2,6 +2,7 @@ package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
 import group13.demo1.model.UserDao;
+import group13.demo1.model.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -27,6 +28,9 @@ public class Login {
     private final UserDao userDao = new UserDao();
     @FXML
     private void onClickLogOut() throws IOException {
+
+        UserSession.clearSession();
+
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
@@ -47,11 +51,13 @@ public class Login {
         String password = passwordField.getText();
 
         if (userDao.validateLogin(username, password)) {
+            UserSession.createSession(username);
             statusLabel.setText("Login successful!");
             Stage stage = (Stage) nextButton.getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
             stage.setScene(scene);
+
             String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
             scene.getStylesheets().add(stylesheet);
         } else {

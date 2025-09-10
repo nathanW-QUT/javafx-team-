@@ -1,6 +1,7 @@
 package group13.demo1.controller;
 import group13.demo1.HelloApplication;
 import group13.demo1.model.UserDao;
+import group13.demo1.model.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -30,9 +31,10 @@ public class RegisterController {
 
         boolean success = userDao.addUser(username, password);
         if (success) {
+            UserSession.createSession(username);
             statusLabel.setText("Account created! Logging in...");
 
-            // Go to main page immediately
+
             try {
                 Stage stage = (Stage) nextButton.getScene().getWindow();
                 FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
