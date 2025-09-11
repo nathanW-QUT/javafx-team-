@@ -24,9 +24,9 @@ public class QuickLogController {
     public void logDistraction() {
         boolean success = distractionDao.addDistraction();
         if (success) {
-            distractionStatus.setText("Distraction logged!");
+            System.out.println("Distraction logged!");
         } else {
-            distractionStatus.setText("Failed to log distraction.");
+            System.out.println("Failed to log distraction.");
         }
     }
 }
