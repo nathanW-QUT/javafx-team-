@@ -85,6 +85,7 @@ public class TimerHistory {
 
         dao.deleteTimer(t);
         items.remove(i);
+        list.refresh();
 
         if (items.isEmpty()) {
             selectedLabel.setText("(none)");
