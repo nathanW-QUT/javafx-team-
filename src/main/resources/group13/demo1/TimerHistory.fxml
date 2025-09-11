@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.TimerHistory">
+
+    <left>
+        <fx:include source="Sidebar.fxml"/>
+    </left>
+
+    <center>
+        <VBox spacing="12" alignment="TOP_CENTER" prefWidth="600">
+            <Label text="Timer History" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+            <ListView fx:id="historyList" prefWidth="600" prefHeight="320"
+                      style="-fx-font-family: 'Consolas', 'Monospaced';"/>
+
+        </VBox>
+    </center>
+</BorderPane>
