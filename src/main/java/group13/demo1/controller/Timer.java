@@ -1,6 +1,7 @@
 package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
+import group13.demo1.model.UserSession;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -28,14 +29,18 @@ public class Timer {
 
     @FXML
     private Label timerLabel;
+    @FXML
+    private Label welcomeText;
 
     private int secondsElapsed = 0;
     private Timeline timeline;
+
 
     @FXML
     private void initialize() {
         timerLabel.setText("00:00");
         startStopButton.setText("Start");
+
     }
 
 
@@ -89,4 +94,7 @@ public class Timer {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
+
+
+
 }

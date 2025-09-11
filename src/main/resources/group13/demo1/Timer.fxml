@@ -15,6 +15,7 @@
     <!-- Center stopwatch -->
     <center>
         <VBox alignment="CENTER" spacing="20">
+            <Label fx:id="welcomeText"/>
 
             <Label fx:id="timerLabel" text="00:00" style="-fx-font-size: 28px;"/>
 

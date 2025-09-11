@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
+import java.text.BreakIterator;
 import java.time.LocalDateTime;
 
 public class TimerController {
@@ -17,6 +18,9 @@ public class TimerController {
 
     @FXML
     private Button startStopButton;
+
+    @FXML
+    private Label welcomeText;
 
     private ITimerDAO timerDAO;
     private boolean running = false;
@@ -52,6 +56,9 @@ public class TimerController {
             }
         };
         timer.start();
+
+        String currentUser = UserSession.getInstance().getUsername();
+        welcomeText.setText("Welcome, " + currentUser + "!");
     }
 
     @FXML

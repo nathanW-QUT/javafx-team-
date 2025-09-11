@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class HelloApplication extends Application {
-    //this is the Width and Height across the entire application
+
     public static final int WIDTH = 640;
     public static final int HEIGHT = 360;
 

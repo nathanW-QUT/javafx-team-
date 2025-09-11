@@ -6,7 +6,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.Login">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+
+            fx:controller="group13.demo1.controller.RegisterController" >
 
 
     <center>
@@ -21,12 +23,13 @@
     <bottom>
         <BorderPane >
             <left>
-                <Button fx:id="nextButton" text="Back" onAction="#onClickLogOut" />
+                <Button fx:id="nextButton" text="Back" onAction="#handleBack" />
             </left>
             <center>
-                <Button text="Login" onAction="#handleLogin" />
+                <Button text="Register" onAction="#handleRegister" />
             </center>
         </BorderPane>
     </bottom>
+
 
 </BorderPane>
