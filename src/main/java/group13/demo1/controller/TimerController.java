@@ -80,7 +80,7 @@ public class TimerController {
             startTime = System.currentTimeMillis();
             running = true;
             startStopButton.setText("Pause");
-            System.out.println("Timer started at " + LocalDateTime.now());
+            System.out.println("Timer started:  " + LocalDateTime.now()); // comment out when not needed for submission
         } else {
             long endMillis = System.currentTimeMillis();
             running = false;
@@ -104,11 +104,14 @@ public class TimerController {
         }
     }
 
-
+    // This is a placeholder until i can figure out how to do play-pause-reset
     @FXML
     public void resetTimer(ActionEvent event) {
         running = false;
+
+        long durationBeforeReset = elapsedTime; // capture before resetting
         elapsedTime = 0;
+
         startStopButton.setText("Start");
         timerLabel.setText("00:00");
         System.out.println("Timer reset");
@@ -117,12 +120,32 @@ public class TimerController {
         TimerRecord record = new TimerRecord(
                 currentUser,
                 "Reset",
+                LocalDateTime.now().minusSeconds(durationBeforeReset / 1000),
                 LocalDateTime.now(),
-                LocalDateTime.now(),
-                0
+                durationBeforeReset / 1000
         );
         timerDAO.addTimer(record);
     }
+
+
+//    @FXML
+//    public void resetTimer(ActionEvent event) {
+//        running = false;
+////        elapsedTime = 0;
+//        startStopButton.setText("Start");
+//        timerLabel.setText("00:00");
+//        System.out.println("Timer reset");
+//
+//        String currentUser = UserSession.getInstance().getUsername();
+//        TimerRecord record = new TimerRecord(
+//                currentUser,
+//                "Reset",
+//                LocalDateTime.now(),
+//                LocalDateTime.now(),
+//                elapsedTime / 1000
+//        );
+//        timerDAO.addTimer(record);
+//    }
 
     //@FXML
     //public void onClickLogDistraction(ActionEvent event) {

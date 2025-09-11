@@ -21,7 +21,7 @@ public class SqliteTimerDAO implements ITimerDAO {
                     "label TEXT NOT NULL," +    // Just pause and Reset now
                     "startTime TEXT NOT NULL," +
                     "endTime TEXT NOT NULL," +
-                    "totalTime INTEGER NOT NULL" +    // stores in seconds for clarity
+                    "totalTime INTEGER NOT NULL" +    // now stores in seconds for clarity
                     ")";
             stmt.execute(query);
         } catch (Exception e) {
