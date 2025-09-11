@@ -7,11 +7,11 @@
             fx:controller="group13.demo1.controller.TimerHistory">
 
     <!-- NEW: Top bar with Back -->
-    <top>
-        <HBox alignment="CENTER_RIGHT" spacing="8" style="-fx-padding: 10 12 0 12;">
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="8" style="-fx-padding: 8 12 12 12;">
             <Button text="Back" onAction="#onBackHome"/>
         </HBox>
-    </top>
+    </bottom>
 
     <left>
         <ListView fx:id="list" prefWidth="260"/>
