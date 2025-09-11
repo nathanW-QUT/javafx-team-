@@ -2,6 +2,7 @@ package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
 import group13.demo1.model.DistractionDAO;
+import group13.demo1.model.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -20,13 +21,14 @@ public class QuickLogController {
 
     public void logDistraction() {
         String description = descriptionField.getText();
+        String currentUser = UserSession.getInstance().getUsername();
 
         if (description == null || description.isBlank()) {
             distractionStatus.setText("Please enter a description.");
             return;
         }
 
-        boolean success = distractionDao.addDistraction(description);
+        boolean success = distractionDao.addDistraction(description, currentUser);
 
         if (success) {
             distractionStatus.setText("Distraction logged!");

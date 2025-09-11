@@ -32,7 +32,7 @@ public class TimerController {
     private long startTime; //  nanoseconds
     private long elapsedTime = 0; //  milliseconds
     private final QuickLogController quickLogController = new QuickLogController();
-    private final DistractionDAO distractionDao = new DistractionDAO();
+    private final DistractionDAO distractionDAO = new DistractionDAO();
     private AnimationTimer timer;
 
     public TimerController() {
@@ -111,20 +111,20 @@ public class TimerController {
 
     public void onClickLogDistraction() {
         String description = descriptionField.getText();
-
+        String currentUser = UserSession.getInstance().getUsername();
         if (description == null || description.isBlank()) {
-            distractionStatus.setText("Please enter a description.");
-            return;
+            distractionStatus.setText("Please enter a description:");
+            if (currentUser == null || currentUser.isBlank()) {
+                distractionStatus.setText("Please enter login:");
+
+                return;
+            }
+
         }
 
-        boolean success = distractionDao.addDistraction(description);
+        boolean ok = distractionDAO.addDistraction(description, currentUser);
+        distractionStatus.setText(ok ? "Distraction logged for " + currentUser : "Failed to log distraction");
 
-        if (success) {
-            distractionStatus.setText("Distraction logged!");
-            descriptionField.clear();
-        } else {
-            distractionStatus.setText("Failed to log distraction.");
-        }
     }
 
 
