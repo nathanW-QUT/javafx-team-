@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class QuickLogController {
 
@@ -32,20 +33,6 @@ public class QuickLogController {
             descriptionField.clear();
         } else {
             distractionStatus.setText("Failed to log distraction.");
-        }
-    }
-
-    public static void showPopup() {
-        try {
-            FXMLLoader loader = new FXMLLoader(
-                    QuickLogController.class.getResource("quicklog.fxml")
-            );
-            Stage stage = new Stage();
-            stage.setScene(new Scene(loader.load()));
-            stage.setTitle("Log Distraction");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -5,9 +5,8 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import java.text.BreakIterator;
 import java.time.LocalDateTime;
 
@@ -23,11 +22,17 @@ public class TimerController {
     @FXML
     private Label welcomeText;
 
+    @FXML private TextField distractionDescription;
+    @FXML private TextField descriptionField;
+    @FXML private Label distractionStatus;
+    @FXML private VBox distractionBox;
+
     private ITimerDAO timerDAO;
     private boolean running = false;
     private long startTime; //  nanoseconds
     private long elapsedTime = 0; //  milliseconds
     private final QuickLogController quickLogController = new QuickLogController();
+    private final DistractionDAO distractionDao = new DistractionDAO();
     private AnimationTimer timer;
 
     public TimerController() {
@@ -97,18 +102,30 @@ public class TimerController {
         TimerRecord record = new TimerRecord("Reset", LocalDateTime.now(), LocalDateTime.now(), 0);
         timerDAO.addTimer(record);
     }
-    //@FXML
-    //private void onClickLogDistraction() {
-        //quickLogController.logDistraction();
-    //}
 
     @FXML
-    private void onClickLogDistraction() {
-        QuickLogController.showPopup();
+    public void showQuickLog() {
+        distractionBox.setVisible(true);
+        distractionBox.setManaged(true);
     }
 
+    public void onClickLogDistraction() {
+        String description = descriptionField.getText();
 
+        if (description == null || description.isBlank()) {
+            distractionStatus.setText("Please enter a description.");
+            return;
+        }
 
+        boolean success = distractionDao.addDistraction(description);
+
+        if (success) {
+            distractionStatus.setText("Distraction logged!");
+            descriptionField.clear();
+        } else {
+            distractionStatus.setText("Failed to log distraction.");
+        }
+    }
 
 
     public void printAllTimers() {

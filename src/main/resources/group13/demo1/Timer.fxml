@@ -24,7 +24,12 @@
                 <Button fx:id="resetButton" text="Reset" onAction="#resetTimer"/>
             </HBox>
 
-            <Button fx:id="nextButton" text="Log Distraction" onAction="#onClickLogDistraction"/>
+            <Button fx:id="addDistractionButton" text="Add Distraction" onAction="#showQuickLog"/>
+        <VBox fx:id="distractionBox" visible="false" managed="false" spacing="5" alignment="CENTER">
+            <TextField fx:id="descriptionField" promptText="Enter distraction description"/>
+            <Button fx:id="QuickButton" text="Log Distraction" onAction="#onClickLogDistraction"/>
+            <Label fx:id="distractionStatus" text=""/>
+        </VBox>
         </VBox>
     </center>
 </BorderPane>
