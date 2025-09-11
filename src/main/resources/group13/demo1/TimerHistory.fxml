@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.TimerHistory">
 
+    <!-- NEW: Top bar with Back -->
+    <top>
+        <HBox alignment="CENTER_RIGHT" spacing="8" style="-fx-padding: 10 12 0 12;">
+            <Button text="Back" onAction="#onBackHome"/>
+        </HBox>
+    </top>
+
     <left>
-        <fx:include source="Sidebar.fxml"/>
+        <ListView fx:id="list" prefWidth="260"/>
     </left>
 
     <center>
-        <VBox spacing="12" alignment="TOP_CENTER" prefWidth="600">
-            <Label text="Timer History" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
-            <ListView fx:id="historyList" prefWidth="600" prefHeight="320"
-                      style="-fx-font-family: 'Consolas', 'Monospaced';"/>
-
+        <VBox spacing="12" alignment="TOP_LEFT" style="-fx-padding: 20;">
+            <Label text="Select a distraction to view or edit."/>
+            <Separator/>
+            <Label text="Selected:"/>
+            <Label fx:id="selectedLabel" style="-fx-font-weight: bold;"/>
+            <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+                <Button text="Confirm" onAction="#onConfirm"/>
+                <Button text="Delete"  onAction="#onDelete"/>
+            </HBox>
         </VBox>
     </center>
 </BorderPane>

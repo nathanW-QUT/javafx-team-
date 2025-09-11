@@ -1,46 +1,116 @@
 package group13.demo1.controller;
 
+import group13.demo1.HelloApplication;
 import group13.demo1.model.ITimerDAO;
 import group13.demo1.model.SqliteTimerDAO;
 import group13.demo1.model.TimerRecord;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class TimerHistory {
 
-    @FXML private ListView<String> historyList;
+    @FXML private ListView<TimerRecord> list;
+    @FXML private Label selectedLabel;
 
     private final ITimerDAO dao = new SqliteTimerDAO();
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private ObservableList<TimerRecord> items;
 
     @FXML
     public void initialize() {
-        historyList.setItems(FXCollections.observableArrayList(
-                dao.getAllTimers().stream()
-                        .map(this::formatLine)
-                        .collect(Collectors.toList())
-        ));
+        // Load newest first
+        List<TimerRecord> rows = dao.getAllTimers();
+        rows.sort((a, b) -> b.getStartTime().compareTo(a.getStartTime()));
+        items = FXCollections.observableArrayList(rows);
+        list.setItems(items);
+        list.setPlaceholder(new Label("No timer sessions yet."));
+
+        // Simple row text
+        list.setCellFactory(lv -> new ListCell<>() {
+            @Override protected void updateItem(TimerRecord t, boolean empty) {
+                super.updateItem(t, empty);
+                setText((empty || t == null) ? null
+                        : "Distraction " + t.getId() + "  •  " + t.getLabel());
+            }
+        });
+
+        // Update details panel
+        list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
+            if (t == null) {
+                selectedLabel.setText("(none)");
+            } else {
+                long secs = elapsedSecondsFromTimes(t);      // <-- compute from times
+                selectedLabel.setText(
+                        "Distraction " + t.getId() + "  •  " + t.getLabel() + "  •  " + formatElapsedTime(secs) + "\n" +
+                                dtf.format(t.getStartTime()) + "  →  " + dtf.format(t.getEndTime())
+                );
+            }
+        });
+
+        if (!items.isEmpty()) list.getSelectionModel().select(0);
+        else selectedLabel.setText("(none)");
     }
 
-    private String formatLine(TimerRecord t) {
-        return "ID: " + t.getId()
-                + " | Label: " + t.getLabel()
-                + " | Start: " + dtf.format(t.getStartTime())
-                + " | End: " + dtf.format(t.getEndTime())
-                + " | Time Elapsed: " + FormattingElapsedTime(t.getElapsedSeconds());
+    @FXML
+    private void onConfirm() {
+        int i = list.getSelectionModel().getSelectedIndex();
+        if (i < 0) return;
+        if (i < items.size() - 1) list.getSelectionModel().select(i + 1);
     }
 
-    private String FormattingElapsedTime(long millis) {
-        long s = Math.max(0, millis / 1000);
-        long h = s / 3600;
-        long m = (s % 3600) / 60;
-        long sec = s % 60;
+    @FXML
+    private void onDelete() {
+        int i = list.getSelectionModel().getSelectedIndex();
+        if (i < 0) return;
+        TimerRecord t = items.get(i);
+
+        dao.deleteTimer(t);
+        items.remove(i);
+
+        if (items.isEmpty()) {
+            selectedLabel.setText("(none)");
+            return;
+        }
+        list.getSelectionModel().select(Math.min(i, items.size() - 1));
+    }
+
+    // Optional: Back button handler if you added it in FXML
+    @FXML
+    private void onBackHome() throws IOException {
+        Stage stage = (Stage) list.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+        stage.setScene(scene);
+        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+    }
+
+    // --- Helpers ---
+
+    // Always compute elapsed from timestamps to avoid unit mismatches
+    private long elapsedSecondsFromTimes(TimerRecord t) {
+        long secs = Duration.between(t.getStartTime(), t.getEndTime()).getSeconds();
+        return Math.max(0, secs);
+    }
+
+    private String formatElapsedTime(long seconds) {
+        long h = seconds / 3600;
+        long m = (seconds % 3600) / 60;
+        long s = seconds % 60;
         return (h > 0)
-                ? String.format("%02d:%02d:%02d", h, m, sec)
-                : String.format("%02d:%02d", m, sec);
+                ? String.format("%02d:%02d:%02d", h, m, s)
+                : String.format("%02d:%02d", m, s);
     }
 }

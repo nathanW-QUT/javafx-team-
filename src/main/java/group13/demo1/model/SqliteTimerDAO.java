@@ -102,6 +102,31 @@ public class SqliteTimerDAO implements ITimerDAO {
         }
         return null;
     }
+    @Override
+    public List<TimerRecord> getTimersForUser(String username) {
+        List<TimerRecord> timers = new ArrayList<>();
+        String sql = "SELECT * FROM timers WHERE username = ? ORDER BY startTime DESC";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    TimerRecord t = new TimerRecord(
+                            rs.getString("username"),
+                            rs.getString("label"),
+                            LocalDateTime.parse(rs.getString("startTime")),
+                            LocalDateTime.parse(rs.getString("endTime")),
+                            rs.getLong("totalTime") // seconds
+                    );
+                    t.setId(rs.getInt("id"));
+                    timers.add(t);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return timers;
+    }
+
 
 
     @Override

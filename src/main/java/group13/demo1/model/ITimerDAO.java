@@ -8,4 +8,5 @@ public interface ITimerDAO {
     void deleteTimer(TimerRecord timer);
     TimerRecord getTimer(int id);
     List<TimerRecord> getAllTimers();
+    List<TimerRecord> getTimersForUser(String username);
 }
