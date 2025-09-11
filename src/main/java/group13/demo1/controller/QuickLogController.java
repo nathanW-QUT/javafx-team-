@@ -13,20 +13,39 @@ public class QuickLogController {
 
     @FXML private Button distractionButton;
     @FXML private Label distractionStatus;
+    @FXML private TextField descriptionField;
 
     private final DistractionDAO distractionDao = new DistractionDAO();
 
-    @FXML
-    private void initialize() {
-        distractionButton.setOnAction(event -> logDistraction());
+    public void logDistraction() {
+        String description = descriptionField.getText();
+
+        if (description == null || description.isBlank()) {
+            distractionStatus.setText("Please enter a description.");
+            return;
+        }
+
+        boolean success = distractionDao.addDistraction(description);
+
+        if (success) {
+            distractionStatus.setText("Distraction logged!");
+            descriptionField.clear();
+        } else {
+            distractionStatus.setText("Failed to log distraction.");
+        }
     }
 
-    public void logDistraction() {
-        boolean success = distractionDao.addDistraction();
-        if (success) {
-            System.out.println("Distraction logged!");
-        } else {
-            System.out.println("Failed to log distraction.");
+    public static void showPopup() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    QuickLogController.class.getResource("quicklog.fxml")
+            );
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.setTitle("Log Distraction");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

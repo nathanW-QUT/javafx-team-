@@ -4,6 +4,7 @@ import group13.demo1.model.*;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -96,15 +97,19 @@ public class TimerController {
         TimerRecord record = new TimerRecord("Reset", LocalDateTime.now(), LocalDateTime.now(), 0);
         timerDAO.addTimer(record);
     }
-
     //@FXML
-    //public void onClickLogDistraction(ActionEvent event) {
-        //System.out.println("Distraction logged!");
+    //private void onClickLogDistraction() {
+        //quickLogController.logDistraction();
     //}
+
     @FXML
     private void onClickLogDistraction() {
-        quickLogController.logDistraction();
+        QuickLogController.showPopup();
     }
+
+
+
+
 
     public void printAllTimers() {
         for (TimerRecord t : timerDAO.getAllTimers()) {

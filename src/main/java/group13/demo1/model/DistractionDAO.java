@@ -14,7 +14,9 @@ public class DistractionDAO {
     private void createTable() {
         String query = """
             CREATE TABLE IF NOT EXISTS distraction (
-                id INTEGER PRIMARY KEY AUTOINCREMENT
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                description TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
             """;
         try (Statement stmt = connection.createStatement()) {
@@ -24,9 +26,10 @@ public class DistractionDAO {
         }
     }
 
-    public boolean addDistraction() {
-        String query = "INSERT INTO distraction DEFAULT VALUES";
+    public boolean addDistraction(String description) {
+        String query = "INSERT INTO distraction (description) VALUES (?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, description);
             stmt.executeUpdate();
             return true;
         } catch (SQLException e) {
