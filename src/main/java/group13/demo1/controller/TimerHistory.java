@@ -1,5 +1,5 @@
 package group13.demo1.controller;
-
+import group13.demo1.model.UserSession;
 import group13.demo1.HelloApplication;
 import group13.demo1.model.ITimerDAO;
 import group13.demo1.model.SqliteTimerDAO;
@@ -30,9 +30,12 @@ public class TimerHistory {
 
     @FXML
     public void initialize() {
-        // Load newest first
-        List<TimerRecord> rows = dao.getAllTimers();
+        String user = UserSession.getInstance().getUsername();
+
+        // only this user's timers, excluding "Reset"
+        List<TimerRecord> rows = dao.getTimersForUser(user);
         rows.sort((a, b) -> b.getStartTime().compareTo(a.getStartTime()));
+
         items = FXCollections.observableArrayList(rows);
         list.setItems(items);
         list.setPlaceholder(new Label("No timer sessions yet."));
@@ -41,19 +44,23 @@ public class TimerHistory {
         list.setCellFactory(lv -> new ListCell<>() {
             @Override protected void updateItem(TimerRecord t, boolean empty) {
                 super.updateItem(t, empty);
-                setText((empty || t == null) ? null
-                        : "Distraction " + t.getId() + "  •  " + t.getLabel());
+                if (empty || t == null) {
+                    setText(null);
+                    return;
+                }
+                int n = getIndex() + 1;                 // 1-based display number
+                setText("Distraction " + n + "  •  " + t.getLabel());
             }
         });
-
         // Update details panel
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
             if (t == null) {
                 selectedLabel.setText("(none)");
             } else {
-                long secs = elapsedSecondsFromTimes(t);      // <-- compute from times
+                int n = list.getSelectionModel().getSelectedIndex() + 1;  // 1-based
+                long secs = elapsedSecondsFromTimes(t);
                 selectedLabel.setText(
-                        "Distraction " + t.getId() + "  •  " + t.getLabel() + "  •  " + formatElapsedTime(secs) + "\n" +
+                        "Distraction " + n + "  •  " + t.getLabel() + "  •  " + formatElapsedTime(secs) + "\n" +
                                 dtf.format(t.getStartTime()) + "  →  " + dtf.format(t.getEndTime())
                 );
             }
