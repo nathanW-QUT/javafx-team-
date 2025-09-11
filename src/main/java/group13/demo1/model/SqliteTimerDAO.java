@@ -17,10 +17,11 @@ public class SqliteTimerDAO implements ITimerDAO {
         try (Statement stmt = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS timers (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "label TEXT NOT NULL," +
+                    "username TEXT NOT NULL," +
+                    "label TEXT NOT NULL," +    // Just pause and Reset now
                     "startTime TEXT NOT NULL," +
                     "endTime TEXT NOT NULL," +
-                    "elapsedTime INTEGER NOT NULL" +
+                    "totalTime INTEGER NOT NULL" +    // stores in seconds for clarity
                     ")";
             stmt.execute(query);
         } catch (Exception e) {
@@ -29,16 +30,16 @@ public class SqliteTimerDAO implements ITimerDAO {
     }
 
 
-
     @Override
     public void addTimer(TimerRecord timer) {
         try {
-            String query = "INSERT INTO timers (label, startTime, endTime, elapsedTime) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO timers (username, label, startTime, endTime, totalTime) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, timer.getLabel());
-            ps.setString(2, timer.getStartTime().toString()); // ISO format
-            ps.setString(3, timer.getEndTime().toString());
-            ps.setLong(4, timer.getElapsedTime());
+            ps.setString(1, timer.getUsername());
+            ps.setString(2, timer.getLabel());
+            ps.setString(3, timer.getStartTime().toString());
+            ps.setString(4, timer.getEndTime().toString());
+            ps.setLong(5, timer.getElapsedSeconds());
             ps.executeUpdate();
 
             ResultSet keys = ps.getGeneratedKeys();
@@ -53,12 +54,12 @@ public class SqliteTimerDAO implements ITimerDAO {
     @Override
     public void updateTimer(TimerRecord timer) {
         try {
-            String query = "UPDATE timers SET label=?, startTime=?, endTime=?, elapsedTime=? WHERE id=?";
+            String query = "UPDATE timers SET label=?, startTime=?, endTime=?, totalTime=? WHERE id=?";
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setString(1, timer.getLabel());
             ps.setString(2, timer.getStartTime().toString()); // store as text
             ps.setString(3, timer.getEndTime().toString());
-            ps.setLong(4, timer.getElapsedTime());
+            ps.setLong(4, timer.getElapsedSeconds());
             ps.setInt(5, timer.getId());
             ps.executeUpdate();
         } catch (Exception e) {
@@ -87,10 +88,11 @@ public class SqliteTimerDAO implements ITimerDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 TimerRecord t = new TimerRecord(
+                        rs.getString("username"),
                         rs.getString("label"),
                         LocalDateTime.parse(rs.getString("startTime")),
                         LocalDateTime.parse(rs.getString("endTime")),
-                        rs.getLong("elapsedTime")
+                        rs.getLong("totalTime")
                 );
                 t.setId(id);
                 return t;
@@ -110,10 +112,11 @@ public class SqliteTimerDAO implements ITimerDAO {
             ResultSet rs = stmt.executeQuery("SELECT * FROM timers");
             while (rs.next()) {
                 TimerRecord t = new TimerRecord(
+                        rs.getString("username"),
                         rs.getString("label"),
                         LocalDateTime.parse(rs.getString("startTime")),
                         LocalDateTime.parse(rs.getString("endTime")),
-                        rs.getLong("elapsedTime")
+                        rs.getLong("totalTime")
                 );
                 t.setId(rs.getInt("id"));
                 timers.add(t);

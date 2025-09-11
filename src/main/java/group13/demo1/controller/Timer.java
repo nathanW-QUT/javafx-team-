@@ -61,7 +61,7 @@ public class Timer {
 
             System.out.println("Timer started at: " + now.format(formatter));
 
-            // Start timer
+            // Start the timer
             timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
                 secondsElapsed++;
                 int minutes = secondsElapsed / 60;
@@ -94,7 +94,4 @@ public class Timer {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
-
-
-
 }

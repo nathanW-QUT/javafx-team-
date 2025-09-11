@@ -31,7 +31,7 @@ public class TimerHistory {
                 + " | Label: " + t.getLabel()
                 + " | Start: " + dtf.format(t.getStartTime())
                 + " | End: " + dtf.format(t.getEndTime())
-                + " | Time Elapsed: " + FormattingElapsedTime(t.getElapsedTime());
+                + " | Time Elapsed: " + FormattingElapsedTime(t.getElapsedSeconds());
     }
 
     private String FormattingElapsedTime(long millis) {
