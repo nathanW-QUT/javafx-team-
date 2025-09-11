@@ -26,7 +26,7 @@ public class TimerController {
     private boolean running = false;
     private long startTime; //  nanoseconds
     private long elapsedTime = 0; //  milliseconds
-
+    private final QuickLogController quickLogController = new QuickLogController();
     private AnimationTimer timer;
 
     public TimerController() {
@@ -97,11 +97,14 @@ public class TimerController {
         timerDAO.addTimer(record);
     }
 
+    //@FXML
+    //public void onClickLogDistraction(ActionEvent event) {
+        //System.out.println("Distraction logged!");
+    //}
     @FXML
-    public void onClickLogDistraction(ActionEvent event) {
-        System.out.println("Distraction logged!");
+    private void onClickLogDistraction() {
+        quickLogController.logDistraction();
     }
-
 
     public void printAllTimers() {
         for (TimerRecord t : timerDAO.getAllTimers()) {
