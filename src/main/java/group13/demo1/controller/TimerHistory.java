@@ -4,6 +4,7 @@ import group13.demo1.HelloApplication;
 import group13.demo1.model.ITimerDAO;
 import group13.demo1.model.SqliteTimerDAO;
 import group13.demo1.model.TimerRecord;
+import javafx.collections.ListChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,6 +24,8 @@ public class TimerHistory {
 
     @FXML private ListView<TimerRecord> list;
     @FXML private Label selectedLabel;
+    @FXML private Label totalLabel;
+
 
     private final ITimerDAO dao = new SqliteTimerDAO();
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -32,12 +35,16 @@ public class TimerHistory {
     public void initialize() {
         String user = UserSession.getInstance().getUsername();
 
-        // only this user's timers, excluding "Reset"
+
         List<TimerRecord> rows = dao.getTimersForUser(user);
         rows.sort((a, b) -> b.getStartTime().compareTo(a.getStartTime()));
 
         items = FXCollections.observableArrayList(rows);
         list.setItems(items);
+        totalLabel.setText("Total Distractions: " + items.size());
+        items.addListener((ListChangeListener<TimerRecord>) c ->
+                totalLabel.setText("Total Distractions: " + items.size()));
+
         list.setPlaceholder(new Label("No timer sessions yet."));
 
         // Simple row text
@@ -52,7 +59,7 @@ public class TimerHistory {
                 setText("Distraction " + n + "  •  " + t.getLabel());
             }
         });
-        // Update details panel
+
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
             if (t == null) {
                 selectedLabel.setText("(none)");
@@ -94,7 +101,7 @@ public class TimerHistory {
         list.getSelectionModel().select(Math.min(i, items.size() - 1));
     }
 
-    // Optional: Back button handler if you added it in FXML
+
     @FXML
     private void onBackHome() throws IOException {
         Stage stage = (Stage) list.getScene().getWindow();
@@ -105,9 +112,6 @@ public class TimerHistory {
         scene.getStylesheets().add(stylesheet);
     }
 
-    // --- Helpers ---
-
-    // Always compute elapsed from timestamps to avoid unit mismatches
     private long elapsedSecondsFromTimes(TimerRecord t) {
         long secs = Duration.between(t.getStartTime(), t.getEndTime()).getSeconds();
         return Math.max(0, secs);

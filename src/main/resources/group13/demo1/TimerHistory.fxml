@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.TimerHistory">
 
-    <!-- NEW: Top bar with Back -->
-    <bottom>
-        <HBox alignment="CENTER_RIGHT" spacing="8" style="-fx-padding: 8 12 12 12;">
-            <Button text="Back" onAction="#onBackHome"/>
-        </HBox>
-    </bottom>
 
     <left>
         <ListView fx:id="list" prefWidth="260"/>
     </left>
 
+
     <center>
         <VBox spacing="12" alignment="TOP_LEFT" style="-fx-padding: 20;">
-            <Label text="Select a distraction to view or edit."/>
+            <Label text="Timer History" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+
+
+            <Label fx:id="totalLabel" text="Total Distractions: 0"/>
+
             <Separator/>
             <Label text="Selected:"/>
             <Label fx:id="selectedLabel" style="-fx-font-weight: bold;"/>
@@ -29,4 +27,11 @@
             </HBox>
         </VBox>
     </center>
+
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 12 12 12;">
+            <Button text="Back" onAction="#onBackHome"/>
+        </HBox>
+    </bottom>
 </BorderPane>
