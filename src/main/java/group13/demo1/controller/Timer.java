@@ -32,6 +32,7 @@ public class Timer {
     @FXML
     private Label welcomeText;
 
+
     private int secondsElapsed = 0;
     private Timeline timeline;
 

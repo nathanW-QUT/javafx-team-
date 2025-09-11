@@ -4,8 +4,15 @@ import group13.demo1.model.*;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import java.text.BreakIterator;
+
 import java.time.LocalDateTime;
 import group13.demo1.controller.QuickLogController;
 
@@ -21,12 +28,19 @@ public class TimerController {
     @FXML
     private Label welcomeText;
 
+    @FXML private TextField distractionDescription;
+    @FXML private TextField descriptionField;
+    @FXML private Label distractionStatus;
+    @FXML private VBox distractionBox;
+
     private ITimerDAO timerDAO;
     private boolean running = false;
     private long startTime; //  nanoseconds
     private long elapsedTime = 0; //  milliseconds
-    private DistractionDAO DistractionDAO;
-    private final QuickLogController distractionController = new QuickLogController();
+
+    private final QuickLogController quickLogController = new QuickLogController();
+    private final DistractionDAO distractionDAO = new DistractionDAO();
+
     private AnimationTimer timer;
 
     public TimerController() {
@@ -116,8 +130,29 @@ public class TimerController {
    // }
 
     @FXML
-    private void onClickLogDistraction() {
-        distractionController.logDistraction();
+
+    public void showQuickLog() {
+        distractionBox.setVisible(true);
+        distractionBox.setManaged(true);
+    }
+
+    public void onClickLogDistraction() {
+        String description = descriptionField.getText();
+        String currentUser = UserSession.getInstance().getUsername();
+        if (description == null || description.isBlank()) {
+            distractionStatus.setText("Please enter a description:");
+            if (currentUser == null || currentUser.isBlank()) {
+                distractionStatus.setText("Please enter login:");
+
+                return;
+            }
+
+        }
+
+        boolean ok = distractionDAO.addDistraction(description, currentUser);
+        distractionStatus.setText(ok ? "Distraction logged for " + currentUser : "Failed to log distraction");
+
+
     }
 
 
