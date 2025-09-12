@@ -152,7 +152,7 @@ public class TimerController {
             return;
         }
 
-        // Optional: persist the note in your distraction table (kept from your app)
+
         distractionDAO.addDistraction(tag, currentUser);
 
         if (running) {
