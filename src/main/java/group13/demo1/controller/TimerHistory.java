@@ -47,7 +47,7 @@ public class TimerHistory {
 
         list.setPlaceholder(new Label("No timer sessions yet."));
 
-        // Simple row text
+
         list.setCellFactory(lv -> new ListCell<>() {
             @Override protected void updateItem(TimerRecord t, boolean empty) {
                 super.updateItem(t, empty);
@@ -55,7 +55,7 @@ public class TimerHistory {
                     setText(null);
                     return;
                 }
-                int n = getIndex() + 1;                 // 1-based display number
+                int n = getIndex() + 1;
                 setText("Distraction " + n + "  •  " + t.getLabel());
             }
         });

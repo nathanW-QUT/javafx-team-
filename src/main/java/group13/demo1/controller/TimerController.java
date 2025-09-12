@@ -34,8 +34,8 @@ public class TimerController {
     private final DistractionDAO distractionDAO = new DistractionDAO();
 
     private boolean running = false;
-    private long startTime;          // ms, when this run started
-    private long elapsedTime = 0;    // ms, total accumulated (if you want it)
+    private long startTime;
+    private long elapsedTime = 0;
 
 
     private String activeDistraction = null;
