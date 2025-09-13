@@ -51,7 +51,7 @@ public class QuickLogController {
         try {
             List<TimerRecord> recent = timerDAO.getTimersForUser(currentUser);
             if (!recent.isEmpty()) {
-                TimerRecord last = recent.getFirst();
+                TimerRecord last = recent.get(0);
                 if ("Pause".equalsIgnoreCase(last.getLabel())) {
                     last.setLabel(tag);
                     timerDAO.updateTimer(last);

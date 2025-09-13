@@ -1,5 +1,8 @@
 package group13.demo1.controller;
-
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import java.util.Optional;
 import group13.demo1.model.UserSession;
 import group13.demo1.HelloApplication;
 import group13.demo1.model.ITimerDAO;
@@ -44,9 +47,11 @@ public class TimerHistory {
         list.setCellFactory(lv -> new ListCell<TimerRecord>() {
             @Override protected void updateItem(TimerRecord t, boolean empty) {
                 super.updateItem(t, empty);
-                if (empty || t == null) {
+                if (empty || t == null)
+                {
                     setText(null);
-                } else {
+                } else
+                {
                     int n = getIndex() + 1;
                     setText("Distraction " + n + "  •  " + t.getLabel());
                 }
@@ -61,9 +66,11 @@ public class TimerHistory {
                 totalLabel.setText("Total Distractions: " + items.size()));
 
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
-            if (t == null) {
+            if (t == null)
+            {
                 selectedLabel.setText("(none)");
-            } else {
+            } else
+            {
                 int n = list.getSelectionModel().getSelectedIndex() + 1;
                 long secs = elapsedSecondsFromTimes(t);
                 selectedLabel.setText(
@@ -77,9 +84,11 @@ public class TimerHistory {
     }
 
     @FXML
-    private void onConfirm() {
+    private void onConfirm()
+    {
 
-        if (list.getSelectionModel().getSelectedIndex() >= 0) {
+        if (list.getSelectionModel().getSelectedIndex() >= 0)
+        {
             list.getSelectionModel().clearSelection();
             list.getFocusModel().focus(-1);
             selectedLabel.setText("(none)");
@@ -87,7 +96,8 @@ public class TimerHistory {
     }
 
     @FXML
-    private void onDelete() {
+    private void onDelete()
+    {
         int i = list.getSelectionModel().getSelectedIndex();
         if (i < 0) return;
         TimerRecord t = items.get(i);
@@ -96,7 +106,8 @@ public class TimerHistory {
         items.remove(i);
         list.refresh();
 
-        if (items.isEmpty()) {
+        if (items.isEmpty())
+        {
             selectedLabel.setText("(none)");
             return;
         }
@@ -104,7 +115,8 @@ public class TimerHistory {
     }
 
     @FXML
-    private void onBackHome() throws IOException {
+    private void onBackHome() throws IOException
+    {
         Stage stage = (Stage) list.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
@@ -113,12 +125,14 @@ public class TimerHistory {
         scene.getStylesheets().add(stylesheet);
     }
 
-    private long elapsedSecondsFromTimes(TimerRecord t) {
+    private long elapsedSecondsFromTimes(TimerRecord t)
+    {
         long secs = Duration.between(t.getStartTime(), t.getEndTime()).getSeconds();
         return Math.max(0, secs);
     }
 
-    private String formatElapsedTime(long seconds) {
+    private String formatElapsedTime(long seconds)
+    {
         long h = seconds / 3600;
         long m = (seconds % 3600) / 60;
         long s = seconds % 60;

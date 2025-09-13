@@ -69,7 +69,7 @@ public class TimerController {
     @FXML
     public void toggleStartStop(ActionEvent event) {
         if (!running) {
-            // START
+
             startTime = System.currentTimeMillis();
             running = true;
             startStopButton.setText("Pause");
