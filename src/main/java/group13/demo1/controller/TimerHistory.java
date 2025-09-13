@@ -1,4 +1,5 @@
 package group13.demo1.controller;
+
 import group13.demo1.model.UserSession;
 import group13.demo1.HelloApplication;
 import group13.demo1.model.ITimerDAO;
@@ -26,7 +27,6 @@ public class TimerHistory {
     @FXML private Label selectedLabel;
     @FXML private Label totalLabel;
 
-
     private final ITimerDAO dao = new SqliteTimerDAO();
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private ObservableList<TimerRecord> items;
@@ -35,40 +35,39 @@ public class TimerHistory {
     public void initialize() {
         String user = UserSession.getInstance().getUsername();
 
-
         List<TimerRecord> rows = dao.getTimersForUser(user);
         rows.sort((a, b) -> b.getStartTime().compareTo(a.getStartTime()));
 
         items = FXCollections.observableArrayList(rows);
-        list.setItems(items);
-        totalLabel.setText("Total Distractions: " + items.size());
-        items.addListener((ListChangeListener<TimerRecord>) c ->
-                totalLabel.setText("Total Distractions: " + items.size()));
 
-        list.setPlaceholder(new Label("No timer sessions yet."));
-
-
-        list.setCellFactory(lv -> new ListCell<>() {
+        // >>> add this <<<
+        list.setCellFactory(lv -> new ListCell<TimerRecord>() {
             @Override protected void updateItem(TimerRecord t, boolean empty) {
                 super.updateItem(t, empty);
                 if (empty || t == null) {
                     setText(null);
-                    return;
+                } else {
+                    int n = getIndex() + 1;
+                    setText("Distraction " + n + "  •  " + t.getLabel());
                 }
-                int n = getIndex() + 1;
-                setText("Distraction " + n + "  •  " + t.getLabel());
             }
         });
+
+        list.setItems(items);
+        list.setPlaceholder(new Label("No timer sessions yet."));
+
+        totalLabel.setText("Total Distractions: " + items.size());
+        items.addListener((ListChangeListener<TimerRecord>) c ->
+                totalLabel.setText("Total Distractions: " + items.size()));
 
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
             if (t == null) {
                 selectedLabel.setText("(none)");
             } else {
-                int n = list.getSelectionModel().getSelectedIndex() + 1;  // 1-based
+                int n = list.getSelectionModel().getSelectedIndex() + 1;
                 long secs = elapsedSecondsFromTimes(t);
                 selectedLabel.setText(
-                        "Distraction " + n + "  •  " + t.getLabel() + "  •  " + formatElapsedTime(secs) + "\n" +
-                                dtf.format(t.getStartTime()) + "  →  " + dtf.format(t.getEndTime())
+                        "Distraction " + n + "  •  " + t.getLabel() + "  •  " + formatElapsedTime(secs)
                 );
             }
         });
@@ -79,9 +78,12 @@ public class TimerHistory {
 
     @FXML
     private void onConfirm() {
-        int i = list.getSelectionModel().getSelectedIndex();
-        if (i < 0) return;
-        if (i < items.size() - 1) list.getSelectionModel().select(i + 1);
+
+        if (list.getSelectionModel().getSelectedIndex() >= 0) {
+            list.getSelectionModel().clearSelection();
+            list.getFocusModel().focus(-1);
+            selectedLabel.setText("(none)");
+        }
     }
 
     @FXML
@@ -100,7 +102,6 @@ public class TimerHistory {
         }
         list.getSelectionModel().select(Math.min(i, items.size() - 1));
     }
-
 
     @FXML
     private void onBackHome() throws IOException {
@@ -122,7 +123,8 @@ public class TimerHistory {
         long m = (seconds % 3600) / 60;
         long s = seconds % 60;
         return (h > 0)
-                ? String.format("%02d:%02d:%02d", h, m, s)
-                : String.format("%02d:%02d", m, s);
+                ? String.format("%02dh:%02dm:%02ds", h, m, s)
+                : String.format("%02d:%02d s", m, s);
     }
 }
+
