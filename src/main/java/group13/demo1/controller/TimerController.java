@@ -68,13 +68,14 @@ public class TimerController {
 
     @FXML
     public void toggleStartStop(ActionEvent event) {
-        if (!running) {
-
+        if (!running)
+        {
             startTime = System.currentTimeMillis();
             running = true;
             startStopButton.setText("Pause");
             System.out.println("Timer started: " + LocalDateTime.now());
-        } else {
+        } else
+        {
 
             long endMillis     = System.currentTimeMillis();
             long sessionMillis = endMillis - startTime;
@@ -158,7 +159,7 @@ public class TimerController {
         if (running) {
 
             activeDistraction = tag;
-            distractionStatus.setText("Tag set for next pause: " + tag);
+            distractionStatus.setText("Tag set for next session: " + tag);
         } else {
 
             List<TimerRecord> recent = timerDAO.getTimersForUser(currentUser);
@@ -166,11 +167,11 @@ public class TimerController {
                 TimerRecord last = recent.get(0);
                 last.setLabel(tag);
                 timerDAO.updateTimer(last);
-                distractionStatus.setText("Updated last session to: " + tag);
+                distractionStatus.setText("Updated the session tag to: " + tag);
             } else {
 
                 activeDistraction = tag;
-                distractionStatus.setText("Tag set for next pause: " + tag);
+                distractionStatus.setText("Tag set for next session: " + tag);
             }
         }
 

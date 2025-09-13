@@ -43,7 +43,7 @@ public class TimerHistory {
 
         items = FXCollections.observableArrayList(rows);
 
-        // >>> add this <<<
+
         list.setCellFactory(lv -> new ListCell<TimerRecord>() {
             @Override protected void updateItem(TimerRecord t, boolean empty) {
                 super.updateItem(t, empty);
