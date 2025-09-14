@@ -16,16 +16,15 @@
 <center>
     <VBox spacing="20" alignment="TOP_CENTER">
 
+        <Label text="Accomplishments"/>
 
-        <Label text="Accomplishments" />
+        <HBox spacing="10" alignment="CENTER">
+            <TextField fx:id="accomplishmentLabel">Enter New Accomplishment</TextField>
+            <Button text="Add" onAction="#addAccomplishment"/>
+        </HBox>
 
-
-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
-            <TilePane hgap="10" vgap="10" prefColumns="3">
-                <Button text="Example Accomplishments" fx:id="AccomplishmentButton"/>
-            </TilePane>
-        </ScrollPane>
-
+        <Label fx:id="statusLabel" textFill="#bb9dd0"/>
+        <ListView fx:id="accomplishmentList" VBox.vgrow="ALWAYS"/>
     </VBox>
 </center>
 </BorderPane>
