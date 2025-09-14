@@ -11,12 +11,14 @@
         <Button fx:id="nextButton" text="Home" onAction="#onHomeButtonClick"/>
         <Button text="Timer" onAction="#onClickGoTimer"/>
         <Button text="Tasks" onAction="#onClickGoTasks"/>
+        <Button text="Accomplishments" onAction="#onClickGoAccomplishment"/>
         <Button text="Exit" onAction="#onClickLogOut"/>
     </VBox>
     <VBox spacing="40" alignment="TOP_CENTER" fx:id="SideBar">
         <Button fx:id="nextButton" text="Home" onAction="#onHomeButtonClick"/>
         <Button text="Timer" onAction="#onClickGoTimer"/>
         <Button text="Tasks" onAction="#onClickGoTasks"/>
+        <Button text="Accomplishments" onAction="#onClickGoAccomplishment"/>
         <Button text="History" onAction="#onClickGoHistory"/> <!-- NEW -->
         <Button text="Exit" onAction="#onClickLogOut"/>
     </VBox>

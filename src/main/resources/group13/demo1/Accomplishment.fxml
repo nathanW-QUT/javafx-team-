@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.AccomplishmentController">
+
+<left>
+    <fx:include source="Sidebar.fxml"/>
+</left>
+
+<center>
+    <VBox spacing="20" alignment="TOP_CENTER">
+
+
+        <Label text="Accomplishments" />
+
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+            <TilePane hgap="10" vgap="10" prefColumns="3">
+                <Button text="Example Accomplishments" fx:id="AccomplishmentButton"/>
+            </TilePane>
+        </ScrollPane>
+
+    </VBox>
+</center>
+</BorderPane>
