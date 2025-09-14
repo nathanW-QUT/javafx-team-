@@ -12,6 +12,7 @@ public class DistractionDAO {
         createTable();
     }
 
+
     private void createTable() {
         String query = """
             CREATE TABLE IF NOT EXISTS distraction (
