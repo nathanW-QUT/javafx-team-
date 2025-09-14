@@ -44,13 +44,11 @@ public class SqliteAccomplishmentDAO implements IAccomplishmentDAO
     public void deleteAccomplishment(Accomplishment accomplishment) {}
 
     @Override
-    public Accomplishment getAccomplishment(int id) {return null;}
+    public Accomplishment getAccomplishmentById (int id) {return null;}
 
     @Override
-    public List<Accomplishment> getAllAccomplishments() {return new ArrayList<>();}
+    public List<Accomplishment> getAccomplishments() {return new ArrayList<>();}
 
     @Override
-    public List<Accomplishment> getAccomplishmentsForUser(String username) {return new ArrayList<>();}
-
-
+    public List<Accomplishment> getAccomplishmentsByUsername (String username) {return new ArrayList<>();}
 }
