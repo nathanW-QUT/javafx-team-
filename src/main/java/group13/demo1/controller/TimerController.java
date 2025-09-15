@@ -57,10 +57,12 @@ public class TimerController {
                 long sec = (totalElapsed / 1000) % 60;
                 long min = (totalElapsed / 60000) % 60;
                 long hr  = totalElapsed / 3600000;
-
-                timerLabel.setText(hr > 0
-                        ? String.format("%02d:%02d:%02d", hr, min, sec)
-                        : String.format("%02d:%02d", min, sec));
+/// i dont really get this properly but HERE: https://stackoverflow.com/questions/266825/how-to-format-a-duration-in-java-e-g-format-hmmss ///
+                if(hr > 0) {
+                    timerLabel.setText(String.format("%02d:%02d:%02d", hr, min, sec));
+                } else {
+                    timerLabel.setText(String.format("%02d:%02d", min, sec));
+                }
             }
         };
         timer.start();
@@ -85,7 +87,7 @@ public class TimerController {
         {
             startTime = System.currentTimeMillis();
             running = true;
-            // looking for pauses in session
+            // lookin for pauses in session
             if (pauseStart > 0) {
                 totalPauseMillis += System.currentTimeMillis() - pauseStart;
                 pauseStart = 0;
@@ -123,8 +125,6 @@ public class TimerController {
                     sessionSeconds
             );
             timerDAO.addTimer(record);
-
-
             activeDistraction = null;
 
             System.out.println("Timer paused at " + sessionSeconds + " seconds, label=" + label);
