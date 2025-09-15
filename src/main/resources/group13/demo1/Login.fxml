@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.Login">
-
 
     <center>
         <VBox spacing="15" alignment="CENTER" maxWidth="300">
@@ -16,7 +12,6 @@
             <Label fx:id="statusLabel"/>
         </VBox>
     </center>
-
 
     <bottom>
         <BorderPane >

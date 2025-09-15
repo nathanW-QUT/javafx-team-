@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -14,8 +11,7 @@
 
     <center>
         <StackPane>
-
-            <Label fx:id="welcomeText" text="Home page example"/>
+            <Label fx:id="welcomeText" text="KeepTrack Distraction Logger" styleClass="title-label"/>
             <Button fx:id="nextButton" text="Log Distraction" onAction="#onClickLogDistraction" styleClass="floating-button"/>
         </StackPane>
     </center>

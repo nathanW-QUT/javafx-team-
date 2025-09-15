@@ -10,7 +10,6 @@
 
             fx:controller="group13.demo1.controller.RegisterController" >
 
-
     <center>
         <VBox spacing="15" alignment="CENTER" maxWidth="300">
             <TextField fx:id="usernameField" promptText="Username" />

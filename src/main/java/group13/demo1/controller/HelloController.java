@@ -9,7 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-
 import java.io.IOException;
 
 public class HelloController  {
@@ -45,6 +44,7 @@ public class HelloController  {
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         stage.setScene(scene);
     }
     @FXML
@@ -105,5 +105,4 @@ public class HelloController  {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
-
 }
