@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
+
 import java.io.IOException;
 
 public class HelloApplication extends Application {
@@ -17,9 +20,11 @@ public class HelloApplication extends Application {
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), WIDTH, HEIGHT);
-        stage.setTitle("Hello!");
+
         stage.setScene(scene);
+        stage.setTitle("KeepTrack");
         stage.show();
+
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }

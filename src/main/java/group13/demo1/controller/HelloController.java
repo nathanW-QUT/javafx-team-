@@ -29,8 +29,6 @@ public class HelloController  {
         scene.getStylesheets().add(stylesheet);
     }
 
-
-
     @FXML
     private void onClickLogDistraction() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
