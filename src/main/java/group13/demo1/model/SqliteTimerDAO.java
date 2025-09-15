@@ -11,10 +11,32 @@ public class SqliteTimerDAO implements ITimerDAO {
     public SqliteTimerDAO() {
         connection = SqliteConnection.getInstance();
         createTable();
+        createSession();
+    }
+
+    //attempt at session
+    private void createSession(){
+        try (Statement statement = connection.createStatement()){
+            // Session table
+            String createSessionsTable = """
+            CREATE TABLE IF NOT EXISTS sessions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                startTime TEXT NOT NULL,
+                endTime TEXT,
+                totalRunSeconds INTEGER,
+                totalPauseSeconds INTEGER,
+                pauseCount INTEGER
+            );
+            """;
+            statement.execute(createSessionsTable);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void createTable() {
-        try (Statement stmt = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS timers (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "username TEXT NOT NULL," +
@@ -23,15 +45,17 @@ public class SqliteTimerDAO implements ITimerDAO {
                     "endTime TEXT NOT NULL," +
                     "totalTime INTEGER NOT NULL" +    // now stores in seconds for clarity
                     ")";
-            stmt.execute(query);
+            statement.execute(query);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
+
     @Override
-    public void addTimer(TimerRecord timer) {
+    public void addTimer(TimerModel timer) {
         try {
             String query = "INSERT INTO timers (username, label, startTime, endTime, totalTime) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -52,7 +76,7 @@ public class SqliteTimerDAO implements ITimerDAO {
     }
 
     @Override
-    public void updateTimer(TimerRecord timer) {
+    public void updateTimer(TimerModel timer) {
         try {
             String query = "UPDATE timers SET label=?, startTime=?, endTime=?, totalTime=? WHERE id=?";
             PreparedStatement ps = connection.prepareStatement(query);
@@ -69,7 +93,7 @@ public class SqliteTimerDAO implements ITimerDAO {
 
 
     @Override
-    public void deleteTimer(TimerRecord timer) {
+    public void deleteTimer(TimerModel timer) {
         try {
             String query = "DELETE FROM timers WHERE id=?";
             PreparedStatement ps = connection.prepareStatement(query);
@@ -81,13 +105,13 @@ public class SqliteTimerDAO implements ITimerDAO {
     }
 
     @Override
-    public TimerRecord getTimer(int id) {
+    public TimerModel getTimer(int id) {
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM timers WHERE id=?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                TimerRecord t = new TimerRecord(
+                TimerModel t = new TimerModel(
                         rs.getString("username"),
                         rs.getString("label"),
                         LocalDateTime.parse(rs.getString("startTime")),
@@ -103,8 +127,8 @@ public class SqliteTimerDAO implements ITimerDAO {
         return null;
     }
     @Override
-    public List<TimerRecord> getTimersForUser(String username) {
-        List<TimerRecord> timers = new ArrayList<>();
+    public List<TimerModel> getTimersForUser(String username) {
+        List<TimerModel> timers = new ArrayList<>();
         String sql = "SELECT * FROM timers " +
                 "WHERE username = ? AND label <> 'Reset' " +
                 "ORDER BY startTime DESC";
@@ -112,7 +136,7 @@ public class SqliteTimerDAO implements ITimerDAO {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    TimerRecord t = new TimerRecord(
+                    TimerModel t = new TimerModel(
                             rs.getString("username"),
                             rs.getString("label"),
                             LocalDateTime.parse(rs.getString("startTime")),
@@ -133,13 +157,13 @@ public class SqliteTimerDAO implements ITimerDAO {
 
 
     @Override
-    public List<TimerRecord> getAllTimers() {
-        List<TimerRecord> timers = new ArrayList<>();
+    public List<TimerModel> getAllTimers() {
+        List<TimerModel> timers = new ArrayList<>();
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM timers");
             while (rs.next()) {
-                TimerRecord t = new TimerRecord(
+                TimerModel t = new TimerModel(
                         rs.getString("username"),
                         rs.getString("label"),
                         LocalDateTime.parse(rs.getString("startTime")),

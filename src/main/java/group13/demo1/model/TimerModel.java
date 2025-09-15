@@ -2,7 +2,7 @@ package group13.demo1.model;
 
 import java.time.LocalDateTime;
 
-public class TimerRecord {
+public class TimerModel {
     private int id;
     private String username;
     private String label; // "Pause' or 'Reset'
@@ -10,7 +10,7 @@ public class TimerRecord {
     private LocalDateTime endTime;
     private long totalTime; // stored as seconds now for ease
 
-    public TimerRecord(String username, String label, LocalDateTime startTime, LocalDateTime endTime, long totalTime) {
+    public TimerModel(String username, String label, LocalDateTime startTime, LocalDateTime endTime, long totalTime) {
         this.username = username;
         this.label = label;
         this.startTime = startTime;
@@ -34,15 +34,20 @@ public class TimerRecord {
     public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
     public void setElapsedSeconds(long totalTime) { this.totalTime = totalTime; }
 
+
+    /**
+     * This is used to show data in the terminal and can be used in debugs
+      * @return string
+     */
     @Override
     public String toString() {
         return "TimerRecord{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", label='" + label + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", elapsedSeconds=" + totalTime +
+                "id:" + id +
+                ", username:" + username +
+                ", label:" + label +
+                ", startTime:" + startTime +
+                ", endTime:" + endTime +
+                ", elapsedSeconds:" + totalTime +
                 '}';
     }
 }

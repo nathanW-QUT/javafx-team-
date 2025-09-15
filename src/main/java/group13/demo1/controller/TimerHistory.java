@@ -1,13 +1,9 @@
 package group13.demo1.controller;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import java.util.Optional;
 import group13.demo1.model.UserSession;
 import group13.demo1.HelloApplication;
 import group13.demo1.model.ITimerDAO;
 import group13.demo1.model.SqliteTimerDAO;
-import group13.demo1.model.TimerRecord;
+import group13.demo1.model.TimerModel;
 import javafx.collections.ListChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,26 +22,26 @@ import java.util.List;
 
 public class TimerHistory {
 
-    @FXML private ListView<TimerRecord> list;
+    @FXML private ListView<TimerModel> list;
     @FXML private Label selectedLabel;
     @FXML private Label totalLabel;
 
     private final ITimerDAO dao = new SqliteTimerDAO();
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private ObservableList<TimerRecord> items;
+    private ObservableList<TimerModel> items;
 
     @FXML
     public void initialize() {
         String user = UserSession.getInstance().getUsername();
 
-        List<TimerRecord> rows = dao.getTimersForUser(user);
+        List<TimerModel> rows = dao.getTimersForUser(user);
         rows.sort((a, b) -> b.getStartTime().compareTo(a.getStartTime()));
 
         items = FXCollections.observableArrayList(rows);
 
 
-        list.setCellFactory(lv -> new ListCell<TimerRecord>() {
-            @Override protected void updateItem(TimerRecord t, boolean empty) {
+        list.setCellFactory(lv -> new ListCell<TimerModel>() {
+            @Override protected void updateItem(TimerModel t, boolean empty) {
                 super.updateItem(t, empty);
                 if (empty || t == null)
                 {
@@ -62,7 +58,7 @@ public class TimerHistory {
         list.setPlaceholder(new Label("No timer sessions yet."));
 
         totalLabel.setText("Total Distractions: " + items.size());
-        items.addListener((ListChangeListener<TimerRecord>) c ->
+        items.addListener((ListChangeListener<TimerModel>) c ->
                 totalLabel.setText("Total Distractions: " + items.size()));
 
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
@@ -100,7 +96,7 @@ public class TimerHistory {
     {
         int i = list.getSelectionModel().getSelectedIndex();
         if (i < 0) return;
-        TimerRecord t = items.get(i);
+        TimerModel t = items.get(i);
 
         dao.deleteTimer(t);
         items.remove(i);
@@ -125,7 +121,7 @@ public class TimerHistory {
         scene.getStylesheets().add(stylesheet);
     }
 
-    private long elapsedSecondsFromTimes(TimerRecord t)
+    private long elapsedSecondsFromTimes(TimerModel t)
     {
         long secs = Duration.between(t.getStartTime(), t.getEndTime()).getSeconds();
         return Math.max(0, secs);

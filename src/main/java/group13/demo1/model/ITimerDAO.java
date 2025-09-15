@@ -3,10 +3,10 @@ package group13.demo1.model;
 import java.util.List;
 
 public interface ITimerDAO {
-    void addTimer(TimerRecord timer);
-    void updateTimer(TimerRecord timer);
-    void deleteTimer(TimerRecord timer);
-    TimerRecord getTimer(int id);
-    List<TimerRecord> getAllTimers();
-    List<TimerRecord> getTimersForUser(String username);
+    void addTimer(TimerModel timer);
+    void updateTimer(TimerModel timer);
+    void deleteTimer(TimerModel timer);
+    TimerModel getTimer(int id);
+    List<TimerModel> getAllTimers();
+    List<TimerModel> getTimersForUser(String username);
 }

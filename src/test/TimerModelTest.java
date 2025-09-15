@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TimerRecordTest {
+public class TimerModelTest {
 
     private static final String USERNAME = "alice";
     private static final String USERNAME_2 = "bob";
@@ -21,11 +21,11 @@ public class TimerRecordTest {
     private static final LocalDateTime END =
             LocalDateTime.of(2025, 1, 1, 12, 5);
 
-    private TimerRecord record;
+    private TimerModel record;
 
     @BeforeEach
     public void setUp() {
-        record = new TimerRecord(USERNAME, LABEL, START, END, ELAPSED);
+        record = new TimerModel(USERNAME, LABEL, START, END, ELAPSED);
         record.setId(1);
     }
 

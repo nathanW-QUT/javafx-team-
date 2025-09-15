@@ -1,16 +1,9 @@
 package group13.demo1.controller;
-import group13.demo1.HelloApplication;
 import group13.demo1.model.DistractionDAO;
 import group13.demo1.model.UserSession;
 import group13.demo1.model.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import java.io.IOException;
 
-import java.time.LocalDateTime;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -49,9 +42,9 @@ public class QuickLogController {
 
 
         try {
-            List<TimerRecord> recent = timerDAO.getTimersForUser(currentUser);
+            List<TimerModel> recent = timerDAO.getTimersForUser(currentUser);
             if (!recent.isEmpty()) {
-                TimerRecord last = recent.get(0);
+                TimerModel last = recent.get(0);
                 if ("Pause".equalsIgnoreCase(last.getLabel())) {
                     last.setLabel(tag);
                     timerDAO.updateTimer(last);

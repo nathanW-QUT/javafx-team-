@@ -8,10 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import java.text.BreakIterator;
 
 import java.time.LocalDateTime;
-import group13.demo1.controller.QuickLogController;
 
 public class TimerController {
 
@@ -39,8 +37,15 @@ public class TimerController {
 
 
     private String activeDistraction = null;
-
     private AnimationTimer timer;
+
+
+    /// Attempring timer session ///
+    private SessionModel currentSession;
+    private long totalPauseMillis = 0;
+    private int pauseCount = 0;
+    private long pauseStart = 0;
+    private final SessionDAO sessionDAO = new SessionDAO(SqliteConnection.getInstance());
 
     @FXML
     public void initialize() {
@@ -49,21 +54,29 @@ public class TimerController {
                 long totalElapsed = elapsedTime;
                 if (running) totalElapsed += System.currentTimeMillis() - startTime;
 
-                long seconds = (totalElapsed / 1000) % 60;
-                long minutes = (totalElapsed / (1000 * 60)) % 60;
-                long hours   =  totalElapsed / (1000 * 60 * 60);
+                long sec = (totalElapsed / 1000) % 60;
+                long min = (totalElapsed / 60000) % 60;
+                long hr  = totalElapsed / 3600000;
 
-                if (hours > 0) {
-                    timerLabel.setText(String.format("%02d:%02d:%02d", hours, minutes, seconds));
-                } else {
-                    timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
-                }
+                timerLabel.setText(hr > 0
+                        ? String.format("%02d:%02d:%02d", hr, min, sec)
+                        : String.format("%02d:%02d", min, sec));
             }
         };
         timer.start();
 
         String currentUser = UserSession.getInstance().getUsername();
         welcomeText.setText("Welcome, " + currentUser + "!");
+        startSession(currentUser);
+    }
+    // Session helper
+    private void startSession(String username) {
+        try {
+            currentSession = new SessionModel(username, LocalDateTime.now());
+            sessionDAO.insert(currentSession);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -72,6 +85,11 @@ public class TimerController {
         {
             startTime = System.currentTimeMillis();
             running = true;
+            // looking for pauses in session
+            if (pauseStart > 0) {
+                totalPauseMillis += System.currentTimeMillis() - pauseStart;
+                pauseStart = 0;
+            }
             startStopButton.setText("Pause");
             System.out.println("Timer started: " + LocalDateTime.now());
         } else
@@ -82,6 +100,9 @@ public class TimerController {
 
             running = false;
             elapsedTime += sessionMillis;
+            // if pasued add a counter
+            pauseStart = System.currentTimeMillis();
+            pauseCount++;
             startStopButton.setText("Start");
 
             long sessionSeconds = Math.max(0, sessionMillis / 1000);
@@ -94,7 +115,7 @@ public class TimerController {
                     : "Pause";
 
             String currentUser = UserSession.getInstance().getUsername();
-            TimerRecord record = new TimerRecord(
+            TimerModel record = new TimerModel(
                     currentUser,
                     label,
                     startDateTime,
@@ -112,10 +133,10 @@ public class TimerController {
 
     @FXML
     public void resetTimer(ActionEvent event) {
-        // stop running session if any
+        // stop running *Timer* if any
         running = false;
 
-        long durationBeforeReset = elapsedTime; // keep if you need it
+        long durationBeforeReset = elapsedTime;
         elapsedTime = 0;
 
         startStopButton.setText("Start");
@@ -123,7 +144,7 @@ public class TimerController {
         System.out.println("Timer reset");
 
         String currentUser = UserSession.getInstance().getUsername();
-        TimerRecord record = new TimerRecord(
+        TimerModel record = new TimerModel(
                 currentUser,
                 "Reset",
                 LocalDateTime.now().minusSeconds(durationBeforeReset / 1000),
@@ -131,8 +152,39 @@ public class TimerController {
                 durationBeforeReset / 1000
         );
         timerDAO.addTimer(record);
-    }
+        saveTimerRecord(durationBeforeReset, "Reset");
+        finishSession(durationBeforeReset);
 
+    }
+    private void saveTimerRecord(long durationMillis, String defaultLabel) {
+        long secs = Math.max(0, durationMillis / 1000);
+        LocalDateTime end = LocalDateTime.now();
+        LocalDateTime start = end.minusSeconds(secs);
+        String label = (activeDistraction != null && !activeDistraction.isBlank())
+                ? activeDistraction.trim()
+                : defaultLabel;
+
+        TimerModel record = new TimerModel(
+                UserSession.getInstance().getUsername(),
+                label, start, end, secs
+        );
+        timerDAO.addTimer(record);
+        activeDistraction = null;
+    }
+    private void finishSession(long totalRunMillis) {
+        try {
+            if (currentSession != null) {
+                currentSession.setEndTime(LocalDateTime.now());
+                currentSession.setTotalRunSeconds(totalRunMillis / 1000);
+                currentSession.setTotalPauseSeconds(totalPauseMillis / 1000);
+                currentSession.setPauseCount(pauseCount);
+                sessionDAO.update(currentSession);
+                currentSession = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     public void showQuickLog() {
         distractionBox.setVisible(true);
@@ -162,9 +214,9 @@ public class TimerController {
             distractionStatus.setText("Tag set for next session: " + tag);
         } else {
 
-            List<TimerRecord> recent = timerDAO.getTimersForUser(currentUser);
+            List<TimerModel> recent = timerDAO.getTimersForUser(currentUser);
             if (!recent.isEmpty() && "Pause".equalsIgnoreCase(recent.get(0).getLabel())) {
-                TimerRecord last = recent.get(0);
+                TimerModel last = recent.get(0);
                 last.setLabel(tag);
                 timerDAO.updateTimer(last);
                 distractionStatus.setText("Updated the session tag to: " + tag);
