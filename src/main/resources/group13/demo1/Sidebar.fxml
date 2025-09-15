@@ -13,6 +13,6 @@
         <Button text="Tasks" onAction="#onClickGoTasks"/>
         <Button text="Accomplishments" onAction="#onClickGoAccomplishment"/>
         <Button text="History" onAction="#onClickGoHistory"/>
-        <Button text="Exit" onAction="#onClickLogOut"/>
+        <Button text="Log Out" onAction="#onClickLogOut"/>
     </VBox>
 </StackPane>
