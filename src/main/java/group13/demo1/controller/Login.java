@@ -25,7 +25,7 @@ public class Login {
     @FXML
     private Label statusLabel;
 
-    private final UserDao userDao = new UserDao();
+    public UserDao userDao = new UserDao();
     @FXML
     private void onClickLogOut() throws IOException {
 
@@ -46,9 +46,9 @@ public class Login {
         scene.getStylesheets().add(stylesheet);
     }
     @FXML
-    private void handleLogin() throws IOException{
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+    public void handleLogin(String username, String password) throws IOException{
+        username = usernameField.getText();
+        password = passwordField.getText();
 
         if (userDao.validateLogin(username, password)) {
             UserSession.createSession(username);
@@ -63,6 +63,7 @@ public class Login {
         } else {
             statusLabel.setText("Invalid username or password.");
         }
+
     }
 
 }

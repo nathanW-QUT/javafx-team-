@@ -1,6 +1,7 @@
 package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
+import group13.demo1.model.UserDao;
 import group13.demo1.model.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 
 public class DeleteAccountController {
 
+    public UserDao userDao;
     @FXML
     private Button nextButton;
     @FXML
@@ -35,9 +37,17 @@ public class DeleteAccountController {
     }
 
     @FXML
-    private void handleDeleteAccount() {
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
+    public void handleDeleteAccount(String username, String password ) {
+
+
+        username = usernameField.getText().trim();
+        password = passwordField.getText().trim();
+
+
+
+
+
+
 
         if (username.isEmpty() || password.isEmpty()) {
             Alert alert = new Alert(AlertType.ERROR, "Please fill in both fields.");

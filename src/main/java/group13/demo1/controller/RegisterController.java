@@ -17,16 +17,16 @@ public class RegisterController {
     @FXML private PasswordField passwordField;
     @FXML private Label statusLabel;
 
-    private final UserDao userDao = new UserDao();
+    public UserDao userDao = new UserDao();
 
     @FXML
-    private void handleRegister() {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+    public void handleRegister(String username, String password) {
+        username = usernameField.getText();
+        password = passwordField.getText();
 
         if (username.isBlank() || password.isBlank()) {
             statusLabel.setText("Please enter both fields.");
-            return;
+
         }
 
         boolean success = userDao.addUser(username, password);
@@ -50,6 +50,7 @@ public class RegisterController {
         } else {
             statusLabel.setText("Username already taken.");
         }
+
     }
 
     @FXML
