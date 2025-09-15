@@ -20,9 +20,12 @@
     <Label text="vijay"/>
 
 
-    <HBox spacing="100.0" alignment="CENTER"  >
+    <HBox spacing="100.0" alignment="CENTER" styleClass=""  >
         <Button fx:id="nextButton" text="Login" onAction="#onLoginButtonClicked"/>
 
         <Button text="Register" onAction="#onRegisterButtonClicked"/>
+    </HBox>
+    <HBox alignment="BOTTOM_RIGHT" >
+        <Button text="Delete Account" onAction="#onDeleteAccount" fx:id="DeleteAccount" />
     </HBox>
 </VBox>

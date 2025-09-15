@@ -3,6 +3,10 @@
     -fx-pref-width: 80px;
 
 }
+#DeleteAccount {
+    -fx-pref-width: 100px;
+    -fx-pref-height: 45px;
+}
 
 .button:hover {
 
