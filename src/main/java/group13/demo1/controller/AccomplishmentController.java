@@ -22,7 +22,7 @@ public class AccomplishmentController
     private final IAccomplishmentDAO accomplishmentDAO = new SqliteAccomplishmentDAO();
 
     @FXML
-    public void initialise()
+    public void initialize()
     {
         loadAccomplishments();
     }
@@ -35,7 +35,7 @@ public class AccomplishmentController
 
         for (Accomplishment accomplishment : accomplishments)
         {
-            String display = accomplishment.getLabel() + (accomplishment.isCompleted() ? "✓":"✗");
+            String display = accomplishment.getLabel() + " " + (accomplishment.isCompleted() ? "✓":"✗");
             accomplishmentList.getItems().add(display);
         }
     }
@@ -56,4 +56,45 @@ public class AccomplishmentController
         accomplishmentDAO.addAccomplishment(accomplishment);
         statusLabel.setText("Successfully added accomplishment");
     }
+
+    @FXML
+    public void updateAccomplishment()
+    {
+        int selectedIndex = accomplishmentList.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0)
+        {
+            statusLabel.setText("Please select a accomplishment to update");
+            return;
+        }
+
+        String label = accomplishmentLabel.getText();
+        if (label.isEmpty())
+        {
+            statusLabel.setText("Please enter a description");
+            return;
+        }
+        Accomplishment selected =  accomplishmentDAO.getAccomplishmentsByUsername(UserSession.getInstance().getUsername()).get(selectedIndex);
+        selected.setLabel(label);
+        accomplishmentDAO.updateAccomplishment(selected);
+        statusLabel.setText("Successfully updated accomplishment");
+        loadAccomplishments();
+    }
+
+    @FXML
+    public void deleteAccomplishment()
+    {
+        int selectedIndex = accomplishmentList.getSelectionModel().getSelectedIndex();
+        if (selectedIndex < 0)
+        {
+            statusLabel.setText("Please select an accomplishment to delete");
+            return;
+        }
+
+        Accomplishment selected =  accomplishmentDAO.getAccomplishmentsByUsername(UserSession.getInstance().getUsername()).get(selectedIndex);
+        accomplishmentDAO.deleteAccomplishment(selected);
+        statusLabel.setText("Successfully deleted accomplishment");
+        loadAccomplishments();
+    }
 }
+
+

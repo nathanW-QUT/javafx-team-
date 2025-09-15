@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.AccomplishmentController">
@@ -14,17 +12,23 @@
 </left>
 
 <center>
-    <VBox spacing="20" alignment="TOP_CENTER">
+    <VBox spacing="10" alignment="TOP_CENTER">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
 
-        <Label text="Accomplishments"/>
+        <Label text="Manage your Accomplishments"/>
 
-        <HBox spacing="10" alignment="CENTER">
-            <TextField fx:id="accomplishmentLabel">Enter New Accomplishment</TextField>
+        <HBox spacing="10">
+            <TextField fx:id="accomplishmentLabel" promptText="Enter Accomplishment"/>
             <Button text="Add" onAction="#addAccomplishment"/>
+            <Button text="Update" onAction="#updateAccomplishment"/>
+            <Button text="Delete" onAction="#deleteAccomplishment"/>
         </HBox>
 
-        <Label fx:id="statusLabel" textFill="#bb9dd0"/>
-        <ListView fx:id="accomplishmentList" VBox.vgrow="ALWAYS"/>
+        <Label fx:id="statusLabel" style="-fx-text-fill: green"/>
+        <ListView fx:id="accomplishmentList" prefHeight="200" prefWidth="400" VBox.vgrow="ALWAYS"/>
+
     </VBox>
 </center>
 </BorderPane>
