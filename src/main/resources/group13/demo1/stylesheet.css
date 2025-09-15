@@ -116,6 +116,10 @@
 
 #TasksButton
 {
+    -fx-background-color: #edbfd5; /*pink for the fucks of it*/
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
     -fx-pref-width: 100px;
-    -fx-pref-Height: 100px;
+    -fx-pref-Height: 40px;
 }
