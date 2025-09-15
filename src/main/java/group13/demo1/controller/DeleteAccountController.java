@@ -37,11 +37,11 @@ public class DeleteAccountController {
     }
 
     @FXML
-    public void handleDeleteAccount(String username, String password ) {
+    public void handleDeleteAccount() {
 
 
-        username = usernameField.getText().trim();
-        password = passwordField.getText().trim();
+        String username = usernameField.getText().trim();
+        String  password = passwordField.getText().trim();
 
 
 

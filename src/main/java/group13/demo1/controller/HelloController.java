@@ -67,7 +67,7 @@ public class HelloController  {
         scene.getStylesheets().add(stylesheet);
     }
     @FXML
-    protected void onLoginButtonClicked() throws IOException {
+    private void onLoginButtonClicked() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Login.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
@@ -76,7 +76,7 @@ public class HelloController  {
         scene.getStylesheets().add(stylesheet);
     }
     @FXML
-    protected void onRegisterButtonClicked() throws IOException {
+    private void onRegisterButtonClicked() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Register.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
@@ -85,7 +85,7 @@ public class HelloController  {
         scene.getStylesheets().add(stylesheet);
     }
     @FXML
-    protected void onDeleteAccount() throws IOException {
+    private void onDeleteAccount() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("DeleteAccount.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);

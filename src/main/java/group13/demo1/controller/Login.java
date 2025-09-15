@@ -37,7 +37,7 @@ public class Login {
         stage.setScene(scene);
     }
     @FXML
-    protected void onHomeButtonClick() throws IOException {
+    private void onHomeButtonClick() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
@@ -46,9 +46,9 @@ public class Login {
         scene.getStylesheets().add(stylesheet);
     }
     @FXML
-    public void handleLogin(String username, String password) throws IOException{
-        username = usernameField.getText();
-        password = passwordField.getText();
+    public void handleLogin() throws IOException{
+        String username = usernameField.getText();
+        String password = passwordField.getText();
 
         if (userDao.validateLogin(username, password)) {
             UserSession.createSession(username);

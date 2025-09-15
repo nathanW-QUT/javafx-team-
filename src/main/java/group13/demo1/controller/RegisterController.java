@@ -20,9 +20,9 @@ public class RegisterController {
     public UserDao userDao = new UserDao();
 
     @FXML
-    public void handleRegister(String username, String password) {
-        username = usernameField.getText();
-        password = passwordField.getText();
+    public void handleRegister() {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
 
         if (username.isBlank() || password.isBlank()) {
             statusLabel.setText("Please enter both fields.");
