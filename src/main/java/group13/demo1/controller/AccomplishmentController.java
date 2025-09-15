@@ -2,9 +2,7 @@ package group13.demo1.controller;
 
 import group13.demo1.model.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 
 import java.util.List;
 
@@ -24,6 +22,9 @@ public class AccomplishmentController
     @FXML
     public void initialize()
     {
+//        accomplishmentList.setCellFactory(CheckBoxListCell.forListView(
+//                Accomplishment::completedProperty
+//        ));
         loadAccomplishments();
     }
 
