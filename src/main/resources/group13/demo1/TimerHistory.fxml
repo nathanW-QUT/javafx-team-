@@ -17,6 +17,7 @@
 
 
             <Label fx:id="totalLabel" text="Total Distractions: 0"/>
+            <Label fx:id="totalTimeLabel" text="Total Distraction Time: 0s"/>
 
             <Separator/>
             <Label text="Selected:"/>

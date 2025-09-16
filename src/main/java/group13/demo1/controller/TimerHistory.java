@@ -26,6 +26,7 @@ public class TimerHistory {
     @FXML private ListView<TimerRecord> list;
     @FXML private Label selectedLabel;
     @FXML private Label totalLabel;
+    @FXML private Label totalTimeLabel;
 
     private final ITimerDAO dao = new SqliteTimerDAO();
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a");
@@ -63,6 +64,8 @@ public class TimerHistory {
         totalLabel.setText("Total Timer Sessions: " + items.size());
         items.addListener((ListChangeListener<TimerRecord>) c ->
                 totalLabel.setText("Total Timers: " + items.size()));
+        updateTotals();
+        items.addListener((ListChangeListener<TimerRecord>) c -> updateTotals());
 
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
             if (t == null) {
@@ -93,6 +96,15 @@ public class TimerHistory {
         if (!items.isEmpty()) list.getSelectionModel().select(0);
         else selectedLabel.setText("(none)");
     }
+    private void updateTotals() {
+        long totalSecs = 0L;
+        for (TimerRecord r : items) {
+            totalSecs += r.getElapsedSeconds(); // already stored in seconds
+        }
+        if (totalTimeLabel != null) {
+            totalTimeLabel.setText("Total Distraction Time: " + formatTotal(totalSecs));
+        }
+    }
 
     @FXML
     private void onConfirm()
@@ -116,6 +128,7 @@ public class TimerHistory {
         dao.deleteTimer(t);
         items.remove(i);
         list.refresh();
+        updateTotals();
 
         if (items.isEmpty())
         {
@@ -150,5 +163,15 @@ public class TimerHistory {
         return (h > 0)
                 ? String.format("%02dh:%02dm:%02ds", h, m, s)
                 : String.format("%02d:%02d s", m, s);
+    }
+
+    private String formatTotal(long seconds) {
+        long h = seconds / 3600;
+        long m = (seconds % 3600) / 60;
+        long s = seconds % 60;
+
+        if (h > 0)  return String.format("%dh %02dm %02ds", h, m, s);
+        if (m > 0)  return String.format("%dm %02ds", m, s);
+        return String.format("%ds", s);
     }
 }
