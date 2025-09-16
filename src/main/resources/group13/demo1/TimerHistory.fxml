@@ -20,6 +20,9 @@
 
             <Separator/>
             <Label text="Selected:"/>
+            <Label fx:id="selectedHeader"
+                   text="Id  -  Distraction Tag  -  Start time  →  End time  -  Time Spent"
+                   style="-fx-font-size: 11px; -fx-text-fill: white;"/>
             <Label fx:id="selectedLabel" style="-fx-font-weight: bold;"/>
             <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
                 <Button text="Confirm" onAction="#onConfirm"/>
