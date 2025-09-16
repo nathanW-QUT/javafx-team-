@@ -19,6 +19,11 @@
             <Button fx:id="nextButton" text="Log Distraction" onAction="#onClickLogDistraction" styleClass="floating-button"/>
         </StackPane>
     </center>
+
+
+
+
+
 </BorderPane>
 
 

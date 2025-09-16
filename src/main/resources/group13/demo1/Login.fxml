@@ -14,6 +14,7 @@
             <TextField fx:id="usernameField" promptText="Username" />
             <PasswordField fx:id="passwordField" promptText="Password" />
             <Label fx:id="statusLabel"/>
+            <Button text="Login" onAction="#handleLogin" />
         </VBox>
     </center>
 
@@ -23,12 +24,14 @@
             <left>
                 <Button fx:id="nextButton" text="Back" onAction="#onClickLogOut" />
             </left>
-            <center>
-                <Button text="Login" onAction="#handleLogin" />
-            </center>
-            <right>
 
-                <Button text="Change Password" onAction="#onClickEditPassword" />
+            <right>
+                <HBox>
+                    <Button text="Change Password" onAction="#onClickEditPassword" />
+                    <Button text="Delete Account" onAction="#onDeleteAccount" fx:id="DeleteAccount" />
+
+                </HBox>
+
             </right>
         </BorderPane>
     </bottom>

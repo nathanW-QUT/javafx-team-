@@ -21,4 +21,5 @@
 
         <Button text="Register" onAction="#onRegisterButtonClicked"/>
     </HBox>
+
 </VBox>
