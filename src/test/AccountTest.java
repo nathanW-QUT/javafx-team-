@@ -1,8 +1,14 @@
 
+import group13.demo1.model.SqliteConnection;
 import group13.demo1.model.UserDao;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.sql.Statement;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -20,6 +26,20 @@ public class AccountTest {
     @BeforeEach
     public void setUp() {
         userDao = new UserDao();
+    }
+    @AfterEach
+    void tearDown() {
+        clearUsersTable();
+    }
+
+    private void clearUsersTable() {
+        try {
+            Connection conn = SqliteConnection.getInstance();
+            Statement stmt = conn.createStatement();
+            stmt.execute("DELETE FROM users");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -60,6 +80,7 @@ public class AccountTest {
 
     @Test
     public void testRemoveUserThatDoesNotExist() {
+
         assertFalse(userDao.deleteAccount(NON_EXISTENT, NON_EXISTENT));
     }
 

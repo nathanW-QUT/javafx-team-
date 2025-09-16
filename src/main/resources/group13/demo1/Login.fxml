@@ -26,6 +26,10 @@
             <center>
                 <Button text="Login" onAction="#handleLogin" />
             </center>
+            <right>
+
+                <Button text="Change Password" onAction="#onClickEditPassword" />
+            </right>
         </BorderPane>
     </bottom>
 
