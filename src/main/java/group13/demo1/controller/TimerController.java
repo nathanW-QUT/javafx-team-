@@ -112,11 +112,11 @@ public class TimerController {
 
     @FXML
     public void resetTimer(ActionEvent event) {
-        // stop running session if any
+
         if (running) {
-            // Edit: Makes sure that the Reset logs the time correctly
+
             long currentTime = System.currentTimeMillis();
-            elapsedTime += (currentTime - startTime); // Adds the current running segment when hasn't been pasued
+            elapsedTime += (currentTime - startTime);
         }
         running = false;
 

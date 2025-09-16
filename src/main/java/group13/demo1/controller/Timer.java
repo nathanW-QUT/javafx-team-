@@ -50,11 +50,11 @@ public class Timer {
 
     @FXML
     private void toggleStartStop() {
-        // Print current date and time to terminal
+
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         if (timeline != null && timeline.getStatus() == Timeline.Status.RUNNING) {
-            // Stop timer
+
             timeline.stop();
             System.out.println("Timer paused at: "+ now.format(formatter));
             startStopButton.setText("Start");
@@ -62,7 +62,7 @@ public class Timer {
 
             System.out.println("Timer started at: " + now.format(formatter));
 
-            // Start the timer
+
             timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
                 secondsElapsed++;
                 int minutes = secondsElapsed / 60;
