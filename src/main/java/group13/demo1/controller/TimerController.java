@@ -113,9 +113,16 @@ public class TimerController {
     @FXML
     public void resetTimer(ActionEvent event) {
         // stop running session if any
+        if (running) {
+            // Edit: Makes sure that the Reset logs the time correctly
+            long currentTime = System.currentTimeMillis();
+            elapsedTime += (currentTime - startTime); // Adds the current running segment when hasn't been pasued
+        }
         running = false;
 
-        long durationBeforeReset = elapsedTime; // keep if you need it
+        long durationBeforeReset = elapsedTime;
+        long durationInSeconds = durationBeforeReset / 1000;
+        //reset the timer to 0
         elapsedTime = 0;
 
         startStopButton.setText("Start");
@@ -126,9 +133,9 @@ public class TimerController {
         TimerRecord record = new TimerRecord(
                 currentUser,
                 "Reset",
-                LocalDateTime.now().minusSeconds(durationBeforeReset / 1000),
+                LocalDateTime.now().minusSeconds(durationInSeconds),
                 LocalDateTime.now(),
-                durationBeforeReset / 1000
+                durationInSeconds
         );
         timerDAO.addTimer(record);
     }
@@ -183,8 +190,6 @@ public class TimerController {
         seconds = seconds % 60;
         return String.format("%02d:%02d", minutes, seconds);
     }
-
-
 }
 
 

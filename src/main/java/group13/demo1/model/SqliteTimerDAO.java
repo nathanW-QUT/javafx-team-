@@ -14,16 +14,16 @@ public class SqliteTimerDAO implements ITimerDAO {
     }
 
     private void createTable() {
-        try (Statement stmt = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS timers (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "username TEXT NOT NULL," +
                     "label TEXT NOT NULL," +    // Just pause and Reset now
                     "startTime TEXT NOT NULL," +
                     "endTime TEXT NOT NULL," +
-                    "totalTime INTEGER NOT NULL" +    // now stores in seconds for clarity
+                    "totalTime INTEGER NOT NULL" +    // now stores in seconds instead of milli for clarity
                     ")";
-            stmt.execute(query);
+            statement.execute(query);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,9 +108,9 @@ public class SqliteTimerDAO implements ITimerDAO {
         String sql = "SELECT * FROM timers " +
                 "WHERE username = ? AND label <> 'Reset' " +
                 "ORDER BY startTime DESC";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, username);
+            try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
                     TimerRecord t = new TimerRecord(
                             rs.getString("username"),
@@ -136,8 +136,8 @@ public class SqliteTimerDAO implements ITimerDAO {
     public List<TimerRecord> getAllTimers() {
         List<TimerRecord> timers = new ArrayList<>();
         try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM timers");
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM timers");
             while (rs.next()) {
                 TimerRecord t = new TimerRecord(
                         rs.getString("username"),
