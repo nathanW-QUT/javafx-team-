@@ -56,7 +56,16 @@ class SqliteAccomplishmentDAOTest
         assertTrue(updated.isCompleted());
     }
 
-    public SqliteAccomplishmentDAOTest getDao() {
-        return dao;
+    @Test
+    void testDeleteAccomplishment()
+    {
+        Accomplishment accomplishment = new Accomplishment("Temp");
+        dao.addAccomplishment("Murray", accomplishment);
+
+        Accomplishment fetched = dao.getAccomplishmentByUsername("Murray").get(0);
+        dao.deleteAccomplishment(fetched.getId());
+
+        List<Accomplishment> list = dao.getAccomplishmentByUsername("Murray");
+        assertTrue(list.isEmpty());
     }
 }
