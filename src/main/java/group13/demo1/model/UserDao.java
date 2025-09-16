@@ -51,5 +51,30 @@ public class UserDao {
             return false;
         }
     }
+    public boolean updatePassword(String username, String oldPassword, String newPassword) {
+        if (!validateLogin(username, oldPassword)) {
+            return false;
+        }
+        String query = "UPDATE users SET password = ? WHERE username = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, newPassword);
+            stmt.setString(2, username);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean deleteAccount(String username, String password) {
+        String query = "DELETE FROM users WHERE username = ? AND password = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
