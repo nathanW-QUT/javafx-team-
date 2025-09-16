@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.EditAccountController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="15">
+            <Label text="Edit Account" />
+
+            <TextField fx:id="usernameField" promptText="Username" maxWidth="250"/>
+            <PasswordField fx:id="currentPasswordField" promptText="Current Password" maxWidth="250"/>
+            <PasswordField fx:id="newPasswordField" promptText="New Password" maxWidth="250"/>
+
+            <Button fx:id="nextButton" text="Update Password" onAction="#handleUpdatePassword" maxWidth="250"/>
+        </VBox>
+    </center>
+    <bottom>
+        <BorderPane>
+            <left>
+                <Button text="Back" onAction="#onClickback" maxWidth="250"/>
+            </left>
+        </BorderPane>
+    </bottom>
+
+</BorderPane>

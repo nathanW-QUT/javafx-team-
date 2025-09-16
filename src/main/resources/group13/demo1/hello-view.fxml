@@ -19,4 +19,5 @@
         <Button fx:id="nextButton" text="Login" onAction="#onLoginButtonClicked"/>
         <Button text="Register" onAction="#onRegisterButtonClicked"/>
     </HBox>
+
 </VBox>

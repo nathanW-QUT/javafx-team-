@@ -18,6 +18,7 @@ public class Login {
     @FXML
     private Button nextButton;
     @FXML
+
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
@@ -25,7 +26,6 @@ public class Login {
     private Label statusLabel;
 
     private final UserDao userDao = new UserDao();
-
     @FXML
     private void onClickLogOut() throws IOException {
 
@@ -38,15 +38,7 @@ public class Login {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
-    @FXML
-    protected void onHomeButtonClick() throws IOException {
-        Stage stage = (Stage) nextButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
-        stage.setScene(scene);
-        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
-        scene.getStylesheets().add(stylesheet);
-    }
+
     @FXML
     private void handleLogin() throws IOException{
         String username = usernameField.getText();
@@ -66,4 +58,26 @@ public class Login {
             statusLabel.setText("Invalid username or password.");
         }
     }
+    @FXML
+    private void onClickEditPassword() throws IOException {
+
+
+
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("EditAccount.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+        stage.setScene(scene);
+        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+    }
+    @FXML
+    private void onDeleteAccount() throws IOException {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("DeleteAccount.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+        stage.setScene(scene);
+        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+    }
+
 }

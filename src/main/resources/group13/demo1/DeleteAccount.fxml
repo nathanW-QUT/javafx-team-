@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.DeleteAccountController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="15">
+            <Label text="Delete Account" />
+
+            <TextField fx:id="usernameField" promptText="Username" maxWidth="250"/>
+            <PasswordField fx:id="passwordField" promptText="Password" maxWidth="250"/>
+
+            <Button fx:id="nextButton" text="Delete Account" onAction="#handleDeleteAccount" maxWidth="250"/>
+        </VBox>
+    </center>
+    <bottom>
+        <BorderPane>
+            <left>
+                <Button text="Back" onAction="#onClickback" maxWidth="250"/>
+            </left>
+        </BorderPane>
+    </bottom>
+
+
+</BorderPane>
