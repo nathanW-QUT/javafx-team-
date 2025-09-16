@@ -14,7 +14,7 @@ public class DistractionDAOTest {
     @BeforeEach
     public void setUp() throws SQLException {
         Connection connection = DriverManager.getConnection("jdbc:sqlite::memory:");
-        dao = new DistractionDAO(connection); // requires the extra constructor
+        dao = new DistractionDAO(connection);
     }
 
     @Test
