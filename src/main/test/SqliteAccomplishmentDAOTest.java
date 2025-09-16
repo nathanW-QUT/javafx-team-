@@ -7,28 +7,33 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SqliteAccomplishmentDAOTest {
+class SqliteAccomplishmentDAOTest
+{
 
     private SqliteAccomplishmentDAO dao;
 
     @BeforeEach
-    void setUp() {
+    void setUp()
+    {
         dao = new SqliteAccomplishmentDAO();
         clearTable();
     }
 
     @AfterEach
-    void tearDown() {
+    void tearDown()
+    {
         clearTable();
     }
 
     private void clearTable()
     {
-        try {
+        try
+        {
             Connection conn = SqliteConnection.getInstance();
             Statement stmt = conn.createStatement();
             stmt.execute("DELETE FROM accomplishment");
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
