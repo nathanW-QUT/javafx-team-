@@ -1,5 +1,6 @@
-package group13.demo1.model;
-
+import group13.demo1.model.Accomplishment;
+import group13.demo1.model.SqliteAccomplishmentDAO;
+import group13.demo1.model.SqliteConnection;
 import org.junit.jupiter.api.*;
 import java.sql.Connection;
 import java.sql.Statement;
