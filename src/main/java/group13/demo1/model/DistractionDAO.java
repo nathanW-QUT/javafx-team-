@@ -13,6 +13,12 @@ public class DistractionDAO {
         createTable();
     }
 
+    public DistractionDAO(Connection connection) {
+        this.connection = connection;
+        createTable();
+    }
+
+
     private void createTable() {
         String query = """
             CREATE TABLE IF NOT EXISTS distraction (
