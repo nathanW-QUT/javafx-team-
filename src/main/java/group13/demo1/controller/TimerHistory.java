@@ -1,8 +1,4 @@
 package group13.demo1.controller;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import java.util.Optional;
 import group13.demo1.model.UserSession;
 import group13.demo1.HelloApplication;
 import group13.demo1.model.ITimerDAO;
@@ -26,12 +22,17 @@ import java.util.List;
 
 public class TimerHistory {
 
+    @FXML private Label selectedHeader;
     @FXML private ListView<TimerRecord> list;
     @FXML private Label selectedLabel;
     @FXML private Label totalLabel;
+    @FXML private Label totalTimeLabel;
 
     private final ITimerDAO dao = new SqliteTimerDAO();
-    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a");
+    private final DateTimeFormatter dateformatted = DateTimeFormatter.ofPattern("MMM d, yyyy");
+    private final DateTimeFormatter timeformatted = DateTimeFormatter.ofPattern("hh:mm:ss a");
+
     private ObservableList<TimerRecord> items;
 
     @FXML
@@ -43,7 +44,6 @@ public class TimerHistory {
 
         items = FXCollections.observableArrayList(rows);
 
-
         list.setCellFactory(lv -> new ListCell<TimerRecord>() {
             @Override protected void updateItem(TimerRecord t, boolean empty) {
                 super.updateItem(t, empty);
@@ -53,7 +53,7 @@ public class TimerHistory {
                 } else
                 {
                     int n = getIndex() + 1;
-                    setText("Distraction " + n + "  •  " + t.getLabel());
+                    setText("Timer " + n + "  •  " + t.getLabel());
                 }
             }
         });
@@ -61,26 +61,49 @@ public class TimerHistory {
         list.setItems(items);
         list.setPlaceholder(new Label("No timer sessions yet."));
 
-        totalLabel.setText("Total Distractions: " + items.size());
+        totalLabel.setText("Total Timer Sessions: " + items.size());
         items.addListener((ListChangeListener<TimerRecord>) c ->
-                totalLabel.setText("Total Distractions: " + items.size()));
+                totalLabel.setText("Total Timers: " + items.size()));
+        updateTotals();
+        items.addListener((ListChangeListener<TimerRecord>) c -> updateTotals());
 
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
-            if (t == null)
-            {
+            if (t == null) {
                 selectedLabel.setText("(none)");
-            } else
-            {
+            } else {
                 int n = list.getSelectionModel().getSelectedIndex() + 1;
                 long secs = elapsedSecondsFromTimes(t);
+
+
+                String range;
+                boolean sameDay = t.getStartTime().toLocalDate().equals(t.getEndTime().toLocalDate());
+                if (sameDay) {
+
+                    range = dateformatted.format(t.getStartTime()) + "  •  "
+                            + timeformatted.format(t.getStartTime()) + "  →  "
+                            + timeformatted.format(t.getEndTime());
+                } else {
+
+                    range = dtf.format(t.getStartTime()) + "  →  " + dtf.format(t.getEndTime());
+                }
+
                 selectedLabel.setText(
-                        "Distraction " + n + "  •  " + t.getLabel() + "  •  " + formatElapsedTime(secs)
+                        "Timer " + n + "  •  " + t.getLabel() + "  •  " + range + "  •  " + formatElapsedTime(secs)
                 );
             }
         });
 
         if (!items.isEmpty()) list.getSelectionModel().select(0);
         else selectedLabel.setText("(none)");
+    }
+    private void updateTotals() {
+        long totalSecs = 0L;
+        for (TimerRecord r : items) {
+            totalSecs += r.getElapsedSeconds(); // already stored in seconds
+        }
+        if (totalTimeLabel != null) {
+            totalTimeLabel.setText("Total Distraction Time: " + formatTotal(totalSecs));
+        }
     }
 
     @FXML
@@ -105,6 +128,7 @@ public class TimerHistory {
         dao.deleteTimer(t);
         items.remove(i);
         list.refresh();
+        updateTotals();
 
         if (items.isEmpty())
         {
@@ -140,5 +164,14 @@ public class TimerHistory {
                 ? String.format("%02dh:%02dm:%02ds", h, m, s)
                 : String.format("%02d:%02d s", m, s);
     }
-}
 
+    private String formatTotal(long seconds) {
+        long h = seconds / 3600;
+        long m = (seconds % 3600) / 60;
+        long s = seconds % 60;
+
+        if (h > 0)  return String.format("%dh %02dm %02ds", h, m, s);
+        if (m > 0)  return String.format("%dm %02ds", m, s);
+        return String.format("%ds", s);
+    }
+}
