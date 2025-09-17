@@ -14,7 +14,7 @@ public class SqliteAccomplishmentDAO implements IAccomplishmentDAO
         createTable();
     }
 
-    private void createTable()
+    void createTable()
     {
         String query = """
                 CREATE TABLE IF NOT EXISTS Accomplishment (
