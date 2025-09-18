@@ -45,7 +45,7 @@ public class TimerHistory {
                 if (empty || t == null) {
                     setText(null);
                 } else {
-                    setText(logic.buildRowLabel(getIndex(), t));
+                    setText(logic.Row(getIndex(), t));
                 }
             }
         });

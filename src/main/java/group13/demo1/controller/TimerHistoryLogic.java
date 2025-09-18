@@ -18,7 +18,7 @@ public class TimerHistoryLogic {
     }
 
 
-    public String buildRowLabel(int indexZeroBased, TimerRecord t) {
+    public String Row(int indexZeroBased, TimerRecord t) {
         int n = indexZeroBased + 1;
         return "Timer " + n + "  -  " + t.getLabel();
     }
