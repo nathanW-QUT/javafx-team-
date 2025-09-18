@@ -12,18 +12,18 @@ public class TimerHistoryLogic {
     private final DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("MMM d, yyyy");
     private final DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("hh:mm:ss a");
 
-    /** Sort newest first by startTime (desc). */
+
     public void sortNewestFirst(List<TimerRecord> rows) {
         rows.sort((a, b) -> b.getStartTime().compareTo(a.getStartTime()));
     }
 
-    /** Build the left list label: "Timer N  -  Label". */
+
     public String buildRowLabel(int indexZeroBased, TimerRecord t) {
         int n = indexZeroBased + 1;
         return "Timer " + n + "  -  " + t.getLabel();
     }
 
-    /** Return the formatted string for the selected session line. */
+
     public String buildSelectedSessionText(int indexZeroBased, TimerRecord t) {
         int n = indexZeroBased + 1;
         long secs = elapsedSecondsFromTimes(t);
@@ -31,7 +31,7 @@ public class TimerHistoryLogic {
         return "Timer " + n + "  -  " + t.getLabel() + "  -  " + range + "  -  " + formatElapsedTime(secs);
     }
 
-    /** Same-day vs cross-day formatting. */
+
     public String formatRange(TimerRecord t) {
         boolean sameDay = t.getStartTime().toLocalDate().equals(t.getEndTime().toLocalDate());
         if (sameDay) {
@@ -43,13 +43,13 @@ public class TimerHistoryLogic {
         }
     }
 
-    /** Safe elapsed seconds from start/end. */
+
     public long elapsedSecondsFromTimes(TimerRecord t) {
         long secs = Duration.between(t.getStartTime(), t.getEndTime()).getSeconds();
         return Math.max(0, secs);
     }
 
-    /** Selected-line elapsed time format. */
+
     public String formatElapsedTime(long seconds) {
         long h = seconds / 3600;
         long m = (seconds % 3600) / 60;
@@ -59,7 +59,7 @@ public class TimerHistoryLogic {
                 : String.format("%02d:%02d s", m, s);
     }
 
-    /** Footer total-time format. */
+
     public String formatTotal(long seconds) {
         long h = seconds / 3600;
         long m = (seconds % 3600) / 60;
@@ -69,18 +69,18 @@ public class TimerHistoryLogic {
         return String.format("%ds", s);
     }
 
-    /** Sum of elapsed seconds across items (uses stored seconds on record). */
+
     public long computeTotalSeconds(List<TimerRecord> items) {
         long totalSecs = 0L;
         for (TimerRecord r : items) totalSecs += r.getElapsedSeconds();
         return totalSecs;
     }
 
-    /** Header text helpers to match your labels. */
+
     public String totalsHeaderInitial(int count) { return "Total Timer Sessions: " + count; }
     public String totalsHeaderOnChange(int count) { return "Total Timers: " + count; }
 
-    /** After delete, which index should be selected next? (-1 means none) */
+
     public int nextIndexAfterDelete(int deletedIndex, int sizeAfterRemoval) {
         if (sizeAfterRemoval <= 0) return -1;
         return Math.min(deletedIndex, sizeAfterRemoval - 1);
