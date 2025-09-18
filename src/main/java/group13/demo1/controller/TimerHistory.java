@@ -58,8 +58,8 @@ public class TimerHistory {
         items.addListener((ListChangeListener<TimerRecord>) c -> totalsession.setText(logic.totalsHeaderOnChange(items.size())));
 
 
-        updateTotals();
-        items.addListener((ListChangeListener<TimerRecord>) c -> updateTotals());
+        updateTotal();
+        items.addListener((ListChangeListener<TimerRecord>) c -> updateTotal());
 
 
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
@@ -67,7 +67,7 @@ public class TimerHistory {
                 session.setText("(none)");
             } else {
                 int index = list.getSelectionModel().getSelectedIndex();
-                session.setText(logic.buildSelectedSessionText(index, t));
+                session.setText(logic.SelectedSessionText(index, t));
             }
         });
 
@@ -75,8 +75,8 @@ public class TimerHistory {
         else session.setText("(none)");
     }
 
-    private void updateTotals() {
-        long totalSecs = logic.computeTotalSeconds(items);
+    private void updateTotal() {
+        long totalSecs = logic.TotalSeconds(items);
         if (totalTime != null) {
             totalTime.setText("Total Distracted Time: " + logic.formatTotal(totalSecs));
         }
@@ -100,7 +100,7 @@ public class TimerHistory {
         dao.deleteTimer(t);
         items.remove(i);
         list.refresh();
-        updateTotals();
+        updateTotal();
 
         if (items.isEmpty()) {
             session.setText("(none)");

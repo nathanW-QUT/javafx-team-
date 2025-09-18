@@ -24,9 +24,9 @@ public class TimerHistoryLogic {
     }
 
 
-    public String buildSelectedSessionText(int indexZeroBased, TimerRecord t) {
+    public String SelectedSessionText(int indexZeroBased, TimerRecord t) {
         int n = indexZeroBased + 1;
-        long secs = elapsedSecondsFromTimes(t);
+        long secs = elapsedTimeFromTimerRecord(t);
         String range = formatRange(t);
         return "Timer " + n + "  -  " + t.getLabel() + "  -  " + range + "  -  " + formatElapsedTime(secs);
     }
@@ -44,7 +44,7 @@ public class TimerHistoryLogic {
     }
 
 
-    public long elapsedSecondsFromTimes(TimerRecord t) {
+    public long elapsedTimeFromTimerRecord(TimerRecord t) {
         long secs = Duration.between(t.getStartTime(), t.getEndTime()).getSeconds();
         return Math.max(0, secs);
     }
@@ -70,7 +70,7 @@ public class TimerHistoryLogic {
     }
 
 
-    public long computeTotalSeconds(List<TimerRecord> items) {
+    public long TotalSeconds(List<TimerRecord> items) {
         long totalSecs = 0L;
         for (TimerRecord r : items) totalSecs += r.getElapsedSeconds();
         return totalSecs;
