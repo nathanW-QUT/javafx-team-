@@ -9,8 +9,8 @@ import java.util.List;
 public class TimerHistoryLogic {
 
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss a");
-    private final DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("MMM d, yyyy");
-    private final DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("hh:mm:ss a");
+    private final DateTimeFormatter dateFormatted = DateTimeFormatter.ofPattern("MMM d, yyyy");
+    private final DateTimeFormatter timeFormatted = DateTimeFormatter.ofPattern("hh:mm:ss a");
 
 
     public void sortNewestFirst(List<TimerRecord> rows) {
@@ -35,9 +35,9 @@ public class TimerHistoryLogic {
     public String formatRange(TimerRecord t) {
         boolean sameDay = t.getStartTime().toLocalDate().equals(t.getEndTime().toLocalDate());
         if (sameDay) {
-            return dateFmt.format(t.getStartTime()) + "  -  "
-                    + timeFmt.format(t.getStartTime()) + "  →  "
-                    + timeFmt.format(t.getEndTime());
+            return dateFormatted.format(t.getStartTime()) + "  -  "
+                    + timeFormatted.format(t.getStartTime()) + "  →  "
+                    + timeFormatted.format(t.getEndTime());
         } else {
             return dtf.format(t.getStartTime()) + "  →  " + dtf.format(t.getEndTime());
         }

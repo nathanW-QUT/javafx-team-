@@ -32,19 +32,24 @@ public class TimerHistory {
     private ObservableList<TimerRecord> items;
 
     @FXML
-    public void initialize() {
+    public void initialize()
+    {
         String user = UserSession.getInstance().getUsername();
         List<TimerRecord> rows = dao.getTimersForUser(user);
         logic.sortNewestFirst(rows);
 
         items = FXCollections.observableArrayList(rows);
 
-        list.setCellFactory(lv -> new ListCell<TimerRecord>() {
-            @Override protected void updateItem(TimerRecord t, boolean empty) {
+        list.setCellFactory(lv -> new ListCell<TimerRecord>()
+        {
+            @Override protected void updateItem(TimerRecord t, boolean empty)
+            {
                 super.updateItem(t, empty);
-                if (empty || t == null) {
+                if (empty || t == null)
+                {
                     setText(null);
-                } else {
+                } else
+                {
                     setText(logic.Row(getIndex(), t));
                 }
             }
@@ -63,9 +68,11 @@ public class TimerHistory {
 
 
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
-            if (t == null) {
+            if (t == null)
+            {
                 session.setText("(none)");
-            } else {
+            } else
+            {
                 int index = list.getSelectionModel().getSelectedIndex();
                 session.setText(logic.SelectedSessionText(index, t));
             }
@@ -75,16 +82,20 @@ public class TimerHistory {
         else session.setText("(none)");
     }
 
-    private void updateTotal() {
+    private void updateTotal()
+    {
         long totalSecs = logic.TotalSeconds(items);
-        if (totalTime != null) {
+        if (totalTime != null)
+        {
             totalTime.setText("Total Distracted Time: " + logic.formatTotal(totalSecs));
         }
     }
 
     @FXML
-    private void onConfirm() {
-        if (list.getSelectionModel().getSelectedIndex() >= 0) {
+    private void onConfirm()
+    {
+        if (list.getSelectionModel().getSelectedIndex() >= 0)
+        {
             list.getSelectionModel().clearSelection();
             list.getFocusModel().focus(-1);
             session.setText("(none)");
@@ -92,7 +103,8 @@ public class TimerHistory {
     }
 
     @FXML
-    private void onDelete() {
+    private void onDelete()
+    {
         int i = list.getSelectionModel().getSelectedIndex();
         if (i < 0) return;
 
@@ -102,7 +114,8 @@ public class TimerHistory {
         list.refresh();
         updateTotal();
 
-        if (items.isEmpty()) {
+        if (items.isEmpty())
+        {
             session.setText("(none)");
             return;
         }

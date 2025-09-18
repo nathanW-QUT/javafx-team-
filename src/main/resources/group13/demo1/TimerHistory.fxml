@@ -16,8 +16,8 @@
             <Label text="Timer History" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
 
 
-            <Label fx:id="totalsession" text="Total Distractions: 0"/>
-            <Label fx:id="totalTime" text="Total Distraction Time: 0s"/>
+            <Label fx:id="totalsession" text="Total Timer Sessions: 0"/>
+            <Label fx:id="totalTime" text="Total Distracted Time: 0s"/>
 
             <Separator/>
             <Label text="Selected:"/>
