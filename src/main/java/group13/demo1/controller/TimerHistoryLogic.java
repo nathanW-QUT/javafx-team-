@@ -1,7 +1,6 @@
 package group13.demo1.controller;
 
 import group13.demo1.model.TimerRecord;
-
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
