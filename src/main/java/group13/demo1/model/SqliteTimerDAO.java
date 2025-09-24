@@ -11,6 +11,7 @@ public class SqliteTimerDAO implements ITimerDAO {
     public SqliteTimerDAO() {
         connection = SqliteConnection.getInstance();
         createTable();
+        createSessionTable();
     }
 
     private void createTable() {
@@ -28,6 +29,23 @@ public class SqliteTimerDAO implements ITimerDAO {
             e.printStackTrace();
         }
     }
+    private void createSessionTable() {
+        try (Statement statement = connection.createStatement()) {
+            String query = "CREATE TABLE IF NOT EXISTS sessions (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "username TEXT NOT NULL," +
+                    "startTime TEXT NOT NULL," +
+                    "endTime TEXT," +
+                    "totalRunSeconds INTEGER," +
+                    "totalPauseSeconds INTEGER,"+
+                    "pauseCount INTEGER"+
+                    ")";
+            statement.execute(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @Override

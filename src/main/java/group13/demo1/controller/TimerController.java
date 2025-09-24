@@ -42,6 +42,14 @@ public class TimerController {
 
     private AnimationTimer timer;
 
+    // New Session tracking code
+    private SessionModel currentSession;
+    private SessionDAO sessionDAO;
+    private long totalPauseMillis = 0;
+    private int pauseCount = 0;
+    private long pauseStartMillis = 0;
+
+
     @FXML
     public void initialize() {
         timer = new AnimationTimer() {
@@ -61,9 +69,16 @@ public class TimerController {
             }
         };
         timer.start();
-
+        sessionDAO = new SessionDAO(SqliteConnection.getInstance());
         String currentUser = UserSession.getInstance().getUsername();
         welcomeText.setText("Welcome, " + currentUser + "!");
+        // start a new session row right away
+        currentSession = new SessionModel(currentUser, LocalDateTime.now());
+        try {
+            sessionDAO.insert(currentSession);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -73,7 +88,11 @@ public class TimerController {
             startTime = System.currentTimeMillis();
             running = true;
             startStopButton.setText("Pause");
-            System.out.println("Timer started: " + LocalDateTime.now());
+//            System.out.println("Timer started: " + LocalDateTime.now());
+            if (pauseStartMillis > 0) {
+                totalPauseMillis += System.currentTimeMillis() - pauseStartMillis;
+                pauseStartMillis = 0;
+            }
         } else
         {
 
@@ -83,6 +102,9 @@ public class TimerController {
             running = false;
             elapsedTime += sessionMillis;
             startStopButton.setText("Start");
+            // Session iterate the pause counter and pausetimer
+            pauseCount++;
+            pauseStartMillis = System.currentTimeMillis();
 
             long sessionSeconds = Math.max(0, sessionMillis / 1000);
             LocalDateTime endDateTime   = LocalDateTime.now();
@@ -137,6 +159,19 @@ public class TimerController {
                 LocalDateTime.now(),
                 durationInSeconds
         );
+        //Sessions
+        try {
+            if (currentSession != null) {
+                currentSession.setEndTime(LocalDateTime.now());
+                currentSession.setTotalRunSeconds(durationBeforeReset / 1000);
+                currentSession.setTotalPauseSeconds(totalPauseMillis / 1000);
+                currentSession.setPauseCount(pauseCount);
+                sessionDAO.update(currentSession);
+                currentSession = null; // end the session for this session session
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         timerDAO.addTimer(record);
     }
 
