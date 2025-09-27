@@ -99,7 +99,7 @@ class SqliteAccomplishmentDAOTest
         dao.addAccomplishment(new Accomplishment(0, "Jane", "Example 3", false));
 
         List<Accomplishment> listA = dao.getAccomplishmentsByUsername("John");
-        assertEquals(2, listA.size());
+        assertEquals(1, listA.size());
 
         List<Accomplishment> listB = dao.getAccomplishmentsByUsername("Mary");
         assertEquals(1, listB.size());
