@@ -50,6 +50,9 @@ public class TimerController {
     private long pauseStartMillis = 0;
 
 
+    /**
+     * initialize the timer
+     */
     @FXML
     public void initialize() {
         timer = new AnimationTimer() {
