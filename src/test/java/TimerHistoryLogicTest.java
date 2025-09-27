@@ -1,4 +1,4 @@
-package group13.demo1.controller;
+import group13.demo1.controller.TimerHistoryLogic;
 import group13.demo1.model.TimerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

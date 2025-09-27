@@ -1,5 +1,4 @@
-package group13.demo1.model;
-
+import group13.demo1.model.SessionModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
