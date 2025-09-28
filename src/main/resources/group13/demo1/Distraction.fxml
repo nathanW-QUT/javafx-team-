@@ -5,6 +5,7 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.HelloController" >
@@ -16,10 +17,45 @@
         <StackPane>
 
             <Label text="Distraction Logger"/>
+            <VBox alignment="TOP_CENTER" spacing="10">
+            <Label fx:id="cause" text="What was the cause of your distraction?"/>
+            <ComboBox fx:id="CauseBox" promptText="Choose an answer" prefWidth="100" editable="true">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value= "Got a snack"/>
+                        <String fx:value="Scrolled on phone"/>
+                        <String fx:value="Cleaned Room"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
 
+                <Label fx:id="min" text="How many minutes were you distracted for?"/>
+                <ComboBox fx:id="MinutesBox" promptText="Choose an answer" prefWidth="100" editable="true">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value= "1"/>
+                            <String fx:value= "2"/>
+                            <String fx:value= "3"/>
+                            <String fx:value= "4"/>
+                            <String fx:value= "5"/>
+                            <String fx:value= "6"/>
+                            <String fx:value= "7"/>
+                            <String fx:value= "8"/>
+                            <String fx:value= "9"/>
+                            <String fx:value= "10"/>
+                            <String fx:value= "15"/>
+                            <String fx:value= "20"/>
+                            <String fx:value= "30"/>
+                            <String fx:value= "45"/>
+                            <String fx:value= "60"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </VBox>
 
+            <TextField fx:id="descriptionField" promptText="Enter distraction description"/>
             <Button fx:id="nextButton" text="Log Distraction"
-                    onAction="#onHomeButtonClick"
+                    onAction="#onClickLogDistraction"
                     StackPane.alignment="BOTTOM_RIGHT"
                     style="-fx-padding: 10;"/>
         </StackPane>
