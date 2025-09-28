@@ -1,13 +1,18 @@
 package group13.demo1.controller;
 
+import group13.demo1.HelloApplication;
 import group13.demo1.model.DistractionDAO;
 import group13.demo1.model.MainDistractionDAO;
 import group13.demo1.model.SqliteConnection;
 import group13.demo1.model.UserSession;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Button;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
+import java.util.List;
+
+import java.io.IOException;
 
 public class MainDistractionController {
     @FXML
@@ -18,6 +23,7 @@ public class MainDistractionController {
     private TextField descriptionField;
     @FXML
     private Button nextButton;
+    @FXML private ListView<MainDistractionDAO.MainItem> recentMainDistractions;
 
     private final MainDistractionDAO mainDistractionDAO = new MainDistractionDAO(SqliteConnection.getInstance());
 
@@ -45,5 +51,65 @@ public class MainDistractionController {
         System.out.println("Distraction logged successfully!");
 
     }
+
+    @FXML
+    private void initialize() {
+        if (recentMainDistractions != null) {
+            loadRecent();
+        }
+    }
+
+    private void loadRecent() {
+        String username = UserSession.getInstance().getUsername();
+        List<MainDistractionDAO.MainItem> last4 = mainDistractionDAO.getRecentForUser(username, 4);
+
+
+        recentMainDistractions.getItems().setAll(last4);
+
+        recentMainDistractions.setCellFactory(list -> new ListCell<>() {
+            @Override
+
+            protected void updateItem(MainDistractionDAO.MainItem item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+
+
+                } else {
+                    String desc = (item.description == null || item.description.isBlank())
+                            ? ""
+                            : " — " + item.description;
+                    setText(item.timestamp + " — " + item.cause + " (" + item.minutes + "m)" + desc);
+                }
+            }
+        });
+    }
+
+    @FXML
+    private void onClickGoToLogger() throws IOException {
+        Stage stage = (Stage) ((recentMainDistractions != null)
+                ? recentMainDistractions.getScene().getWindow()
+                : nextButton.getScene().getWindow()); // fallback
+
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Distraction.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+        stage.setScene(scene);
+        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+    }
+
+    @FXML
+    private void onBackHome() throws IOException {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+        stage.setScene(scene);
+
+        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+    }
+
+
+
 
 }
