@@ -101,16 +101,16 @@ public class SqliteTimerDAO implements ITimerDAO {
     @Override
     public TimerRecord getTimer(int id) {
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM timers WHERE id=?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM timers WHERE id=?");
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
                 TimerRecord t = new TimerRecord(
-                        rs.getString("username"),
-                        rs.getString("label"),
-                        LocalDateTime.parse(rs.getString("startTime")),
-                        LocalDateTime.parse(rs.getString("endTime")),
-                        rs.getLong("totalTime")
+                        resultSet.getString("username"),
+                        resultSet.getString("label"),
+                        LocalDateTime.parse(resultSet.getString("startTime")),
+                        LocalDateTime.parse(resultSet.getString("endTime")),
+                        resultSet.getLong("totalTime")
                 );
                 t.setId(id);
                 return t;
@@ -120,6 +120,13 @@ public class SqliteTimerDAO implements ITimerDAO {
         }
         return null;
     }
+
+    /**
+     * This function selects the timer recorded in the db, by username
+     * for the purposes of displaying that informaiton on page
+     * @param username
+     * @return timers
+     */
     @Override
     public List<TimerRecord> getTimersForUser(String username) {
         List<TimerRecord> timers = new ArrayList<>();

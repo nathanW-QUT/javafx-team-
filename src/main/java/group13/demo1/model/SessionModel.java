@@ -2,6 +2,10 @@ package group13.demo1.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * The session is the amount of pauses and plays between the start and reset of a timer.
+ * This allows for tracking how many pauses and the total pasue time between the start and end of a Timer.
+ */
 public class SessionModel {
     private int id;
     private String username;

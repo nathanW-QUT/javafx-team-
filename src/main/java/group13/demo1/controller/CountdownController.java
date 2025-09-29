@@ -7,6 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+/**
+ * A reversed timer that allows users to set specific timeframes for study
+ */
 public class CountdownController {
 
     @FXML private TextField inputMinutes;
@@ -16,7 +19,7 @@ public class CountdownController {
     @FXML private Button resetButton;
 
     private long remainingMillis = 0;
-    private long lastTick = 0;
+    private long checktime = 0;
     private boolean running = false;
     private AnimationTimer timer;
 
@@ -26,15 +29,19 @@ public class CountdownController {
             @Override
             public void handle(long now) {
                 if (running) {
-                    long nowMillis = System.currentTimeMillis();
-                    long delta = nowMillis - lastTick;
-                    lastTick = nowMillis;
-                    remainingMillis = Math.max(0, remainingMillis - delta);
+                    long currentTimeMillis = System.currentTimeMillis();
+                    long timeElapsedSinceLastUpdate = currentTimeMillis - checktime;
+                    checktime = currentTimeMillis;
+
+                    // Reduce remaining time by the elapsed time
+                    remainingMillis = Math.max(0, remainingMillis - timeElapsedSinceLastUpdate);
                     updateLabel();
 
+                    // Check if timer has reached zero
                     if (remainingMillis == 0) {
                         running = false;
                         startPauseButton.setText("Start");
+
                     }
                 }
             }
@@ -52,7 +59,7 @@ public class CountdownController {
                 long secs = checkLongs(inputSeconds.getText());
                 remainingMillis = (mins * 60 + secs) * 1000;
             }
-            lastTick = System.currentTimeMillis();
+            checktime = System.currentTimeMillis();
             running = true;
             startPauseButton.setText("Pause");
         } else {

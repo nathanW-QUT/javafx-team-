@@ -2,6 +2,9 @@ package group13.demo1.model;
 
 import java.time.LocalDateTime;
 
+/**
+ * A single 'Timer' that can be triggered by a user
+ */
 public class TimerRecord {
     private int id;
     private String username;
@@ -10,6 +13,14 @@ public class TimerRecord {
     private LocalDateTime endTime;
     private long totalTime; // stored as seconds now for ease
 
+    /**
+     *
+     * @param username user taht triggered the timer
+     * @param label type of time, such as pause or reset events
+     * @param startTime DateTime of the click
+     * @param endTime DateTime the event finished
+     * @param totalTime time between start and end
+     */
     public TimerRecord(String username, String label, LocalDateTime startTime, LocalDateTime endTime, long totalTime) {
         this.username = username;
         this.label = label;
