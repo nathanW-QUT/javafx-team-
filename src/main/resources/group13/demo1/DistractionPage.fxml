@@ -8,23 +8,26 @@
     </left>
 
     <center>
-        <VBox spacing="12" style="-fx-padding: 20;">
-            <Label text="Recent Distractions (last 4)"
-                   style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-            <ListView fx:id="recentMainDistractions" prefHeight="320"/>
-        </VBox>
+        <VBox spacing="16" alignment="TOP_CENTER" style="-fx-padding: 20;">
+
+        <Label text="Recent Distractions (last 4)"
+               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <ListView fx:id="recentMainDistractions"
+                  maxHeight="150"
+                  style="-fx-fixed-cell-size: 28;"
+                  prefWidth="500"/>
+
+
+
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 8 0 0 0;">
+            <Button text="Log a Distraction"
+                    onAction="#onClickGoToLogger"
+                    style="-fx-padding: 8 16;"/>
+        </HBox>
+    </VBox>
     </center>
 
-    <bottom>
-        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 12 12 12;">
-            <Button text="Log a Distraction" onAction="#onClickGoToLogger"/>
-        </HBox>
 
-        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 12 12 12;">
-            <Button text="Log a Distraction" onAction="#onClickGoToLogger"/>
-        </HBox>
-
-    </bottom>
 
 </BorderPane>
 
