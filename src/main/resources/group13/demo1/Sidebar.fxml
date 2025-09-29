@@ -14,5 +14,6 @@
         <Button text="Accomplishments" onAction="#onClickGoAccomplishment"/>
         <Button text="History" onAction="#onClickGoHistory"/>
         <Button text="Log Out" onAction="#onClickLogOut"/>
+        <Button text="Countdown" onAction="#onCountdownButtonClicked"/>
     </VBox>
 </StackPane>
