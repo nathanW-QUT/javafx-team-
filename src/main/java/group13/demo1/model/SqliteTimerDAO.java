@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SqliteTimerDAO implements ITimerDAO {
     private final Connection connection;
@@ -13,6 +15,7 @@ public class SqliteTimerDAO implements ITimerDAO {
         createTable();
         createSessionTable();
     }
+
 
     private void createTable() {
         try (Statement statement = connection.createStatement()) {
@@ -171,5 +174,38 @@ public class SqliteTimerDAO implements ITimerDAO {
             e.printStackTrace();
         }
         return timers;
+    }
+
+    public Map<String, Long> getTagCountsForUser(String username) {
+        Map<String, Long> map = new LinkedHashMap<>();
+        String sql = "SELECT label, COUNT(*) AS cnt " +
+                "FROM timers WHERE username=? AND label <> 'Reset' " +
+                "GROUP BY label ORDER BY cnt DESC";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, username);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    map.put(rs.getString("label"), rs.getLong("cnt"));
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return map;
+    }
+
+    public Map<String, Long> getDailyDistractionCounts(String username) {
+        Map<String, Long> map = new LinkedHashMap<>();
+        // startTime stored as ISO-8601 text; yyyy-MM-dd is the first 10 chars
+        String sql = "SELECT substr(startTime,1,10) AS day, COUNT(*) AS cnt " +
+                "FROM timers WHERE username=? AND label <> 'Reset' " +
+                "GROUP BY day ORDER BY day";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, username);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    map.put(rs.getString("day"), rs.getLong("cnt"));
+                }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return map;
     }
 }
