@@ -15,7 +15,7 @@ public class TimerRecord {
 
     /**
      *
-     * @param username user taht triggered the timer
+     * @param username user that triggered the timer
      * @param label type of time, such as pause or reset events
      * @param startTime DateTime of the click
      * @param endTime DateTime the event finished
@@ -45,6 +45,10 @@ public class TimerRecord {
     public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
     public void setElapsedSeconds(long totalTime) { this.totalTime = totalTime; }
 
+    /**
+     * A cmd line tool for helping with debugging, may be safely ignored
+     * @return
+     */
     @Override
     public String toString() {
         return "TimerRecord{" +

@@ -16,6 +16,10 @@ public class SqliteConnection {
         }
     }
 
+    /**
+     * connection connects to a database
+     * @return the instance off the database connection
+     */
     public static Connection getInstance() {
         if (instance == null) {
             new SqliteConnection();

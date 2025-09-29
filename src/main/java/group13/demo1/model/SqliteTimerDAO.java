@@ -14,6 +14,9 @@ public class SqliteTimerDAO implements ITimerDAO {
         createSessionTable();
     }
 
+    /**
+     * Creates the initial Timer table in the db (first created in development
+     */
     private void createTable() {
         try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS timers (" +
@@ -29,6 +32,10 @@ public class SqliteTimerDAO implements ITimerDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Createing the higher level session (of potentially many timers)
+     */
     private void createSessionTable() {
         try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS sessions (" +
@@ -73,13 +80,13 @@ public class SqliteTimerDAO implements ITimerDAO {
     public void updateTimer(TimerRecord timer) {
         try {
             String query = "UPDATE timers SET label=?, startTime=?, endTime=?, totalTime=? WHERE id=?";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, timer.getLabel());
-            ps.setString(2, timer.getStartTime().toString()); // store as text
-            ps.setString(3, timer.getEndTime().toString());
-            ps.setLong(4, timer.getElapsedSeconds());
-            ps.setInt(5, timer.getId());
-            ps.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, timer.getLabel());
+            preparedStatement.setString(2, timer.getStartTime().toString()); // store as text
+            preparedStatement.setString(3, timer.getEndTime().toString());
+            preparedStatement.setLong(4, timer.getElapsedSeconds());
+            preparedStatement.setInt(5, timer.getId());
+            preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,6 +105,7 @@ public class SqliteTimerDAO implements ITimerDAO {
         }
     }
 
+
     @Override
     public TimerRecord getTimer(int id) {
         try {
@@ -105,15 +113,15 @@ public class SqliteTimerDAO implements ITimerDAO {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                TimerRecord t = new TimerRecord(
+                TimerRecord timerRecord = new TimerRecord(
                         resultSet.getString("username"),
                         resultSet.getString("label"),
                         LocalDateTime.parse(resultSet.getString("startTime")),
                         LocalDateTime.parse(resultSet.getString("endTime")),
                         resultSet.getLong("totalTime")
                 );
-                t.setId(id);
-                return t;
+                timerRecord.setId(id);
+                return timerRecord;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,8 +131,8 @@ public class SqliteTimerDAO implements ITimerDAO {
 
     /**
      * This function selects the timer recorded in the db, by username
-     * for the purposes of displaying that informaiton on page
-     * @param username
+     * for the purposes of displaying that information on page
+     * @param username for the currently logged user
      * @return timers
      */
     @Override
@@ -137,15 +145,15 @@ public class SqliteTimerDAO implements ITimerDAO {
             statement.setString(1, username);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    TimerRecord t = new TimerRecord(
+                    TimerRecord timerRecord = new TimerRecord(
                             resultSet.getString("username"),
                             resultSet.getString("label"),
                             LocalDateTime.parse(resultSet.getString("startTime")),
                             LocalDateTime.parse(resultSet.getString("endTime")),
                             resultSet.getLong("totalTime")
                     );
-                    t.setId(resultSet.getInt("id"));
-                    timers.add(t);
+                    timerRecord.setId(resultSet.getInt("id"));
+                    timers.add(timerRecord);
                 }
             }
         } catch (SQLException e) {

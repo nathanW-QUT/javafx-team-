@@ -15,6 +15,11 @@ public class SessionModel {
     private long totalPauseSeconds;
     private int pauseCount;
 
+    /**
+     *
+     * @param username
+     * @param startTime When the user begins a session of timers the first time
+     */
     public SessionModel(String username, LocalDateTime startTime) {
         this.username = username;
         this.startTime = startTime;
