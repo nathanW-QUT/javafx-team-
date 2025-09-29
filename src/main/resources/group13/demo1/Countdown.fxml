@@ -2,18 +2,15 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import group13.demo1.controller.CountdownController?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.CountdownController">
 
-    <!-- left sidebar -->
     <left>
         <fx:include source="Sidebar.fxml"/>
     </left>
 
-    <!-- center countdown UI -->
     <center>
         <VBox alignment="CENTER" spacing="20">
             <Label text="Countdown Timer" style="-fx-font-size:20px;"/>
@@ -24,7 +21,6 @@
                 <TextField fx:id="inputSeconds" promptText="Seconds" prefWidth="80"/>
             </HBox>
 
-            <!-- live countdown label -->
             <Label fx:id="countdownLabel" text="00:00" style="-fx-font-size:28px;"/>
 
             <!-- buttons -->

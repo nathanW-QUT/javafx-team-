@@ -128,16 +128,16 @@ public class SqliteTimerDAO implements ITimerDAO {
                 "ORDER BY startTime DESC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, username);
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
                     TimerRecord t = new TimerRecord(
-                            rs.getString("username"),
-                            rs.getString("label"),
-                            LocalDateTime.parse(rs.getString("startTime")),
-                            LocalDateTime.parse(rs.getString("endTime")),
-                            rs.getLong("totalTime")
+                            resultSet.getString("username"),
+                            resultSet.getString("label"),
+                            LocalDateTime.parse(resultSet.getString("startTime")),
+                            LocalDateTime.parse(resultSet.getString("endTime")),
+                            resultSet.getLong("totalTime")
                     );
-                    t.setId(rs.getInt("id"));
+                    t.setId(resultSet.getInt("id"));
                     timers.add(t);
                 }
             }

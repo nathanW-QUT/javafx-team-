@@ -35,7 +35,6 @@ public class CountdownController {
                     if (remainingMillis == 0) {
                         running = false;
                         startPauseButton.setText("Start");
-                        // TODO: play a sound/alert if you want
                     }
                 }
             }
@@ -49,8 +48,8 @@ public class CountdownController {
         if (!running) {
             if (remainingMillis <= 0) {
                 // user just set the time
-                long mins = parseLongSafe(inputMinutes.getText());
-                long secs = parseLongSafe(inputSeconds.getText());
+                long mins = checkLongs(inputMinutes.getText());
+                long secs = checkLongs(inputSeconds.getText());
                 remainingMillis = (mins * 60 + secs) * 1000;
             }
             lastTick = System.currentTimeMillis();
@@ -59,6 +58,14 @@ public class CountdownController {
         } else {
             running = false;
             startPauseButton.setText("Start");
+        }
+    }
+
+    private long checkLongs(String text) {
+        try {
+            return Long.parseLong(text.trim());
+        } catch (Exception e) {
+            return 0;
         }
     }
 
@@ -77,11 +84,4 @@ public class CountdownController {
         countdownLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
 
-    private long parseLongSafe(String text) {
-        try {
-            return Long.parseLong(text.trim());
-        } catch (Exception e) {
-            return 0;
-        }
-    }
 }
