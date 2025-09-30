@@ -19,24 +19,28 @@
             <VBox spacing="20" alignment="TOP_CENTER" styleClass="content-box">
                 <VBox spacing="15">
                     <Label text="Quick Distraction Logging" styleClass="section-title"/>
-                    <HBox spacing="30">
-                        <VBox spacing="10">
-                            <Label text="Log New Distraction" styleClass="subtitle"/>
-                            <Label text="Record New Distraction, add optional notes." styleClass="description"/>
-                            <Button text="Log New Distraction"
-                                    onAction="#onClickLogDistraction"
-                                    styleClass="primary-button-long"/>
-                            <Button text="Manage Full Distraction Log"
-                                    styleClass="secondary-button-long"/>
-                        </VBox>
+                        <HBox spacing="30">
+                            <HBox spacing="10">
+                                <VBox>
+                                    <Label text="Log New Distraction" styleClass="subtitle"/>
+                                    <Label text="Record New Distraction, add optional notes." styleClass="description"/>
+                                    <Button text="Log New Distraction"
+                                            onAction="#onClickLogDistraction"
+                                            styleClass="primary-button-long"/>
+                                    <Button text="Manage Full Distraction Log"
+                                            onAction="#onClickGoHistory"
+                                            styleClass="secondary-button-long"/>
+                                </VBox>
+                            </HBox>
 
-                        <VBox spacing="10">
-                            <Label text="Instant Log" styleClass="subtitle"/>
-                            <Label text="Quickly record a new distraction - No details Needed!" styleClass="description"/>
-                            <Button fx:id="nextButton"
-                                    text="Instant Log"
-                                    styleClass="primary-button"/>
-                        </VBox>
+                            <VBox spacing="10">
+                                <Label text="Instant Log" styleClass="subtitle"/>
+                                <Label text="Quickly record a new distraction - No details Needed!" styleClass="description"/>
+                                <Button fx:id="nextButton"
+                                        text="Instant Log"
+                                        styleClass="primary-button"/>
+                            </VBox>
+                        </HBox>
 
                         <VBox spacing="10">
                             <Label text="Recent Distractions" styleClass="section-title"/>
@@ -64,7 +68,6 @@
                                 </VBox>
                             </ScrollPane>
                         </VBox>
-                    </HBox>
                 </VBox>
             </VBox>
         </StackPane>
