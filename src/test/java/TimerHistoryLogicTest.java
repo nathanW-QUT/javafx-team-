@@ -1,3 +1,4 @@
+package group13.demo1.controller;
 import group13.demo1.controller.TimerHistoryLogic;
 import group13.demo1.model.TimerRecord;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-//
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TimerHistoryLogicTest {
@@ -76,15 +76,13 @@ public class TimerHistoryLogicTest {
         assertEquals(expected, actual);
     }
 
-//    I have edited this out beacuse the am is causing issues with maven in Github Workflow
-    // i dont really understand the issue
-//    @Test
-//    public void testFormatRange_SameDay()
-//    {
-//        TimerRecord r = new TimerRecord(USER, "Cab302", START_SAME, END_SAME, 307);
-//        String expected = "Jan 1, 2025  -  09:00:00 am  →  09:05:07 am";
-//        assertEquals(expected, logic.formatRange(r));
-//    }
+    @Test
+    public void testFormatRange_SameDay()
+    {
+        TimerRecord r = new TimerRecord(USER, "Cab302", START_SAME, END_SAME, 307);
+        String expected = "Jan 1, 2025  -  09:00:00 am  →  09:05:07 am";
+        assertEquals(expected, logic.formatRange(r));
+    }
 
     @Test
     public void testFormatRange_DifferentDay()
