@@ -18,7 +18,6 @@ public class Login {
     @FXML
     private Button nextButton;
     @FXML
-
     private TextField usernameField;
     @FXML
     private PasswordField passwordField;
@@ -58,11 +57,9 @@ public class Login {
             statusLabel.setText("Invalid username or password.");
         }
     }
+
     @FXML
     private void onClickEditPassword() throws IOException {
-
-
-
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("EditAccount.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
@@ -79,5 +76,4 @@ public class Login {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
-
 }
