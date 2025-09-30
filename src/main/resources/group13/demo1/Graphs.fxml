@@ -4,10 +4,14 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.GraphsController">
+    <stylesheets>
+        <URL value="@graphstyle.css"/>
+    </stylesheets>
 
     <!-- Left sidebar (unchanged) -->
     <left>
@@ -61,3 +65,4 @@
         </StackPane>
     </center>
 </BorderPane>
+

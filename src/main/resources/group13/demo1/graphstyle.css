@@ -1,0 +1,23 @@
+/* Make the plot white for contrast */
+.chart-plot-background {
+    -fx-background-color: white;
+}
+
+/* Axis titles (the big “Date …” / “Distractions/day”) */
+.axis .axis-label {
+    -fx-text-fill: #eef2f7;          /* light text on dark gradient */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Tick labels (numbers/dates along axes) */
+.axis {
+    -fx-tick-label-fill: #1e293b;    /* dark text over white plot */
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* Optional: subtler grid lines */
+.chart-horizontal-grid-lines, .chart-vertical-grid-lines {
+    -fx-stroke: rgba(0,0,0,0.08);
+}
