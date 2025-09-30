@@ -3,7 +3,6 @@ package group13.demo1.model;
 import java.sql.*;
 import java.time.LocalDateTime;
 
-
 public class DistractionDAO {
 
     private final Connection connection;
@@ -13,21 +12,14 @@ public class DistractionDAO {
         createTable();
     }
 
-    public DistractionDAO(Connection connection) {
-        this.connection = connection;
-        createTable();
-    }
-
 
     private void createTable() {
         String query = """
             CREATE TABLE IF NOT EXISTS distraction (
-
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT,
                 description TEXT,
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-
             )
             """;
         try (Statement stmt = connection.createStatement()) {
@@ -36,7 +28,6 @@ public class DistractionDAO {
             e.printStackTrace();
         }
     }
-
 
     public boolean addDistraction(String description, String username) {
         String query = "INSERT INTO distraction (description, username) VALUES (?, ?)";

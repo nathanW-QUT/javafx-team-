@@ -5,23 +5,63 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="group13.demo1.controller.HelloController" >
+<?import javafx.collections.FXCollections?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.MainDistractionController">
+
     <left>
-       <fx:include source="Sidebar.fxml"/>
+        <fx:include source="Sidebar.fxml"/>
     </left>
 
     <center>
-        <StackPane>
+        <!-- Single container to avoid overlapping children -->
+        <VBox alignment="TOP_LEFT" spacing="12" style="-fx-padding: 20;">
+            <Label text="Distraction Logger" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-            <Label text="Distraction Logger"/>
+            <Label fx:id="cause" text="What was the cause of your distraction?"/>
+            <ComboBox fx:id="CauseBox" promptText="Choose an answer" prefWidth="260" editable="true">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Got a snack"/>
+                        <String fx:value="Scrolled on phone"/>
+                        <String fx:value="Cleaned Room"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
 
+            <Label fx:id="min" text="How many minutes were you distracted for?"/>
+            <ComboBox fx:id="MinutesBox" promptText="Choose an answer" prefWidth="140" editable="true">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="1"/>
+                        <String fx:value="2"/>
+                        <String fx:value="3"/>
+                        <String fx:value="4"/>
+                        <String fx:value="5"/>
+                        <String fx:value="6"/>
+                        <String fx:value="7"/>
+                        <String fx:value="8"/>
+                        <String fx:value="9"/>
+                        <String fx:value="10"/>
+                        <String fx:value="15"/>
+                        <String fx:value="20"/>
+                        <String fx:value="30"/>
+                        <String fx:value="45"/>
+                        <String fx:value="60"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
 
-            <Button fx:id="nextButton" text="Log Distraction"
-                    onAction="#onHomeButtonClick"
-                    StackPane.alignment="BOTTOM_RIGHT"
-                    style="-fx-padding: 10;"/>
-        </StackPane>
+            <TextField fx:id="descriptionField" promptText="Enter distraction description" prefWidth="360"/>
+
+            <HBox alignment="CENTER_RIGHT">
+                <Button fx:id="nextButton"
+                        text="Log Distraction"
+                        onAction="#onClickLogDistraction"
+                        style="-fx-padding: 8 14;"/>
+            </HBox>
+        </VBox>
     </center>
 </BorderPane>

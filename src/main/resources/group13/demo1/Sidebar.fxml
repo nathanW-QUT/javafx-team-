@@ -13,6 +13,7 @@
         <Button text="Tasks" onAction="#onClickGoTasks"/>
         <Button text="Accomplishments" onAction="#onClickGoAccomplishment"/>
         <Button text="History" onAction="#onClickGoHistory"/>
+        <Button text="Distractions" onAction="#onClickGoDistractionPage"/>
         <Button text="Log Out" onAction="#onClickLogOut"/>
         <Button text="Countdown" onAction="#onCountdownButtonClicked"/>
     </VBox>

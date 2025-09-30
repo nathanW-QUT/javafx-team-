@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.MainDistractionController">
+
+    <left>
+        <fx:include source="Sidebar.fxml"/>
+    </left>
+
+    <center>
+        <VBox spacing="12" style="-fx-padding: 20;">
+            <Label text="Recent Distractions (last 4)"
+                   style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <ListView fx:id="recentMainDistractions" prefHeight="320"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 12 12 12;">
+            <Button text="Log a Distraction" onAction="#onClickGoToLogger"/>
+        </HBox>
+
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 12 12 12;">
+            <Button text="Log a Distraction" onAction="#onClickGoToLogger"/>
+        </HBox>
+
+    </bottom>
+
+</BorderPane>
+
+
+
+
