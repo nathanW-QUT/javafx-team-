@@ -30,13 +30,13 @@ import java.util.Map;
  * a line chart of distractions over the day.
  */
 public class GraphsController {
-    @FXML private PieChart tagPie;
+    @FXML private PieChart PieChartTag;
     @FXML private LineChart<Number, Number> trendChart;
     @FXML private NumberAxis                timeAxis;   // X
-    @FXML private NumberAxis                trendYAxis; // Y
+    @FXML private NumberAxis                CountYAxis; // Y
 
-    @FXML private Label  emptyState;
-    @FXML private Button backBtn;
+    @FXML private Label  defaultstate;
+    @FXML private Button backbutton;
 
     /**DAO for timer and distraction data. */
     private final SqliteTimerDAO dao = new SqliteTimerDAO();
@@ -50,7 +50,7 @@ public class GraphsController {
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
         if (user == null || user.isBlank())
         {
-            showEmpty("Please log in to view insights.");
+            showDefault("Please log in to view insights.");
             return;
         }
 
@@ -64,32 +64,32 @@ public class GraphsController {
 
         if ((tagCounts == null || tagCounts.isEmpty()) && (times == null || times.isEmpty()))
         {
-            showEmpty("No distractions recorded yet.");
+            showDefault("No distractions recorded yet.");
             return;
         }
-        emptyState.setVisible(false);
+        defaultstate.setVisible(false);
 
         // pie chart
         if (tagCounts != null && !tagCounts.isEmpty())
         {
             ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
             tagCounts.forEach((tag, cnt) -> pieData.add(new PieChart.Data(tag + " (" + cnt + ")", cnt)));
-            tagPie.setData(pieData);
-            tagPie.setVisible(true);
+            PieChartTag.setData(pieData);
+            PieChartTag.setVisible(true);
         } else
         {
-            tagPie.setVisible(false);
+            PieChartTag.setVisible(false);
         }
 
         // line chart
-        setupTimeAxis();
-        plotCumulativeTimeline(times);
+        LineChartTimeAxis();
+        plotConnectingTimeline(times);
     }
 
     /**
      * to get the time (X) and count (Y) axis values for the line chart.
      */
-    private void setupTimeAxis()
+    private void LineChartTimeAxis()
     {
         timeAxis.setAutoRanging(false);
         timeAxis.setLowerBound(0);
@@ -110,11 +110,11 @@ public class GraphsController {
             @Override public Number fromString(String s) { return 0; }
         });
 
-        trendYAxis.setAutoRanging(false);
-        trendYAxis.setLowerBound(0);
-        trendYAxis.setUpperBound(1);
-        trendYAxis.setTickUnit(1);
-        trendYAxis.setLabel("No of Distractions");
+        CountYAxis.setAutoRanging(false);
+        CountYAxis.setLowerBound(0);
+        CountYAxis.setUpperBound(1);
+        CountYAxis.setTickUnit(1);
+        CountYAxis.setLabel("No of Distractions");
 
         trendChart.setAnimated(false);
         trendChart.setCreateSymbols(true);
@@ -126,7 +126,7 @@ public class GraphsController {
      * plots a continuous series of line for the registered timestamps.
      * to create a rising step line.
      */
-    private void plotCumulativeTimeline(List<LocalDateTime> times)
+    private void plotConnectingTimeline(List<LocalDateTime> times)
     {
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
@@ -140,14 +140,14 @@ public class GraphsController {
                 long seconds = t.getHour() * 3600L + t.getMinute() * 60L + t.getSecond();
                 series.getData().add(new XYChart.Data<>(seconds, count));
             }
-            trendYAxis.setUpperBound(Math.max(2, count + 1));
-            trendYAxis.setTickUnit(Math.max(1, Math.ceil((count + 1) / 5.0)));
+            CountYAxis.setUpperBound(Math.max(2, count + 1));
+            CountYAxis.setTickUnit(Math.max(1, Math.ceil((count + 1) / 5.0)));
         } else
         {
             series.getData().add(new XYChart.Data<>(0, 0));
             series.getData().add(new XYChart.Data<>(24 * 3600, 0));
-            trendYAxis.setUpperBound(1);
-            trendYAxis.setTickUnit(1);
+            CountYAxis.setUpperBound(1);
+            CountYAxis.setTickUnit(1);
         }
 
         trendChart.getData().setAll(series);
@@ -156,11 +156,11 @@ public class GraphsController {
     /**
      * to show default page when there is no registered history data
      */
-    private void showEmpty(String msg)
+    private void showDefault(String msg)
     {
-        emptyState.setText(msg);
-        emptyState.setVisible(true);
-        if (tagPie != null)     tagPie.setVisible(false);
+        defaultstate.setText(msg);
+        defaultstate.setVisible(true);
+        if (PieChartTag != null)     PieChartTag.setVisible(false);
         if (trendChart != null) trendChart.setVisible(false);
     }
 
@@ -170,7 +170,7 @@ public class GraphsController {
     @FXML
     private void onBackHome() throws IOException
     {
-        Stage stage = (Stage) backBtn.getScene().getWindow();
+        Stage stage = (Stage) backbutton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
         stage.setScene(scene);

@@ -38,7 +38,7 @@
                             <NumberAxis fx:id="timeAxis" label="Time"/>
                         </xAxis>
                         <yAxis>
-                            <NumberAxis fx:id="trendYAxis" label="No of Distractions" forceZeroInRange="true"/>
+                            <NumberAxis fx:id="CountYAxis" label="No of Distractions" forceZeroInRange="true"/>
                         </yAxis>
                     </LineChart>
                 </VBox>
@@ -46,17 +46,17 @@
                 <!-- Pie chart -->
                 <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Distraction Pie Chart" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                    <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
+                    <PieChart fx:id="PieChartTag" legendVisible="false" labelsVisible="true"
                               prefWidth="1000" prefHeight="340"/>
                 </VBox>
 
                 <HBox alignment="CENTER_LEFT" prefWidth="1000">
-                    <Button fx:id="backBtn" text="Back" onAction="#onBackHome"/>
+                    <Button fx:id="backbutton" text="Back" onAction="#onBackHome"/>
                 </HBox>
             </VBox>
 
             <!-- no distraction logic -->
-            <Label fx:id="emptyState"
+            <Label fx:id="defaultstate"
                    visible="false"
                    text="No distractions recorded yet."
                    style="-fx-font-size: 18px; -fx-text-fill: #ffffff; -fx-opacity: 0.9; -fx-font-weight: bold;"/>
