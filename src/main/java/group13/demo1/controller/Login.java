@@ -17,11 +17,13 @@ import java.io.IOException;
 public class Login {
     @FXML
     private Button nextButton;
-    @FXML
 
+    @FXML
     private TextField usernameField;
+
     @FXML
     private PasswordField passwordField;
+
     @FXML
     private Label statusLabel;
 
@@ -60,9 +62,6 @@ public class Login {
     }
     @FXML
     private void onClickEditPassword() throws IOException {
-
-
-
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("EditAccount.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
