@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -7,54 +9,55 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.GraphsController">
 
-    <top>
-        <VBox spacing="8" style="-fx-padding: 16;">
-            <Label text="Distraction Graphs" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-            <Label fx:id="emptyState" visible="false" style="-fx-text-fill: -fx-text-base-color;"/>
-        </VBox>
-    </top>
+    <!-- Left sidebar (unchanged) -->
+    <left>
+        <fx:include source="Sidebar.fxml"/>
+    </left>
 
+    <!-- Main content with a neat, centered layout -->
     <center>
-        <GridPane hgap="16" vgap="16" style="-fx-padding: 0 16 16 16;">
-            <columnConstraints>
-                <ColumnConstraints percentWidth="50"/>
-                <ColumnConstraints percentWidth="50"/>
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints percentHeight="50"/>
-                <RowConstraints percentHeight="50"/>
-            </rowConstraints>
+        <!-- StackPane lets us overlay an empty-state label over the charts -->
+        <StackPane>
+            <VBox spacing="20.0" alignment="TOP_CENTER" maxWidth="1100">
+                <padding>
+                    <Insets top="24" right="24" bottom="24" left="24"/>
+                </padding>
 
-            <!-- Tag split -->
-            <PieChart fx:id="tagPie" title="Tags (share)"/>
-            <BarChart fx:id="tagBar" title="Tags (count)">
-                <xAxis><CategoryAxis fx:id="tagBarXAxis"/></xAxis>
-                <yAxis><NumberAxis fx:id="tagBarYAxis"/></yAxis>
-            </BarChart>
+                <!-- Page title -->
+                <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
 
-            <!-- Trend over time -->
-            <LineChart fx:id="trendChart" title="Distractions per day" GridPane.rowIndex="1" GridPane.columnSpan="2">
-                <xAxis><CategoryAxis fx:id="trendXAxis"/></xAxis>
-                <yAxis><NumberAxis fx:id="trendYAxis"/></yAxis>
-            </LineChart>
-        </GridPane>
+                <!-- Trend chart (recorded distractions by day) -->
+                <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
+                    <Label text="Recorded Distractions" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <LineChart fx:id="trendChart" animated="false" legendVisible="false"
+                               prefWidth="1000" prefHeight="360">
+                        <xAxis>
+                            <CategoryAxis fx:id="trendXAxis" label="Date (yyyy-MM-dd)" gapStartAndEnd="false"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="trendYAxis" label="Distractions/day" forceZeroInRange="true"/>
+                        </yAxis>
+                    </LineChart>
+                </VBox>
+
+                <!-- Pie chart (distribution by tag) -->
+                <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
+                    <Label text="Logged Distraction Categories" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
+                              prefWidth="1000" prefHeight="340"/>
+                </VBox>
+
+                <!-- Back button row -->
+                <HBox alignment="CENTER_LEFT" prefWidth="1000">
+                    <Button fx:id="backBtn" text="Back" onAction="#onBackHome"/>
+                </HBox>
+            </VBox>
+
+            <!-- Empty state overlay -->
+            <Label fx:id="emptyState"
+                   visible="false"
+                   text="No distractions recorded yet."
+                   style="-fx-font-size: 18px; -fx-text-fill: #ffffff; -fx-opacity: 0.9; -fx-font-weight: bold;"/>
+        </StackPane>
     </center>
-
-    <right>
-        <VBox spacing="8" style="-fx-padding: 16;">
-            <Label text="Top tags (ranked)" style="-fx-font-weight: bold;"/>
-            <TableView fx:id="rankingTable" prefWidth="240">
-                <columns>
-                    <TableColumn fx:id="tagCol" text="Tag" prefWidth="150"/>
-                    <TableColumn fx:id="countCol" text="Count" prefWidth="80"/>
-                </columns>
-            </TableView>
-        </VBox>
-    </right>
-
-    <bottom>
-        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 16 16 16;">
-            <Button text="Back" onAction="#onBackHome" fx:id="backBtn"/>
-        </HBox>
-    </bottom>
 </BorderPane>
