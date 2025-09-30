@@ -1,9 +1,12 @@
 package group13.demo1.model;
-
-import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.time.temporal.ChronoUnit;
 
 public class SqliteTimerDAO implements ITimerDAO {
@@ -15,7 +18,9 @@ public class SqliteTimerDAO implements ITimerDAO {
         createSessionTable();
     }
 
-
+    /**
+     * Creates the initial Timer table in the db (first created in development
+     */
     private void createTable() {
         try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS timers (" +
@@ -31,6 +36,10 @@ public class SqliteTimerDAO implements ITimerDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Createing the higher level session (of potentially many timers)
+     */
     private void createSessionTable() {
         try (Statement statement = connection.createStatement()) {
             String query = "CREATE TABLE IF NOT EXISTS sessions (" +
@@ -75,13 +84,13 @@ public class SqliteTimerDAO implements ITimerDAO {
     public void updateTimer(TimerRecord timer) {
         try {
             String query = "UPDATE timers SET label=?, startTime=?, endTime=?, totalTime=? WHERE id=?";
-            PreparedStatement ps = connection.prepareStatement(query);
-            ps.setString(1, timer.getLabel());
-            ps.setString(2, timer.getStartTime().toString()); // store as text
-            ps.setString(3, timer.getEndTime().toString());
-            ps.setLong(4, timer.getElapsedSeconds());
-            ps.setInt(5, timer.getId());
-            ps.executeUpdate();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, timer.getLabel());
+            preparedStatement.setString(2, timer.getStartTime().toString()); // store as text
+            preparedStatement.setString(3, timer.getEndTime().toString());
+            preparedStatement.setLong(4, timer.getElapsedSeconds());
+            preparedStatement.setInt(5, timer.getId());
+            preparedStatement.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -100,28 +109,36 @@ public class SqliteTimerDAO implements ITimerDAO {
         }
     }
 
+
     @Override
     public TimerRecord getTimer(int id) {
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM timers WHERE id=?");
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                TimerRecord t = new TimerRecord(
-                        rs.getString("username"),
-                        rs.getString("label"),
-                        LocalDateTime.parse(rs.getString("startTime")),
-                        LocalDateTime.parse(rs.getString("endTime")),
-                        rs.getLong("totalTime")
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM timers WHERE id=?");
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                TimerRecord timerRecord = new TimerRecord(
+                        resultSet.getString("username"),
+                        resultSet.getString("label"),
+                        LocalDateTime.parse(resultSet.getString("startTime")),
+                        LocalDateTime.parse(resultSet.getString("endTime")),
+                        resultSet.getLong("totalTime")
                 );
-                t.setId(id);
-                return t;
+                timerRecord.setId(id);
+                return timerRecord;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    /**
+     * This function selects the timer recorded in the db, by username
+     * for the purposes of displaying that information on page
+     * @param username for the currently logged user
+     * @return timers
+     */
     @Override
     public List<TimerRecord> getTimersForUser(String username) {
         List<TimerRecord> timers = new ArrayList<>();
@@ -130,17 +147,17 @@ public class SqliteTimerDAO implements ITimerDAO {
                 "ORDER BY startTime DESC";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, username);
-            try (ResultSet rs = statement.executeQuery()) {
-                while (rs.next()) {
-                    TimerRecord t = new TimerRecord(
-                            rs.getString("username"),
-                            rs.getString("label"),
-                            LocalDateTime.parse(rs.getString("startTime")),
-                            LocalDateTime.parse(rs.getString("endTime")),
-                            rs.getLong("totalTime")
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    TimerRecord timerRecord = new TimerRecord(
+                            resultSet.getString("username"),
+                            resultSet.getString("label"),
+                            LocalDateTime.parse(resultSet.getString("startTime")),
+                            LocalDateTime.parse(resultSet.getString("endTime")),
+                            resultSet.getLong("totalTime")
                     );
-                    t.setId(rs.getInt("id"));
-                    timers.add(t);
+                    timerRecord.setId(resultSet.getInt("id"));
+                    timers.add(timerRecord);
                 }
             }
         } catch (SQLException e) {
