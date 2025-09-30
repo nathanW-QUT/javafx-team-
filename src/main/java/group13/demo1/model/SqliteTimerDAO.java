@@ -6,6 +6,7 @@ import java.util.List;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.time.temporal.ChronoUnit;
 
 public class SqliteTimerDAO implements ITimerDAO {
     private final Connection connection;
@@ -194,7 +195,6 @@ public class SqliteTimerDAO implements ITimerDAO {
 
     public Map<String, Long> getDailyDistractionCounts(String username) {
         Map<String, Long> map = new LinkedHashMap<>();
-        // startTime stored as ISO-8601 text; yyyy-MM-dd is the first 10 chars
         String sql = "SELECT substr(startTime,1,10) AS day, COUNT(*) AS cnt " +
                 "FROM timers WHERE username=? AND label <> 'Reset' " +
                 "GROUP BY day ORDER BY day";
@@ -202,10 +202,43 @@ public class SqliteTimerDAO implements ITimerDAO {
             st.setString(1, username);
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
+
                     map.put(rs.getString("day"), rs.getLong("cnt"));
                 }
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return map;
     }
+
+
+    public Map<String, Long> getHourlyDistractionCounts(String username, int lastNHours) {
+        Map<String, Long> map = new LinkedHashMap<>();
+
+        int hours = Math.max(1, lastNHours);
+        LocalDateTime nowHour = LocalDateTime.now().truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime start   = nowHour.minusHours(hours - 1);
+
+
+        String sql =
+                "SELECT replace(substr(startTime,1,13),'T',' ') || ':00' AS hour_bucket, COUNT(*) AS cnt " +
+                        "FROM timers " +
+                        "WHERE username=? AND label <> 'Reset' AND startTime >= ? " +
+                        "GROUP BY hour_bucket " +
+                        "ORDER BY hour_bucket";
+
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setString(1, username);
+            st.setString(2, start.toString());
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    map.put(rs.getString("hour_bucket"), rs.getLong("cnt"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+
 }

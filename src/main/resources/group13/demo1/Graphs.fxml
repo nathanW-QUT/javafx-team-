@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
@@ -13,28 +12,26 @@
         <URL value="@graphstyle.css"/>
     </stylesheets>
 
-    <!-- Left sidebar (unchanged) -->
     <left>
         <fx:include source="Sidebar.fxml"/>
     </left>
 
-    <!-- Main content with a neat, centered layout -->
     <center>
-        <!-- StackPane lets us overlay an empty-state label over the charts -->
         <StackPane>
-            <VBox spacing="20.0" alignment="TOP_CENTER" maxWidth="1100">
+            <VBox spacing="22.0" alignment="TOP_CENTER" maxWidth="1100">
                 <padding>
                     <Insets top="24" right="24" bottom="24" left="24"/>
                 </padding>
 
-                <!-- Page title -->
+                <!-- Title -->
                 <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
 
-                <!-- Trend chart (recorded distractions by day) -->
+                <!-- Line  -->
                 <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
-                    <Label text="Recorded Distractions" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <Label text="Recorded Distractions (per day)"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
                     <LineChart fx:id="trendChart" animated="false" legendVisible="false"
-                               prefWidth="1000" prefHeight="360">
+                               prefWidth="1000" prefHeight="320">
                         <xAxis>
                             <CategoryAxis fx:id="trendXAxis" label="Date (yyyy-MM-dd)" gapStartAndEnd="false"/>
                         </xAxis>
@@ -44,20 +41,39 @@
                     </LineChart>
                 </VBox>
 
-                <!-- Pie chart (distribution by tag) -->
-                <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
-                    <Label text="Logged Distraction Categories" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                    <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
-                              prefWidth="1000" prefHeight="340"/>
-                </VBox>
+                <!-- scatter  -->
+                <HBox spacing="24" alignment="TOP_LEFT" prefWidth="1000">
+                    <VBox spacing="8" alignment="TOP_LEFT" HBox.hgrow="ALWAYS">
+                        <Label text="Distractions by Time of Day (latest day)"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                        <ScatterChart fx:id="timeChart" legendVisible="true"
+                                      prefWidth="640" prefHeight="320">
+                            <xAxis>
+                                <CategoryAxis fx:id="timeXAxis" label="Tag"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="timeYAxis" label="Time of day" lowerBound="0" upperBound="24" tickUnit="2"/>
+                            </yAxis>
+                        </ScatterChart>
+                    </VBox>
 
-                <!-- Back button row -->
+
+                    <!-- pie  -->
+                    <VBox spacing="8" alignment="TOP_LEFT">
+                        <Label text="Logged Distraction Categories"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                        <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
+                                  prefWidth="320" prefHeight="320"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Back -->
                 <HBox alignment="CENTER_LEFT" prefWidth="1000">
                     <Button fx:id="backBtn" text="Back" onAction="#onBackHome"/>
                 </HBox>
             </VBox>
 
-            <!-- Empty state overlay -->
+
             <Label fx:id="emptyState"
                    visible="false"
                    text="No distractions recorded yet."
@@ -65,4 +81,5 @@
         </StackPane>
     </center>
 </BorderPane>
+
 

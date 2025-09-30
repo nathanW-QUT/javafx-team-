@@ -1,23 +1,27 @@
-/* Make the plot white for contrast */
-.chart-plot-background {
-    -fx-background-color: white;
-}
-
-/* Axis titles (the big “Date …” / “Distractions/day”) */
-.axis .axis-label {
-    -fx-text-fill: #eef2f7;          /* light text on dark gradient */
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-
-/* Tick labels (numbers/dates along axes) */
-.axis {
-    -fx-tick-label-fill: #1e293b;    /* dark text over white plot */
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
-}
-
-/* Optional: subtler grid lines */
+/* Plot background & subtle grid */
+.chart-plot-background { -fx-background-color: white; }
 .chart-horizontal-grid-lines, .chart-vertical-grid-lines {
-    -fx-stroke: rgba(0,0,0,0.08);
+    -fx-stroke: rgba(0,0,0,0.10);
+    -fx-stroke-dash-array: 4 4;
 }
+
+/* Axis styles (keep your colors if you prefer) */
+.axis .axis-label { -fx-font-size: 16px; -fx-font-weight: 700; }
+.axis { -fx-tick-label-fill: #0f172a; -fx-font-size: 13px; -fx-font-weight: 600; }
+
+/* Scatter points: small, rounded, with soft shadow */
+.chart-symbol {
+    -fx-background-radius: 6px;
+    -fx-padding: 4px; /* point size */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.2, 0, 1);
+}
+
+/* Legend bubble */
+.chart-legend {
+    -fx-background-color: rgba(255,255,255,0.85);
+    -fx-background-radius: 8px;
+    -fx-padding: 6px 10px;
+    -fx-border-color: rgba(0,0,0,0.06);
+    -fx-border-radius: 8px;
+}
+
