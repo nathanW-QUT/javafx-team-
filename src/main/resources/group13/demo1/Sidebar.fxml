@@ -10,11 +10,11 @@
     <VBox spacing="40" alignment="TOP_CENTER" fx:id="SideBar">
         <Button fx:id="nextButton" text="Home" onAction="#onHomeButtonClick"/>
         <Button text="Timer" onAction="#onClickGoTimer"/>
+        <Button text="Countdown" onAction="#onCountdownButtonClicked"/>
         <Button text="Tasks" onAction="#onClickGoTasks"/>
         <Button text="Accomplishments" onAction="#onClickGoAccomplishment"/>
         <Button text="History" onAction="#onClickGoHistory"/>
-        <Button text="Distractions" onAction="#onClickGoDistractionPage"/>
+        <Button text="Graphs" onAction="#onClickGoGraphs"/>
         <Button text="Log Out" onAction="#onClickLogOut"/>
-        <Button text="Countdown" onAction="#onCountdownButtonClicked"/>
     </VBox>
 </StackPane>

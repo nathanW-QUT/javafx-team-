@@ -90,6 +90,16 @@ public class HelloController  {
         scene.getStylesheets().add(stylesheet);
     }
     @FXML
+    private void onClickGoGraphs() throws IOException {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        FXMLLoader fxml = new FXMLLoader(HelloApplication.class.getResource("Graphs.fxml"));
+        Scene scene = new Scene(fxml.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+        stage.setScene(scene);
+        String css = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+        scene.getStylesheets().add(css);
+    }
+
+    @FXML
     protected void onLoginButtonClicked() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Login.fxml"));

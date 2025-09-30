@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.GraphsController">
+    <stylesheets>
+        <URL value="@graphstyle.css"/>
+    </stylesheets>
+
+    <left>
+        <fx:include source="Sidebar.fxml"/>
+    </left>
+
+    <center>
+        <StackPane>
+            <VBox spacing="22.0" alignment="TOP_CENTER" maxWidth="1100">
+                <padding>
+                    <Insets top="24" right="24" bottom="24" left="24"/>
+                </padding>
+
+                <!-- Title -->
+                <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
+
+                <!-- Line  -->
+                <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
+                    <Label text="Recorded Distractions (per day)"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <LineChart fx:id="trendChart" animated="false" legendVisible="false"
+                               prefWidth="1000" prefHeight="320">
+                        <xAxis>
+                            <CategoryAxis fx:id="trendXAxis" label="Date (yyyy-MM-dd)" gapStartAndEnd="false"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="trendYAxis" label="Distractions/day" forceZeroInRange="true"/>
+                        </yAxis>
+                    </LineChart>
+                </VBox>
+
+                <!-- scatter  -->
+                <HBox spacing="24" alignment="TOP_LEFT" prefWidth="1000">
+                    <VBox spacing="8" alignment="TOP_LEFT" HBox.hgrow="ALWAYS">
+                        <Label text="Distractions by Time of Day (latest day)"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                        <ScatterChart fx:id="timeChart" legendVisible="true"
+                                      prefWidth="640" prefHeight="320">
+                            <xAxis>
+                                <CategoryAxis fx:id="timeXAxis" label="Tag"/>
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis fx:id="timeYAxis" label="Time of day" lowerBound="0" upperBound="24" tickUnit="2"/>
+                            </yAxis>
+                        </ScatterChart>
+                    </VBox>
+
+
+                    <!-- pie  -->
+                    <VBox spacing="8" alignment="TOP_LEFT">
+                        <Label text="Logged Distraction Categories"
+                               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                        <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
+                                  prefWidth="320" prefHeight="320"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Back -->
+                <HBox alignment="CENTER_LEFT" prefWidth="1000">
+                    <Button fx:id="backBtn" text="Back" onAction="#onBackHome"/>
+                </HBox>
+            </VBox>
+
+
+            <Label fx:id="emptyState"
+                   visible="false"
+                   text="No distractions recorded yet."
+                   style="-fx-font-size: 18px; -fx-text-fill: #ffffff; -fx-opacity: 0.9; -fx-font-weight: bold;"/>
+        </StackPane>
+    </center>
+</BorderPane>
+
+
