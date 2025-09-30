@@ -4,6 +4,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Data Access Object (DAO) implementation used to manage {@link Accomplishment} entities using
+ * an SQLite database.
+ * <p>
+ * Provides CRUD operations: adding, updating, deleting, retrieving accomplishments.
+ */
 public class SqliteAccomplishmentDAO implements IAccomplishmentDAO
 {
     private final Connection connection;
@@ -24,9 +31,9 @@ public class SqliteAccomplishmentDAO implements IAccomplishmentDAO
                     completed INTEGER DEFAULT 0
                 )
                 """;
-        try (Statement stmt = connection.createStatement())
+        try (Statement statement = connection.createStatement())
         {
-            stmt.execute(query);
+            statement.execute(query);
         }
         catch (SQLException e)
         {
