@@ -1,16 +1,8 @@
 package group13.demo1.controller;
-import group13.demo1.HelloApplication;
 import group13.demo1.model.DistractionDAO;
 import group13.demo1.model.UserSession;
 import group13.demo1.model.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import java.io.IOException;
-
-import java.time.LocalDateTime;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

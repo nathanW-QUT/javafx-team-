@@ -1,7 +1,6 @@
 package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
-import group13.demo1.model.DistractionDAO;
 import group13.demo1.model.MainDistractionDAO;
 import group13.demo1.model.SqliteConnection;
 import group13.demo1.model.UserSession;
@@ -22,7 +21,7 @@ public class MainDistractionController {
     @FXML
     private TextField descriptionField;
     @FXML
-    private Button nextButton;
+    private Button logButton;
     @FXML private ListView<MainDistractionDAO.MainItem> recentMainDistractions;
 
     private final MainDistractionDAO mainDistractionDAO = new MainDistractionDAO(SqliteConnection.getInstance());
@@ -55,16 +54,16 @@ public class MainDistractionController {
     @FXML
     private void initialize() {
         if (recentMainDistractions != null) {
-            loadRecent();
+            loadRecentDistractions();
         }
     }
 
-    private void loadRecent() {
+    private void loadRecentDistractions() {
         String username = UserSession.getInstance().getUsername();
-        List<MainDistractionDAO.MainItem> last4 = mainDistractionDAO.getRecentForUser(username, 4);
+        List<MainDistractionDAO.MainItem> last4Items = mainDistractionDAO.getRecentForUser(username, 4);
 
 
-        recentMainDistractions.getItems().setAll(last4);
+        recentMainDistractions.getItems().setAll(last4Items);
 
         recentMainDistractions.setCellFactory(list -> new ListCell<>() {
             @Override
@@ -89,22 +88,11 @@ public class MainDistractionController {
     private void onClickGoToLogger() throws IOException {
         Stage stage = (Stage) ((recentMainDistractions != null)
                 ? recentMainDistractions.getScene().getWindow()
-                : nextButton.getScene().getWindow()); // fallback
+                : logButton.getScene().getWindow());
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Distraction.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
         stage.setScene(scene);
-        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
-        scene.getStylesheets().add(stylesheet);
-    }
-
-    @FXML
-    private void onBackHome() throws IOException {
-        Stage stage = (Stage) nextButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
-        stage.setScene(scene);
-
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
