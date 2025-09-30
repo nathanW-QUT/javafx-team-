@@ -1,27 +1,37 @@
-/* Plot background & subtle grid */
-.chart-plot-background { -fx-background-color: white; }
-.chart-horizontal-grid-lines, .chart-vertical-grid-lines {
-    -fx-stroke: rgba(0,0,0,0.10);
-    -fx-stroke-dash-array: 4 4;
+
+.chart-plot-background { /* background color*/
+    -fx-background-color: white;
 }
 
-/* Axis styles (keep your colors if you prefer) */
-.axis .axis-label { -fx-font-size: 16px; -fx-font-weight: 700; }
-.axis { -fx-tick-label-fill: #0f172a; -fx-font-size: 13px; -fx-font-weight: 600; }
 
-/* Scatter points: small, rounded, with soft shadow */
+.axis .axis-label {
+    -fx-text-fill: #0f172a;          /* x and y axis label-dark navy */
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+
+.axis {
+    -fx-tick-label-fill: #0f172a;    /* x and y axis values - dark */
+    -fx-font-size: 13.5px;
+    -fx-font-weight: 700;
+}
+
+
+.chart-horizontal-grid-lines,
+.chart-vertical-grid-lines {
+    -fx-stroke: #e5e7eb;
+    -fx-opacity: 1;
+}
+
+
+.chart-series-line { -fx-stroke-width: 2.5px; }
 .chart-symbol {
-    -fx-background-radius: 6px;
-    -fx-padding: 4px; /* point size */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.2, 0, 1);
+    -fx-background-color: #ffffff, #f97316;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 7px;
+    -fx-padding: 5px;
 }
 
-/* Legend bubble */
-.chart-legend {
-    -fx-background-color: rgba(255,255,255,0.85);
-    -fx-background-radius: 8px;
-    -fx-padding: 6px 10px;
-    -fx-border-color: rgba(0,0,0,0.06);
-    -fx-border-radius: 8px;
-}
+
 

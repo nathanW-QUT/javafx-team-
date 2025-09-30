@@ -2,38 +2,33 @@ package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
 import group13.demo1.model.SqliteTimerDAO;
-import group13.demo1.model.TimerRecord;
 import group13.demo1.model.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.chart.*;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
 public class GraphsController {
 
-    // Pie
     @FXML private PieChart tagPie;
-
-    // Daily counts (line)
-    @FXML private LineChart<String, Number> trendChart;
-    @FXML private CategoryAxis           trendXAxis;
-    @FXML private NumberAxis             trendYAxis;
-
-    // Time-of-day by tag (scatter)
-    @FXML private ScatterChart<String, Number> timeChart;
-    @FXML private CategoryAxis                 timeXAxis;
-    @FXML private NumberAxis                   timeYAxis;
+    @FXML private LineChart<Number, Number> trendChart;
+    @FXML private NumberAxis                timeAxis;   // X
+    @FXML private NumberAxis                trendYAxis; // Y
 
     @FXML private Label  emptyState;
     @FXML private Button backBtn;
@@ -48,103 +43,92 @@ public class GraphsController {
             return;
         }
 
+        // Pie data
+        Map<String, Long> tagCounts = dao.getTagCountsForUser(user);
+        List<LocalDateTime> times = dao.getTodayDistractionTimes(user);
+        if (times == null || times.isEmpty()) {
+            times = dao.getMostRecentDayDistractionTimes(user);
+        }
 
-        Map<String, Long> tagCounts = dao.getTagCountsForUser(user);          // label -> count
+        if ((tagCounts == null || tagCounts.isEmpty()) && (times == null || times.isEmpty())) {
+            showEmpty("No distractions recorded yet.");
+            return;
+        }
+        emptyState.setVisible(false);
+
+        // pie chart
         if (tagCounts != null && !tagCounts.isEmpty()) {
             ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
             tagCounts.forEach((tag, cnt) -> pieData.add(new PieChart.Data(tag + " (" + cnt + ")", cnt)));
             tagPie.setData(pieData);
-            tagPie.setLegendVisible(false);
             tagPie.setVisible(true);
         } else {
             tagPie.setVisible(false);
         }
 
+        // line chart
+        setupTimeAxis();
+        plotCumulativeTimeline(times);
+    }
 
-        Map<String, Long> daily = dao.getDailyDistractionCounts(user);
-        if (daily != null && !daily.isEmpty()) {
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            daily.forEach((day, cnt) -> series.getData().add(new XYChart.Data<>(day, cnt)));
-            trendChart.setAnimated(false);
-            trendChart.setLegendVisible(false);
-            trendYAxis.setLabel("Distractions/day");
-            trendXAxis.setLabel("Date (yyyy-MM-dd)");
-            trendChart.getData().setAll(series);
-            trendChart.setVisible(true);
-        } else {
-            trendChart.setVisible(false);
-        }
+    private void setupTimeAxis() {
+        timeAxis.setAutoRanging(false);
+        timeAxis.setLowerBound(0);
+        timeAxis.setUpperBound(24 * 60 * 60);
+        timeAxis.setTickUnit(6 * 60 * 60);
+        timeAxis.setLabel("Time");
 
-
-        List<TimerRecord> timers = dao.getTimersForUser(user);
-        if (timers != null && !timers.isEmpty()) {
-
-            LocalDate latestDay = timers.get(0).getStartTime().toLocalDate();
-
-
-            Map<String, List<Double>> byTag = new LinkedHashMap<>();
-            for (TimerRecord t : timers) {
-                LocalDateTime st = t.getStartTime();
-                if (!st.toLocalDate().equals(latestDay)) continue;
-                String tag = t.getLabel();
-                double hour = st.getHour() + (st.getMinute() / 60.0);
-                byTag.computeIfAbsent(tag, k -> new ArrayList<>()).add(hour);
+        timeAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override public String toString(Number n) {
+                long s = n.longValue();
+                long h = (s / 3600) % 24;
+                String am_pm = (h < 12) ? "am" : "pm";
+                long hh = (h % 12 == 0) ? 12 : (h % 12);
+                return String.format("%d %s", hh, am_pm);
             }
+            @Override public Number fromString(String s) { return 0; }
+        });
 
+        trendYAxis.setAutoRanging(false);
+        trendYAxis.setLowerBound(0);
+        trendYAxis.setUpperBound(1);
+        trendYAxis.setTickUnit(1);
+        trendYAxis.setLabel("No of Distractions");
 
-            timeXAxis.setLabel("Tag");
-            timeYAxis.setLabel("Time of day");
-            timeYAxis.setAutoRanging(false);
-            timeYAxis.setLowerBound(0);
-            timeYAxis.setUpperBound(24);
-            timeYAxis.setTickUnit(2);
+        trendChart.setAnimated(false);
+        trendChart.setCreateSymbols(true);
+        trendChart.setLegendVisible(false);
+        trendChart.setVisible(true);
+    }
 
+    private void plotCumulativeTimeline(List<LocalDateTime> times) {
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
-            timeYAxis.setTickLabelFormatter(new StringConverter<Number>() {
-                @Override public String toString(Number n) {
-                    int h = (int)Math.round(n.doubleValue());
-                    if (h < 0) h = 0;
-                    if (h > 24) h = 24;
-                    if (h == 0 || h == 24) return "12 am";
-                    if (h == 12) return "12 pm";
-                    return (h < 12) ? h + " am" : (h - 12) + " pm";
-                }
-                @Override public Number fromString(String s) { return 0; }
-            });
-
-
-            timeChart.getData().clear();
-            for (Map.Entry<String, List<Double>> e : byTag.entrySet()) {
-                String tag = e.getKey();
-                XYChart.Series<String, Number> s = new XYChart.Series<>();
-                s.setName(tag);
-                for (Double hour : e.getValue()) {
-                    s.getData().add(new XYChart.Data<>(tag, hour));
-                }
-                timeChart.getData().add(s);
+        if (times != null && !times.isEmpty()) {
+            times.sort(Comparator.naturalOrder());
+            int count = 0;
+            for (LocalDateTime t : times) {
+                count++;
+                long seconds = t.getHour() * 3600L + t.getMinute() * 60L + t.getSecond();
+                series.getData().add(new XYChart.Data<>(seconds, count));
             }
-            timeChart.setLegendVisible(true);
-            timeChart.setVisible(true);
+            trendYAxis.setUpperBound(Math.max(2, count + 1));
+            trendYAxis.setTickUnit(Math.max(1, Math.ceil((count + 1) / 5.0)));
         } else {
-            timeChart.setVisible(false);
+            series.getData().add(new XYChart.Data<>(0, 0));
+            series.getData().add(new XYChart.Data<>(24 * 3600, 0));
+            trendYAxis.setUpperBound(1);
+            trendYAxis.setTickUnit(1);
         }
 
-
-        if ((tagCounts == null || tagCounts.isEmpty()) &&
-                (daily == null || daily.isEmpty()) &&
-                (timers == null || timers.isEmpty())) {
-            showEmpty("No distractions recorded yet.");
-        } else {
-            emptyState.setVisible(false);
-        }
+        trendChart.getData().setAll(series);
     }
 
     private void showEmpty(String msg) {
         emptyState.setText(msg);
         emptyState.setVisible(true);
-        if (tagPie != null)      tagPie.setVisible(false);
-        if (trendChart != null)  trendChart.setVisible(false);
-        if (timeChart != null)   timeChart.setVisible(false);
+        if (tagPie != null)     tagPie.setVisible(false);
+        if (trendChart != null) trendChart.setVisible(false);
     }
 
     @FXML
@@ -157,4 +141,8 @@ public class GraphsController {
         scene.getStylesheets().add(stylesheet);
     }
 }
+
+
+
+
 
