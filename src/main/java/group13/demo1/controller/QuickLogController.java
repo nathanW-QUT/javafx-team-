@@ -18,11 +18,17 @@ public class QuickLogController {
     private final DistractionDAO distractionDAO = new DistractionDAO();
     private final ITimerDAO timerDAO = new SqliteTimerDAO();
 
+    /**
+     * After the fxml loads it initialises the controller
+     */
     @FXML
     private void initialize() {
         distractionButton.setOnAction(event -> logDistraction());
     }
 
+    /**
+     * Logs a quick distraction for the user of the current session
+     */
     public void logDistraction() {
         String description = descriptionField.getText();
         String currentUser = UserSession.getInstance().getUsername();

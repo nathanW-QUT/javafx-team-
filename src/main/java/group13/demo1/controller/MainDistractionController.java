@@ -26,6 +26,10 @@ public class MainDistractionController {
 
     private final MainDistractionDAO mainDistractionDAO = new MainDistractionDAO(SqliteConnection.getInstance());
 
+    /**
+     * Called upon the user clicking the distraction logging button
+     * Enters a new distraction into the database for the user of the current sesssion
+     */
 
     @FXML
     private void onClickLogDistraction() {
@@ -51,6 +55,10 @@ public class MainDistractionController {
 
     }
 
+    /**
+     * After the fxml loads it initialises the controller
+     * if there are recent main distractions, it will populate the list with the recent distractions
+     */
     @FXML
     private void initialize() {
         if (recentMainDistractions != null) {
@@ -58,6 +66,9 @@ public class MainDistractionController {
         }
     }
 
+    /**
+     * This function loads the four most recent logged distractions by the user of the current session and displays them in a list
+     */
     private void loadRecentDistractions() {
         String username = UserSession.getInstance().getUsername();
         List<MainDistractionDAO.MainItem> last4Items = mainDistractionDAO.getRecentForUser(username, 4);
@@ -84,6 +95,10 @@ public class MainDistractionController {
         });
     }
 
+    /**
+     * Brings the user to the main distraction logging page when the button is pressed
+     * @throws IOException if the page cant be loaded
+     */
     @FXML
     private void onClickGoToLogger() throws IOException {
         Stage stage = (Stage) ((recentMainDistractions != null)

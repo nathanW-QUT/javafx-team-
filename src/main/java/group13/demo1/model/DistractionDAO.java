@@ -7,11 +7,18 @@ public class DistractionDAO {
     private final Connection connection;
 
     public DistractionDAO() {
-        connection = SqliteConnection.getInstance();
+        this(SqliteConnection.getInstance());
+    }
+
+    public DistractionDAO(Connection connection) {
+        this.connection = connection;
         createQuickLogTable();
     }
 
 
+    /**
+     * Creates the quick log distraction table if the table does not yet exist in the database
+     */
     private void createQuickLogTable() {
         String query = """
             CREATE TABLE IF NOT EXISTS distraction (
@@ -28,6 +35,12 @@ public class DistractionDAO {
         }
     }
 
+    /**
+     * Adds a new distraction to the quick log database
+     * @param description adds a quick description to the quick logged distraction
+     * @param username adds the username of the session user to the database
+     * @return returns true if the insert succeeds, elsewise false
+     */
     public boolean addDistraction(String description, String username) {
         String query = "INSERT INTO distraction (description, username) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
