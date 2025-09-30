@@ -18,6 +18,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * controller for the History page.
+ * to configure the recorded list of data and simple confirm and delete actions.
+ */
 public class TimerHistory {
 
     @FXML private Label selectedHeader;
@@ -31,6 +35,11 @@ public class TimerHistory {
 
     private ObservableList<TimerRecord> items;
 
+    /**
+     * Initializes the list content and binds summary labels.
+     * to load timer for current user and sorting it.
+     * and shows total number of timers and time spent distracted for current user.
+     */
     @FXML
     public void initialize()
     {
@@ -82,6 +91,7 @@ public class TimerHistory {
         else session.setText("(none)");
     }
 
+    /** refreshes and shows the total distracted time of the user. */
     private void updateTotal()
     {
         long totalSecs = logic.TotalSeconds(items);
@@ -101,7 +111,7 @@ public class TimerHistory {
             session.setText("(none)");
         }
     }
-
+    /** deletes the particular selected timer for the user */
     @FXML
     private void onDelete()
     {

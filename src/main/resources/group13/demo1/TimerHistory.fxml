@@ -12,13 +12,15 @@
 
 
     <center>
+        <!-- Title -->
         <VBox spacing="12" alignment="TOP_LEFT" style="-fx-padding: 20;">
             <Label text="Timer History" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
 
-
+            <!-- Sub-Title -->
             <Label fx:id="totalsession" text="Total Timer Sessions: 0"/>
             <Label fx:id="totalTime" text="Total Distracted Time: 0s"/>
 
+            <!-- Timer History Table values -->
             <Separator/>
             <Label text="Selected:"/>
             <Label fx:id="selectedHeader"

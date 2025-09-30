@@ -23,8 +23,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * controller for the Insights/Graphs page.
+ * showing:
+ * a pie chart of distraction tags.
+ * a line chart of distractions over the day.
+ */
 public class GraphsController {
-
     @FXML private PieChart tagPie;
     @FXML private LineChart<Number, Number> trendChart;
     @FXML private NumberAxis                timeAxis;   // X
@@ -33,12 +38,18 @@ public class GraphsController {
     @FXML private Label  emptyState;
     @FXML private Button backBtn;
 
+    /**DAO for timer and distraction data. */
     private final SqliteTimerDAO dao = new SqliteTimerDAO();
 
+    /**
+     * to build pie chart and line chart for the currently logged-in user.
+     */
     @FXML
-    public void initialize() {
+    public void initialize()
+    {
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
-        if (user == null || user.isBlank()) {
+        if (user == null || user.isBlank())
+        {
             showEmpty("Please log in to view insights.");
             return;
         }
@@ -46,23 +57,27 @@ public class GraphsController {
         // Pie data
         Map<String, Long> tagCounts = dao.getTagCountsForUser(user);
         List<LocalDateTime> times = dao.getTodayDistractionTimes(user);
-        if (times == null || times.isEmpty()) {
+        if (times == null || times.isEmpty())
+        {
             times = dao.getMostRecentDayDistractionTimes(user);
         }
 
-        if ((tagCounts == null || tagCounts.isEmpty()) && (times == null || times.isEmpty())) {
+        if ((tagCounts == null || tagCounts.isEmpty()) && (times == null || times.isEmpty()))
+        {
             showEmpty("No distractions recorded yet.");
             return;
         }
         emptyState.setVisible(false);
 
         // pie chart
-        if (tagCounts != null && !tagCounts.isEmpty()) {
+        if (tagCounts != null && !tagCounts.isEmpty())
+        {
             ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
             tagCounts.forEach((tag, cnt) -> pieData.add(new PieChart.Data(tag + " (" + cnt + ")", cnt)));
             tagPie.setData(pieData);
             tagPie.setVisible(true);
-        } else {
+        } else
+        {
             tagPie.setVisible(false);
         }
 
@@ -71,15 +86,21 @@ public class GraphsController {
         plotCumulativeTimeline(times);
     }
 
-    private void setupTimeAxis() {
+    /**
+     * to get the time (X) and count (Y) axis values for the line chart.
+     */
+    private void setupTimeAxis()
+    {
         timeAxis.setAutoRanging(false);
         timeAxis.setLowerBound(0);
         timeAxis.setUpperBound(24 * 60 * 60);
         timeAxis.setTickUnit(6 * 60 * 60);
         timeAxis.setLabel("Time");
 
-        timeAxis.setTickLabelFormatter(new StringConverter<Number>() {
-            @Override public String toString(Number n) {
+        timeAxis.setTickLabelFormatter(new StringConverter<Number>()
+        {
+            @Override public String toString(Number n)
+            {
                 long s = n.longValue();
                 long h = (s / 3600) % 24;
                 String am_pm = (h < 12) ? "am" : "pm";
@@ -101,20 +122,28 @@ public class GraphsController {
         trendChart.setVisible(true);
     }
 
-    private void plotCumulativeTimeline(List<LocalDateTime> times) {
+    /**
+     * plots a continuous series of line for the registered timestamps.
+     * to create a rising step line.
+     */
+    private void plotCumulativeTimeline(List<LocalDateTime> times)
+    {
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
-        if (times != null && !times.isEmpty()) {
+        if (times != null && !times.isEmpty())
+        {
             times.sort(Comparator.naturalOrder());
             int count = 0;
-            for (LocalDateTime t : times) {
+            for (LocalDateTime t : times)
+            {
                 count++;
                 long seconds = t.getHour() * 3600L + t.getMinute() * 60L + t.getSecond();
                 series.getData().add(new XYChart.Data<>(seconds, count));
             }
             trendYAxis.setUpperBound(Math.max(2, count + 1));
             trendYAxis.setTickUnit(Math.max(1, Math.ceil((count + 1) / 5.0)));
-        } else {
+        } else
+        {
             series.getData().add(new XYChart.Data<>(0, 0));
             series.getData().add(new XYChart.Data<>(24 * 3600, 0));
             trendYAxis.setUpperBound(1);
@@ -124,15 +153,23 @@ public class GraphsController {
         trendChart.getData().setAll(series);
     }
 
-    private void showEmpty(String msg) {
+    /**
+     * to show default page when there is no registered history data
+     */
+    private void showEmpty(String msg)
+    {
         emptyState.setText(msg);
         emptyState.setVisible(true);
         if (tagPie != null)     tagPie.setVisible(false);
         if (trendChart != null) trendChart.setVisible(false);
     }
 
+    /**
+     * helps in navigating back to the home screen.
+     */
     @FXML
-    private void onBackHome() throws IOException {
+    private void onBackHome() throws IOException
+    {
         Stage stage = (Stage) backBtn.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);

@@ -208,19 +208,31 @@ public class SqliteTimerDAO implements ITimerDAO {
         return map;
     }
 
-    public List<LocalDateTime> getTodayDistractionTimes(String username) {
+    /**
+     * to get the distraction time for that particular day.
+     */
+    public List<LocalDateTime> getTodayDistractionTimes(String username)
+    {
         LocalDate today = LocalDate.now();
         return getDistractionTimesForDate(username, today);
     }
 
-    public List<LocalDateTime> getMostRecentDayDistractionTimes(String username) {
+    /**
+     * to get the most recent day with data for the current user and returns
+     * that day's distraction timestamps.
+     */
+    public List<LocalDateTime> getMostRecentDayDistractionTimes(String username)
+    {
         String daySql = "SELECT substr(startTime,1,10) AS d " +
                 "FROM timers WHERE username=? AND label <> 'Reset' " +
                 "GROUP BY d ORDER BY d DESC LIMIT 1";
-        try (PreparedStatement st = connection.prepareStatement(daySql)) {
+        try (PreparedStatement st = connection.prepareStatement(daySql))
+        {
             st.setString(1, username);
-            try (ResultSet rs = st.executeQuery()) {
-                if (rs.next()) {
+            try (ResultSet rs = st.executeQuery())
+            {
+                if (rs.next())
+                {
                     LocalDate day = LocalDate.parse(rs.getString("d"));
                     return getDistractionTimesForDate(username, day);
                 }
@@ -228,28 +240,28 @@ public class SqliteTimerDAO implements ITimerDAO {
         } catch (SQLException e) { e.printStackTrace(); }
         return Collections.emptyList();
     }
-
-    private List<LocalDateTime> getDistractionTimesForDate(String username, LocalDate day) {
+    /**
+     * returns distraction timestamps for a specific day.
+     */
+    private List<LocalDateTime> getDistractionTimesForDate(String username, LocalDate day)
+    {
         List<LocalDateTime> out = new ArrayList<>();
         String sql = "SELECT startTime FROM timers " +
                 "WHERE username=? AND label <> 'Reset' AND substr(startTime,1,10)=? " +
                 "ORDER BY startTime";
-        try (PreparedStatement st = connection.prepareStatement(sql)) {
+        try (PreparedStatement st = connection.prepareStatement(sql))
+        {
             st.setString(1, username);
             st.setString(2, day.toString());
-            try (ResultSet rs = st.executeQuery()) {
-                while (rs.next()) {
+            try (ResultSet rs = st.executeQuery())
+            {
+                while (rs.next())
+                {
                     out.add(LocalDateTime.parse(rs.getString("startTime")).truncatedTo(ChronoUnit.SECONDS));
                 }
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return out;
     }
-
-
-
-
-
-
 
 }
