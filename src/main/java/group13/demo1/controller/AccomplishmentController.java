@@ -45,7 +45,7 @@ public class AccomplishmentController
         alert.setTitle("Congratulations!");
         alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.getDialogPane().getStylesheets().add("/stylesheet.css");
+        alert.getDialogPane().getStylesheets().add("stylesheet.css");
         alert.showAndWait();
     }
 

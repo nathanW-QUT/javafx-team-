@@ -11,25 +11,25 @@
     <fx:include source="Sidebar.fxml"/>
 </left>
 
-
     <!-- Center stopwatch -->
     <center>
         <VBox alignment="CENTER" spacing="20">
-            <Label fx:id="welcomeText"/>
+            <VBox alignment="CENTER" maxWidth="200" styleClass="content-box">
+                <Label fx:id="welcomeText"/>
+                <Label fx:id="timerLabel" text="00:00" style="-fx-font-size: 28px;"/>
 
-            <Label fx:id="timerLabel" text="00:00" style="-fx-font-size: 28px;"/>
-
-            <HBox alignment="CENTER" spacing="15">
-                <Button fx:id="startStopButton" text="Start" onAction="#toggleStartStop"/>
-                <Button fx:id="resetButton" text="Reset" onAction="#resetTimer"/>
-            </HBox>
+                <HBox alignment="CENTER" spacing="15">
+                    <Button fx:id="startStopButton" text="Start" onAction="#toggleStartStop"/>
+                    <Button fx:id="resetButton" text="Reset" onAction="#resetTimer"/>
+                </HBox>
+            </VBox>
 
             <Button fx:id="addDistractionButton" text="Add Distraction" onAction="#showQuickLog"/>
-        <VBox fx:id="distractionBox" visible="false" managed="false" spacing="5" alignment="CENTER">
-            <TextField fx:id="descriptionField" promptText="Enter distraction description"/>
-            <Button fx:id="QuickButton" text="Log Distraction" onAction="#onClickLogDistraction"/>
-            <Label fx:id="distractionStatus" text=""/>
-        </VBox>
+            <VBox fx:id="distractionBox" visible="false" managed="false" spacing="5" alignment="CENTER">
+                <TextField fx:id="descriptionField" promptText="Enter distraction description"/>
+                <Button fx:id="QuickButton" text="Log Distraction" onAction="#onClickLogDistraction"/>
+                <Label fx:id="distractionStatus" text=""/>
+            </VBox>
         </VBox>
     </center>
 </BorderPane>
