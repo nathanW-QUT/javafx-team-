@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.CreateTaskController">
+
+    <left>
+        <fx:include source="Sidebar.fxml"/>
+    </left>
+
+    <center>
+        <VBox spacing="20" alignment="CENTER" maxWidth="500">
+            <Label text="Create New Task" styleClass="title-label"/>
+
+            <TextField fx:id="titleField" promptText="Task Title"/>
+            <TextArea fx:id="descriptionField" promptText="Task Description" prefRowCount="3"/>
+            <DatePicker fx:id="dueDatePicker" promptText="Select Due Date"/>
+
+            <VBox spacing="5" fx:id="checklistContainer">
+                <Label text="Subtasks:"/>
+                <TextField fx:id="subtaskField" promptText="Enter subtask and press Add"/>
+                <Button text="Add Subtask" onAction="#onAddSubtask"/>
+                <ListView fx:id="subtaskList"/>
+            </VBox>
+
+            <HBox spacing="20" alignment="CENTER">
+                <Button fx:id="nextButton" text="Create Task" onAction="#onSaveTask"/>
+                <Button text="Cancel" onAction="#onCancel"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
+

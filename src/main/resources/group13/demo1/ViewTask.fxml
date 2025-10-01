@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.ViewTaskController">
+
+    <left>
+        <fx:include source="Sidebar.fxml"/>
+    </left>
+
+    <center>
+        <VBox spacing="20" alignment="CENTER" maxWidth="500">
+            <Label fx:id="taskTitle" styleClass="title-label"/>
+            <Label fx:id="taskDescription" wrapText="true"/>
+            <Label fx:id="taskDueDate"/>
+            <ProgressBar fx:id="taskProgress" prefWidth="300"/>
+
+            <VBox fx:id="subtaskContainer" spacing="5" alignment="CENTER_LEFT">
+                <Label text="Subtasks:"/>
+                <ListView fx:id="subtaskListView"/>
+            </VBox>
+
+            <HBox spacing="20" alignment="CENTER">
+                <Button fx:id="nextButton" text="Save Progress" onAction="#onSaveProgress"/>
+                <Button text="Back" onAction="#onBack"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
+
