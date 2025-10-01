@@ -17,10 +17,13 @@ import java.io.IOException;
 public class Login {
     @FXML
     private Button nextButton;
+
     @FXML
     private TextField usernameField;
+
     @FXML
     private PasswordField passwordField;
+
     @FXML
     private Label statusLabel;
 
@@ -57,7 +60,6 @@ public class Login {
             statusLabel.setText("Invalid username or password.");
         }
     }
-
     @FXML
     private void onClickEditPassword() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
@@ -76,4 +78,5 @@ public class Login {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
+
 }

@@ -5,21 +5,73 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.HelloController" >
+
+    <top>
+        <Label text="KeepTrack Distraction Logger" styleClass="header-label" BorderPane.alignment="CENTER"/>
+    </top>
+
     <left>
         <fx:include source="Sidebar.fxml"/>
     </left>
 
     <center>
         <StackPane>
-            <Label fx:id="welcomeText" text="KeepTrack Distraction Logger" styleClass="title-label"/>
-            <Button fx:id="nextButton" text="Log Distraction" onAction="#onClickLogDistraction" styleClass="floating-button"/>
+            <VBox spacing="20" alignment="TOP_CENTER" styleClass="content-box">
+                <VBox spacing="15">
+                    <Label text="Quick Distraction Logging" styleClass="section-title"/>
+                        <HBox spacing="30">
+                            <HBox spacing="10">
+                                <VBox>
+                                    <Label text="Log New Distraction" styleClass="subtitle"/>
+                                    <Label text="Record New Distraction, add optional notes." styleClass="description"/>
+                                    <Button text="Log New Distraction"
+                                            onAction="#onClickLogDistraction"
+                                            styleClass="primary-button-long"/>
+                                    <Button text="Manage Full Distraction Log"
+                                            onAction="#onClickGoHistory"
+                                            styleClass="secondary-button-long"/>
+                                </VBox>
+                            </HBox>
+
+                            <VBox spacing="10">
+                                <Label text="Instant Log" styleClass="subtitle"/>
+                                <Label text="Quickly record a new distraction - No details Needed!" styleClass="description"/>
+                                <Button fx:id="nextButton"
+                                        text="Instant Log"
+                                        styleClass="primary-button"/>
+                            </VBox>
+                        </HBox>
+
+                        <VBox spacing="10">
+                            <Label text="Recent Distractions" styleClass="section-title"/>
+
+                            <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="300">
+                                <VBox spacing="5">
+                                    <!-- Example Distraction Items: import from DB later -->
+                                    <VBox styleClass="distraction-item" spacing="5">
+                                        <Label text="Tags" styleClass="tag-label"/>
+                                        <Label text="Description"/>
+                                        <Label text="Time" styleClass="time-label"/>
+                                    </VBox>
+
+                                    <VBox styleClass="distraction-item" spacing="5">
+                                        <Label text="Tags" styleClass="tag-label"/>
+                                        <Label text="Description"/>
+                                        <Label text="Time" styleClass="time-label"/>
+                                    </VBox>
+
+                                    <VBox styleClass="distraction-item" spacing="5">
+                                        <Label text="Tags" styleClass="tag-label"/>
+                                        <Label text="Description"/>
+                                        <Label text="Time" styleClass="time-label"/>
+                                    </VBox>
+                                </VBox>
+                            </ScrollPane>
+                        </VBox>
+                </VBox>
+            </VBox>
         </StackPane>
     </center>
-
-
-
-
-
 </BorderPane>
 
 

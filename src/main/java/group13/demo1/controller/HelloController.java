@@ -15,7 +15,6 @@ import java.io.IOException;
 public class HelloController  {
     @FXML
     private Label welcomeText;
-
     @FXML
     private Button nextButton;
 
