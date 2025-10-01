@@ -1,16 +1,8 @@
 package group13.demo1.controller;
-import group13.demo1.HelloApplication;
 import group13.demo1.model.DistractionDAO;
 import group13.demo1.model.UserSession;
 import group13.demo1.model.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import java.io.IOException;
-
-import java.time.LocalDateTime;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -26,11 +18,17 @@ public class QuickLogController {
     private final DistractionDAO distractionDAO = new DistractionDAO();
     private final ITimerDAO timerDAO = new SqliteTimerDAO();
 
+    /**
+     * After the fxml loads it initialises the controller
+     */
     @FXML
     private void initialize() {
         distractionButton.setOnAction(event -> logDistraction());
     }
 
+    /**
+     * Logs a quick distraction for the user of the current session
+     */
     public void logDistraction() {
         String description = descriptionField.getText();
         String currentUser = UserSession.getInstance().getUsername();

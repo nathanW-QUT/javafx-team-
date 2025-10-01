@@ -1,7 +1,6 @@
 package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
-import group13.demo1.model.DistractionDAO;
 import group13.demo1.model.MainDistractionDAO;
 import group13.demo1.model.SqliteConnection;
 import group13.demo1.model.UserSession;
@@ -22,11 +21,15 @@ public class MainDistractionController {
     @FXML
     private TextField descriptionField;
     @FXML
-    private Button nextButton;
+    private Button logButton;
     @FXML private ListView<MainDistractionDAO.MainItem> recentMainDistractions;
 
     private final MainDistractionDAO mainDistractionDAO = new MainDistractionDAO(SqliteConnection.getInstance());
 
+    /**
+     * Called upon the user clicking the distraction logging button
+     * Enters a new distraction into the database for the user of the current sesssion
+     */
 
     @FXML
     private void onClickLogDistraction() {
@@ -52,19 +55,26 @@ public class MainDistractionController {
 
     }
 
+    /**
+     * After the fxml loads it initialises the controller
+     * if there are recent main distractions, it will populate the list with the recent distractions
+     */
     @FXML
     private void initialize() {
         if (recentMainDistractions != null) {
-            loadRecent();
+            loadRecentDistractions();
         }
     }
 
-    private void loadRecent() {
+    /**
+     * This function loads the four most recent logged distractions by the user of the current session and displays them in a list
+     */
+    private void loadRecentDistractions() {
         String username = UserSession.getInstance().getUsername();
-        List<MainDistractionDAO.MainItem> last4 = mainDistractionDAO.getRecentForUser(username, 4);
+        List<MainDistractionDAO.MainItem> last4Items = mainDistractionDAO.getRecentForUser(username, 4);
 
 
-        recentMainDistractions.getItems().setAll(last4);
+        recentMainDistractions.getItems().setAll(last4Items);
 
         recentMainDistractions.setCellFactory(list -> new ListCell<>() {
             @Override
@@ -85,26 +95,19 @@ public class MainDistractionController {
         });
     }
 
+    /**
+     * Brings the user to the main distraction logging page when the button is pressed
+     * @throws IOException if the page cant be loaded
+     */
     @FXML
     private void onClickGoToLogger() throws IOException {
         Stage stage = (Stage) ((recentMainDistractions != null)
                 ? recentMainDistractions.getScene().getWindow()
-                : nextButton.getScene().getWindow()); // fallback
+                : logButton.getScene().getWindow());
 
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Distraction.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
         stage.setScene(scene);
-        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
-        scene.getStylesheets().add(stylesheet);
-    }
-
-    @FXML
-    private void onBackHome() throws IOException {
-        Stage stage = (Stage) nextButton.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
-        stage.setScene(scene);
-
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }

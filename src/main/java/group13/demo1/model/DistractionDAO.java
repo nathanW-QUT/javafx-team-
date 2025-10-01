@@ -1,19 +1,25 @@
 package group13.demo1.model;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 
 public class DistractionDAO {
 
     private final Connection connection;
 
     public DistractionDAO() {
-        connection = SqliteConnection.getInstance();
-        createTable();
+        this(SqliteConnection.getInstance());
+    }
+
+    public DistractionDAO(Connection connection) {
+        this.connection = connection;
+        createQuickLogTable();
     }
 
 
-    private void createTable() {
+    /**
+     * Creates the quick log distraction table if the table does not yet exist in the database
+     */
+    private void createQuickLogTable() {
         String query = """
             CREATE TABLE IF NOT EXISTS distraction (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,19 +28,25 @@ public class DistractionDAO {
                 timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
             )
             """;
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(query);
+        try (Statement createdStatement = connection.createStatement()) {
+            createdStatement.execute(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Adds a new distraction to the quick log database
+     * @param description adds a quick description to the quick logged distraction
+     * @param username adds the username of the session user to the database
+     * @return returns true if the insert succeeds, elsewise false
+     */
     public boolean addDistraction(String description, String username) {
         String query = "INSERT INTO distraction (description, username) VALUES (?, ?)";
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, description);
-            stmt.setString(2, username);
-            stmt.executeUpdate();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, description);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
             System.out.println("Add distraction failed: " + e.getMessage());

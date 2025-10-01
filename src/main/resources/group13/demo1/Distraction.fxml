@@ -27,14 +27,20 @@
                         <String fx:value="Got a snack"/>
                         <String fx:value="Scrolled on phone"/>
                         <String fx:value="Cleaned Room"/>
+                        <String fx:value="Went to the toilet"/>
+                        <String fx:value="Watched TV"/>
+                        <String fx:value="Checked emails"/>
+                        <String fx:value="Went for a walk"/>
+                        <String fx:value="Listened to music"/>
+                        <String fx:value="Daydreamed"/>
                     </FXCollections>
                 </items>
             </ComboBox>
 
             <Label fx:id="min" text="How many minutes were you distracted for?"/>
-            <ComboBox fx:id="MinutesBox" promptText="Choose an answer" prefWidth="140" editable="true">
+            <ComboBox fx:id="MinutesBox" promptText="Choose an answer" prefWidth="260" editable="true">
                 <items>
-                    <FXCollections fx:factory="observableArrayList">
+                    <FXCollections fx:factory="observableArrayList" >
                         <String fx:value="1"/>
                         <String fx:value="2"/>
                         <String fx:value="3"/>
@@ -53,14 +59,14 @@
                     </FXCollections>
                 </items>
             </ComboBox>
-
-            <TextField fx:id="descriptionField" promptText="Enter distraction description" prefWidth="360"/>
-
-            <HBox alignment="CENTER_RIGHT">
+            <Label fx:id="desc" text="Please add a description for your distraction:"/>
+            <TextField fx:id="descriptionField" promptText="Enter distraction description" maxWidth="260" />
+            <Region prefHeight="10"/>
+            <HBox alignment="CENTER_LEFT">
                 <Button fx:id="nextButton"
                         text="Log Distraction"
                         onAction="#onClickLogDistraction"
-                        style="-fx-padding: 8 14;"/>
+                        style="-fx-padding: 8 28;"/>
             </HBox>
         </VBox>
     </center>
