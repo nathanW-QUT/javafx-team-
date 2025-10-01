@@ -2,10 +2,8 @@ package group13.demo1.controller;
 
 import group13.demo1.model.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 
 import java.util.List;
 
@@ -41,6 +39,16 @@ public class AccomplishmentController
         }
     }
 
+    public void showCongratulations(String message)
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Congratulations!");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.getDialogPane().getStylesheets().add("stylesheet.css");
+        alert.showAndWait();
+    }
+
     @FXML
     public void addAccomplishment()
     {
@@ -55,7 +63,19 @@ public class AccomplishmentController
 
         Accomplishment accomplishment = new Accomplishment(0, username, label, false);
         accomplishmentDAO.addAccomplishment(accomplishment);
-        statusLabel.setText("Successfully added accomplishment");
+
+        loadAccomplishments();
+        accomplishmentLabel.clear();
+
+        List<Accomplishment> userAccomplishments = accomplishmentDAO.getAccomplishmentsByUsername(username);
+        if (userAccomplishments.size() >= 5)
+        {
+            showCongratulations(" You've logged " + userAccomplishments.size() + " accomplishments!");
+        }
+        else
+        {
+            statusLabel.setText("Successfully added accomplishment");
+        }
     }
 
     @FXML
