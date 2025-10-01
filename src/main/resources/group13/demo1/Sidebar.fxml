@@ -9,6 +9,7 @@
            fx:controller="group13.demo1.controller.HelloController" >
     <VBox spacing="40" alignment="TOP_CENTER" fx:id="SideBar">
         <Button fx:id="nextButton" text="Home" onAction="#onHomeButtonClick"/>
+        <Button text="Distractios" onAction="#onClickGoDistractionPage"/>
         <Button text="Timer" onAction="#onClickGoTimer"/>
         <Button text="Countdown" onAction="#onCountdownButtonClicked"/>
         <Button text="Tasks" onAction="#onClickGoTasks"/>
