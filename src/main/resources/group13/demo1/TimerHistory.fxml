@@ -1,41 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.TimerHistory">
 
-
-    <left>
-        <ListView fx:id="list" prefWidth="260"/>
-    </left>
-
-
     <center>
-        <VBox spacing="12" alignment="TOP_LEFT" style="-fx-padding: 20;">
-            <Label text="Timer History" style="-fx-font-size: 15px; -fx-font-weight: bold;"/>
+        <VBox spacing="10" style="-fx-padding: 18;">
+            <TabPane tabClosingPolicy="UNAVAILABLE">
+                <!-- TAB 1: TIMER SESSIONS -->
+                <Tab text="Timer sessions">
+                    <BorderPane>
+                        <left>
+                            <ListView fx:id="sessionsList" prefWidth="360"/>
+                        </left>
+                        <center>
+                            <VBox spacing="12" style="-fx-padding: 10;">
+                                <Label text="Timer Sessions" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                                <Label fx:id="totalSessionsLabel" text="Total Sessions: 0"/>
+                                <Label fx:id="totalTimeLabel" text="Total Distracted Time: 0s"/>
+                                <Separator/>
+                                <Label text="Selected session:" style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
+                                <Label fx:id="sessionDetail" wrapText="true"/>
+                                <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+                                    <Button text="Clear selection" onAction="#onConfirmSession"/>
+                                    <Button fx:id="deleteBtn" text="Delete" disable="true" onAction="#onDelete"/>
+                                </HBox>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </Tab>
 
+                <!-- TAB 2: DISTRACTION HISTORY -->
+                <Tab text="Distraction history">
+                    <BorderPane>
+                        <left>
+                            <ListView fx:id="mdList" prefWidth="420"/>
+                        </left>
+                        <center>
+                            <VBox spacing="12" style="-fx-padding: 10;">
+                                <Label text="Logged Distractions (main)" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                                <Label fx:id="mdTotalLabel" text="Total Records: 0"/>
+                                <Separator/>
+                                <Label text="Selected:" style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
+                                <Label fx:id="mdDetail" wrapText="true"/>
+                            </VBox>
+                        </center>
+                    </BorderPane>
+                </Tab>
+            </TabPane>
 
-            <Label fx:id="totalsession" text="Total Timer Sessions: 0"/>
-            <Label fx:id="totalTime" text="Total Distracted Time: 0s"/>
-
-            <Separator/>
-            <Label text="Selected:"/>
-            <Label fx:id="selectedHeader"
-                   text="Id  -  Distraction Tag  -  Start time  →  End time  -  Time Spent"
-                   style="-fx-font-size: 11px; -fx-text-fill: white;"/>
-            <Label fx:id="session" style="-fx-font-weight: bold;"/>
-            <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
-                <Button text="Confirm" onAction="#onConfirm"/>
-                <Button text="Delete"  onAction="#onDelete"/>
+            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 6 0 0 0;">
+                <Button text="Back" onAction="#onBackHome"/>
             </HBox>
         </VBox>
     </center>
-
-
-    <bottom>
-        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 12 12 12;">
-            <Button text="Back" onAction="#onBackHome"/>
-        </HBox>
-    </bottom>
 </BorderPane>
