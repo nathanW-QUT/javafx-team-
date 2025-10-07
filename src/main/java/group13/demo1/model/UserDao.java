@@ -3,7 +3,6 @@ package group13.demo1.model;
 import java.sql.*;
 
 public class UserDao {
-
     private final Connection connection;
 
     public UserDao() {
@@ -18,7 +17,7 @@ public class UserDao {
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL
             )
-            """;
+        """;
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(query);
         } catch (SQLException e) {
@@ -51,6 +50,7 @@ public class UserDao {
             return false;
         }
     }
+
     public boolean updatePassword(String username, String oldPassword, String newPassword) {
         if (!validateLogin(username, oldPassword)) {
             return false;
@@ -65,6 +65,7 @@ public class UserDao {
             return false;
         }
     }
+
     public boolean deleteAccount(String username, String password) {
         String query = "DELETE FROM users WHERE username = ? AND password = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
@@ -76,5 +77,4 @@ public class UserDao {
             return false;
         }
     }
-
 }

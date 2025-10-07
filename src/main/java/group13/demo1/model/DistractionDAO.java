@@ -44,7 +44,7 @@ public class DistractionDAO {
     public boolean addDistraction(String description, String username) {
         String query = "INSERT INTO distraction (description, username) VALUES (?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, description);
+            preparedStatement.setString(1, description );
             preparedStatement.setString(2, username);
             preparedStatement.executeUpdate();
             return true;
