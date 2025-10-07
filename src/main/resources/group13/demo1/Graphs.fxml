@@ -25,32 +25,42 @@
 
                 <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
 
-                <!-- Weekly bar chart -->
+                <!-- bar comparison -->
                 <VBox spacing="6" alignment="TOP_LEFT" prefWidth="1000">
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Label text="Counts per day (Mon–Sun)"
-                               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                        <Button fx:id="refreshBtn" text="Refresh"/>
-                    </HBox>
-                    <BarChart fx:id="comboBar" animated="false" legendVisible="true"
-                              prefWidth="1000" prefHeight="360">
+                    <Label text="Distractions vs Accomplishments"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <BarChart fx:id="comboBar" animated="false" legendVisible="false"
+                              prefWidth="1000" prefHeight="300">
                         <xAxis>
-                            <CategoryAxis fx:id="dayAxis" label="Day of week"/>
+                            <CategoryAxis fx:id="dayAxis" label=""/>
                         </xAxis>
                         <yAxis>
                             <NumberAxis fx:id="countAxis" label="Count" forceZeroInRange="true"/>
                         </yAxis>
                     </BarChart>
-                    <Label fx:id="noteLabel" visible="false"
-                           style="-fx-font-size: 12px; -fx-text-fill: derive(-fx-accent,-20%);"/>
                 </VBox>
 
-                <!-- Pie: Main Distraction tags (cause) -->
+                <!-- Line chart  -->
+                <VBox spacing="6" alignment="TOP_LEFT" prefWidth="1000">
+                    <Label text="Trend (counts)"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <LineChart fx:id="comparisonLine" legendVisible="false"
+                               prefWidth="1000" prefHeight="220">
+                        <xAxis>
+                            <CategoryAxis fx:id="lineXAxis"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="lineYAxis" label="Count" forceZeroInRange="true"/>
+                        </yAxis>
+                    </LineChart>
+                </VBox>
+
+                <!-- Pie chart -->
                 <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Main Distraction Tags"
                            style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
                     <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
-                              prefWidth="600" prefHeight="340"/>
+                              prefWidth="600" prefHeight="320"/>
                 </VBox>
 
                 <HBox alignment="CENTER_LEFT" prefWidth="1000">
