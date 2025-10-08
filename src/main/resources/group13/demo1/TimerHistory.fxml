@@ -27,14 +27,14 @@
 
                                 <Separator/>
 
-                                <!-- Title -->
+
                                 <Label text="Selected session:"
                                        style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
 
-                                <!-- LEGACY text (not shown) -->
+
                                 <Label fx:id="session" visible="false" managed="false"/>
 
-                                <!-- CARD -->
+
                                 <GridPane hgap="16" vgap="10" style="-fx-background-color: rgba(255,255,255,0.08);
                                                                       -fx-padding: 14; -fx-background-radius: 12;">
                                     <columnConstraints>
@@ -82,10 +82,10 @@
                                 <Label fx:id="mdTotalLabel" text="Total Records: 0"/>
                                 <Separator/>
 
-                                <!-- LEGACY text (not shown) -->
+
                                 <Label fx:id="mdDetail" visible="false" managed="false"/>
 
-                                <!-- CARD -->
+
                                 <GridPane hgap="16" vgap="10" style="-fx-background-color: rgba(255,255,255,0.08);
                                                                       -fx-padding: 14; -fx-background-radius: 12;">
                                     <columnConstraints>

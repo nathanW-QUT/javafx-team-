@@ -20,10 +20,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-/**
- * Timer History screen (sessions + main distraction history).
- * Presentation enhanced with “cards” for the selected row; core logic unchanged.
- */
 public class TimerHistory {
 
     // ---------- TAB 1 (Timer sessions) ----------
@@ -31,10 +27,8 @@ public class TimerHistory {
     @FXML private Label totalsession;
     @FXML private Label totalTime;
 
-    // legacy one-line text (kept for compatibility; hidden in FXML)
     @FXML private Label session;
 
-    // NEW: card value fields (filled when a session is selected)
     @FXML private Label sDateVal, sStartVal, sEndVal, sFocusVal, sPausedVal, sPausesVal;
 
     @FXML private Button deleteBtn;
@@ -47,21 +41,20 @@ public class TimerHistory {
     @FXML private ListView<MainDistractionRow> mdList;
     @FXML private Label mdTotalLabel;
 
-    // legacy one-line text (kept for compatibility; hidden in FXML)
     @FXML private Label mdDetail;
 
-    // NEW: card value fields for distraction details
+
     @FXML private Label mdReasonVal, mdWhenVal, mdMinutesVal, mdNotesVal;
 
     private final ObservableList<MainDistractionRow> mdItems = FXCollections.observableArrayList();
 
-    // ====== DTO for the Distraction tab (unchanged) ======
+    // ====== DTO for the Distraction tab======
     public static class MainDistractionRow {
         public final int id;
         public final String reason;
-        public final String time_of_occurence;   // nullable – formatted timestamp string
-        public final Integer minutes;            // nullable
-        public final String notes;               // nullable
+        public final String time_of_occurence;
+        public final Integer minutes;
+        public final String notes;
 
         public MainDistractionRow(int id, String cause, String when, Integer minutes, String notes) {
             this.id = id;
@@ -74,7 +67,7 @@ public class TimerHistory {
         public String listTitle(int indexZeroBased) { return "Distraction " + (indexZeroBased + 1) + " — " + reason; }
     }
 
-    // ========= Auto-detect table/columns for the sessions view =========
+
     private static final DateTimeFormatter ISO = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     private static class TableSpec {
@@ -83,7 +76,7 @@ public class TimerHistory {
         final String colUsername;
         final String colStart;
         final String colEnd;
-        final String colRun;    // focus seconds
+        final String colRun;    // focus time
         final String colPause;  // paused seconds
         final String colCount;  // pause count
         TableSpec(String table, String colId, String colUsername,
@@ -142,7 +135,7 @@ public class TimerHistory {
         return null;
     }
 
-    // ======================================================
+
 
     @FXML
     public void initialize() {
@@ -158,10 +151,10 @@ public class TimerHistory {
                 }
             });
             sessionList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, s) -> {
-                // legacy text line (hidden in UI)
+
                 session.setText(s == null ? "(none)" : logic.selectedViewSessionText(
                         sessionList.getSelectionModel().getSelectedIndex(), s));
-                // card fields
+
                 fillSessionCard(s);
             });
         }
@@ -282,7 +275,7 @@ public class TimerHistory {
         loadSessionsForUser(user);
     }
 
-    // ---------------- Main Distraction (unchanged logic, new card UI) ----------------
+    // ---------------- Main Distraction ----------------
     private void wireMainDistractionList() {
         if (mdList == null) return;
 
