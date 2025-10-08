@@ -25,22 +25,22 @@
 
                 <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
 
-                <!-- Bar: Distractions vs Accomplishments -->
+                <!-- Line chart -->
                 <VBox spacing="6" alignment="TOP_LEFT" prefWidth="1000">
-                    <Label text="Distractions vs Accomplishments"
+                    <Label text="Distractions vs Accomplishments (Last 7 Days)"
                            style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                    <BarChart fx:id="comboBar" animated="false" legendVisible="false"
-                              prefWidth="1000" prefHeight="300">
+                    <LineChart fx:id="comparisonLine" legendVisible="true"
+                               prefWidth="1000" prefHeight="280">
                         <xAxis>
-                            <CategoryAxis fx:id="dayAxis" label=""/>
+                            <CategoryAxis fx:id="lineXAxis" label="Date"/>
                         </xAxis>
                         <yAxis>
-                            <NumberAxis fx:id="countAxis" label="Count" forceZeroInRange="true"/>
+                            <NumberAxis fx:id="lineYAxis" label="Count" forceZeroInRange="true"/>
                         </yAxis>
-                    </BarChart>
+                    </LineChart>
                 </VBox>
 
-                <!-- Pie: main distraction tags -->
+                <!-- Pie chart-->
                 <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Main Distraction Tags"
                            style="-fx-font-size: 16px; -fx-font-weight: bold;"/>

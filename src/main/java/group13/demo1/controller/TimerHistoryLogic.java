@@ -107,16 +107,13 @@ public class TimerHistoryLogic {
 
     public String selectedSessionText(int indexZeroBased, AggregatedSession s) {
         int n = indexZeroBased + 1;
-        return "Session " + n + "  —  " + s.label + "  —  "
-                + formatRange(s.start, s.end) + "  —  " + formatElapsedTime(s.totalSeconds);
+        return "Session " + n + "  —  " + s.label + "  —  " + formatRange(s.start, s.end) + "  —  " + formatElapsedTime(s.totalSeconds);
     }
 
     public String formatRange(LocalDateTime start, LocalDateTime end) {
         boolean sameDay = start.toLocalDate().equals(end.toLocalDate());
         if (sameDay) {
-            return dateFormatted.format(start) + "  -  "
-                    + timeFormatted.format(start) + "  →  "
-                    + timeFormatted.format(end);
+            return dateFormatted.format(start) + "  -  " + timeFormatted.format(start) + "  →  " + timeFormatted.format(end);
         } else {
             return dtf.format(start) + "  →  " + dtf.format(end);
         }
