@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -14,7 +15,6 @@
                 <Tab text="Timer sessions">
                     <BorderPane>
                         <left>
-                            <!-- List of sessions -->
                             <ListView fx:id="sessionList" prefWidth="360"/>
                         </left>
 
@@ -27,8 +27,39 @@
 
                                 <Separator/>
 
-                                <Label text="Selected session:" style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
-                                <Label fx:id="session" wrapText="true"/>
+                                <!-- Title -->
+                                <Label text="Selected session:"
+                                       style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
+
+                                <!-- LEGACY text (not shown) -->
+                                <Label fx:id="session" visible="false" managed="false"/>
+
+                                <!-- CARD -->
+                                <GridPane hgap="16" vgap="10" style="-fx-background-color: rgba(255,255,255,0.08);
+                                                                      -fx-padding: 14; -fx-background-radius: 12;">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="120" halignment="RIGHT"/>
+                                        <ColumnConstraints hgrow="ALWAYS"/>
+                                    </columnConstraints>
+
+                                    <Label text="Date:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                    <Label fx:id="sDateVal" text="—" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                    <Label text="Start:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                    <Label fx:id="sStartVal" text="—" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                    <Label text="End:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                    <Label fx:id="sEndVal" text="—" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                    <Label text="Focus time:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                    <Label fx:id="sFocusVal" text="—" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                                    <Label text="Paused:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                                    <Label fx:id="sPausedVal" text="—" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                                    <Label text="Pause count:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                                    <Label fx:id="sPausesVal" text="—" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                                </GridPane>
 
                                 <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
                                     <Button text="Clear selection" onAction="#onConfirm"/>
@@ -39,7 +70,7 @@
                     </BorderPane>
                 </Tab>
 
-                <!-- DISTRACTION HISTORY (unchanged) -->
+                <!-- DISTRACTION HISTORY -->
                 <Tab text="Distraction history">
                     <BorderPane>
                         <left>
@@ -50,8 +81,34 @@
                                 <Label text="Logged Distractions (main)" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
                                 <Label fx:id="mdTotalLabel" text="Total Records: 0"/>
                                 <Separator/>
-                                <Label text="Selected:" style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
-                                <Label fx:id="mdDetail" wrapText="true"/>
+
+                                <!-- LEGACY text (not shown) -->
+                                <Label fx:id="mdDetail" visible="false" managed="false"/>
+
+                                <!-- CARD -->
+                                <GridPane hgap="16" vgap="10" style="-fx-background-color: rgba(255,255,255,0.08);
+                                                                      -fx-padding: 14; -fx-background-radius: 12;">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="140" halignment="RIGHT"/>
+                                        <ColumnConstraints hgrow="ALWAYS"/>
+                                    </columnConstraints>
+
+                                    <Label text="Reason:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                                    <Label fx:id="mdReasonVal" text="—" wrapText="true"
+                                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                                    <Label text="When:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                    <Label fx:id="mdWhenVal" text="—"
+                                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                                    <Label text="Duration:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                                    <Label fx:id="mdMinutesVal" text="—"
+                                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                                    <Label text="Notes:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                                    <Label fx:id="mdNotesVal" text="—" wrapText="true"
+                                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                </GridPane>
                             </VBox>
                         </center>
                     </BorderPane>
