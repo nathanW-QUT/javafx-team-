@@ -25,14 +25,14 @@ import java.util.Map;
 
 public class GraphsController {
 
-    // FXML nodes (same fx:id as your FXML)
+
     @FXML private PieChart tagPie;
 
     @FXML private BarChart<String, Number> comboBar;
     @FXML private CategoryAxis dayAxis;
     @FXML private NumberAxis   countAxis;
 
-    // kept for compatibility — not used by the current FXML but do not remove
+
     @FXML private LineChart<String, Number> comparisonLine;
     @FXML private CategoryAxis lineXAxis;
     @FXML private NumberAxis   lineYAxis;
@@ -44,7 +44,7 @@ public class GraphsController {
 
     @FXML
     public void initialize() {
-        // If axes didn’t inject (rare), fetch them from the chart safely.
+
         try {
             if (comboBar != null) {
                 if (dayAxis == null && comboBar.getXAxis() instanceof CategoryAxis ax) dayAxis = ax;
@@ -63,7 +63,7 @@ public class GraphsController {
             return;
         }
 
-        // ---------- Pie: main distraction tags (with %) ----------
+        // ---------- Pie---------
         Map<String, Long> causeCounts = loadMainDistractionTagCounts(user);
         long total = causeCounts.values().stream().mapToLong(Long::longValue).sum();
         if (!causeCounts.isEmpty()) {
@@ -91,7 +91,7 @@ public class GraphsController {
         }
         if (emptyState != null) emptyState.setVisible(false);
 
-        // ---------- Bar: Distractions vs Accomplishments ----------
+        // ---------- Bar----------
         if (dayAxis != null) {
             dayAxis.getCategories().setAll("Distractions", "Accomplishments");
             dayAxis.setLabel("");
@@ -107,10 +107,10 @@ public class GraphsController {
         comboBar.getData().setAll(barSeries);
         comboBar.setVisible(true);
 
-        addBarValueLabels(barSeries); // labels + tooltips without using protected API
+        addBarValueLabels(barSeries);
     }
 
-    /** Add text labels above bars + tooltips (no protected API used). */
+
     private void addBarValueLabels(XYChart.Series<String, Number> series) {
         Platform.runLater(() -> {
             for (XYChart.Data<String, Number> d : series.getData()) {
@@ -138,7 +138,7 @@ public class GraphsController {
         });
     }
 
-    // ---------------- data helpers ----------------
+
     private Map<String, Long> loadMainDistractionTagCounts(String username) {
         Map<String, Long> out = new LinkedHashMap<>();
         final String sql = """
