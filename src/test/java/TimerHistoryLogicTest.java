@@ -1,4 +1,3 @@
-// src/test/java/TimerHistoryLogicTest.java
 import group13.demo1.controller.TimerHistoryLogic;
 import group13.demo1.controller.TimerHistoryLogic.ViewSession;
 import group13.demo1.model.TimerRecord;
@@ -27,7 +26,7 @@ public class TimerHistoryLogicTest {
     private static final LocalDateTime END_DIFF =
             LocalDateTime.of(2025, 1, 2, 0, 10, 0);
 
-    // Formatters used only to build expected text dynamically (not hard coded)
+
     private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.US);
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("hh:mm:ss a", Locale.US);
 
@@ -37,8 +36,6 @@ public class TimerHistoryLogicTest {
         logic = new TimerHistoryLogic();
     }
 
-    // ---- helpers -----------------------------------------------------------
-
     private TimerRecord rec(String label, LocalDateTime s, LocalDateTime e, long secs) {
         return new TimerRecord("vijay", label, s, e, secs);
     }
@@ -47,7 +44,7 @@ public class TimerHistoryLogicTest {
         return new ViewSession(99, "vijay", s, e, focus, paused, pauseCount);
     }
 
-    // ---- legacy helpers (still used elsewhere) ----------------------------
+
 
     @Test
     public void testSortNewestFirst() {
@@ -94,7 +91,7 @@ public class TimerHistoryLogicTest {
         assertEquals(expected, logic.TotalSeconds(Arrays.asList(r1, r2)));
     }
 
-    // ---- ViewSession presentation (no hard-coded strings) -----------------
+
 
     @Test
     public void testListRowForViewSession() {
@@ -102,7 +99,7 @@ public class TimerHistoryLogicTest {
 
         String row = logic.listRowForViewSession(0, v);
 
-        // Expected parts (derived dynamically)
+
         String expectedDate = DATE_FMT.format(START_SAME);
         String expectedFocus = logic.formatTotal(307);
 
@@ -122,7 +119,7 @@ public class TimerHistoryLogicTest {
         String focus   = logic.formatElapsedTime(307);
         String paused  = logic.formatElapsedTime(30);
 
-        // Verify structure and dynamic parts (no hard coded full string)
+
         assertTrue(actual.startsWith("Session 3"), "Should start with Session index 3");
         assertTrue(actual.contains("  —  " + dateStr + "  —  "), "Should show formatted date");
         assertTrue(actual.contains(range), "Should show time range");
@@ -147,8 +144,7 @@ public class TimerHistoryLogicTest {
         boolean sameDay = START_DIFF.toLocalDate().equals(END_DIFF.toLocalDate());
         assertFalse(sameDay);
 
-        String expected = DATE_FMT.format(START_DIFF) + " " + TIME_FMT.format(START_DIFF)
-                + "  \u2192  " + DATE_FMT.format(END_DIFF) + " " + TIME_FMT.format(END_DIFF);
+        String expected = DATE_FMT.format(START_DIFF) + " " + TIME_FMT.format(START_DIFF) + "  \u2192  " + DATE_FMT.format(END_DIFF) + " " + TIME_FMT.format(END_DIFF);
 
         assertEquals(expected, actual);
     }
