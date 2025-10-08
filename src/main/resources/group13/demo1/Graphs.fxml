@@ -25,7 +25,7 @@
 
                 <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
 
-                <!-- bar comparison -->
+                <!-- Bar: Distractions vs Accomplishments -->
                 <VBox spacing="6" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Distractions vs Accomplishments"
                            style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
@@ -40,27 +40,12 @@
                     </BarChart>
                 </VBox>
 
-                <!-- Line chart  -->
-                <VBox spacing="6" alignment="TOP_LEFT" prefWidth="1000">
-                    <Label text="Trend (counts)"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                    <LineChart fx:id="comparisonLine" legendVisible="false"
-                               prefWidth="1000" prefHeight="220">
-                        <xAxis>
-                            <CategoryAxis fx:id="lineXAxis"/>
-                        </xAxis>
-                        <yAxis>
-                            <NumberAxis fx:id="lineYAxis" label="Count" forceZeroInRange="true"/>
-                        </yAxis>
-                    </LineChart>
-                </VBox>
-
-                <!-- Pie chart -->
+                <!-- Pie: main distraction tags -->
                 <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Main Distraction Tags"
                            style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
                     <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
-                              prefWidth="600" prefHeight="320"/>
+                              prefWidth="700" prefHeight="360"/>
                 </VBox>
 
                 <HBox alignment="CENTER_LEFT" prefWidth="1000">
