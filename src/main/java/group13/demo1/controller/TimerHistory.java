@@ -56,27 +56,27 @@ public class TimerHistory {
 
     public static class MainDistractionRow {
         public final int id;
-        public final String cause;
-        public final String when;     // nullable – formatted timestamp string
+        public final String reason;
+        public final String time_of_occurence;     // nullable – formatted timestamp string
         public final Integer minutes; // nullable
         public final String notes;    // nullable
 
         public MainDistractionRow(int id, String cause, String when, Integer minutes, String notes) {
             this.id = id;
-            this.cause = (cause == null || cause.isBlank()) ? "(untitled)" : cause;
-            this.when = (when == null || when.isBlank()) ? null : when;
+            this.reason = (cause == null || cause.isBlank()) ? "(untitled)" : cause;
+            this.time_of_occurence = (when == null || when.isBlank()) ? null : when;
             this.minutes = minutes;
             this.notes = (notes == null || notes.isBlank()) ? null : notes;
         }
 
         public String listTitle(int indexZeroBased) {
-            return "Distraction " + (indexZeroBased + 1) + " — " + cause;
+            return "Distraction " + (indexZeroBased + 1) + " — " + reason;
         }
 
         public String detailText() {
             StringBuilder sb = new StringBuilder();
-            sb.append("Cause: ").append(cause);
-            if (when != null)   sb.append("\nWhen: ").append(when);
+            sb.append("reason: ").append(reason);
+            if (reason != null)   sb.append("\nTime of Occurence: ").append(time_of_occurence);
             if (minutes != null) sb.append("\nDuration: ").append(minutes).append("m");
             if (notes != null)  sb.append("\nDescription: ").append(notes);
             return sb.toString();
