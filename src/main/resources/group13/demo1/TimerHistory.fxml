@@ -9,26 +9,28 @@
     <center>
         <VBox spacing="10" style="-fx-padding: 18;">
             <TabPane tabClosingPolicy="UNAVAILABLE">
-                <!--TIMER SESSIONS -->
+
+                <!-- TIMER SESSIONS -->
                 <Tab text="Timer sessions">
                     <BorderPane>
                         <left>
-
+                            <!-- List of sessions -->
                             <ListView fx:id="sessionList" prefWidth="360"/>
                         </left>
+
                         <center>
                             <VBox spacing="12" style="-fx-padding: 10;">
                                 <Label text="Timer Sessions" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
 
                                 <Label fx:id="totalsession" text="Total Sessions: 0"/>
+                                <Label fx:id="totalTime" text="Total Focus Time: 0s"/>
 
-                                <Label fx:id="totalTime" text="Total Distracted Time: 0s"/>
                                 <Separator/>
+
                                 <Label text="Selected session:" style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
-
                                 <Label fx:id="session" wrapText="true"/>
-                                <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
 
+                                <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
                                     <Button text="Clear selection" onAction="#onConfirm"/>
                                     <Button text="Delete" onAction="#onDelete"/>
                                 </HBox>
@@ -37,7 +39,7 @@
                     </BorderPane>
                 </Tab>
 
-                <!-- DISTRACTION HISTORY -->
+                <!-- DISTRACTION HISTORY (unchanged) -->
                 <Tab text="Distraction history">
                     <BorderPane>
                         <left>
