@@ -25,14 +25,14 @@ import java.util.Map;
 
 public class GraphsController {
 
-
+    // FXML nodes (same ids as your FXML)
     @FXML private PieChart tagPie;
 
     @FXML private BarChart<String, Number> comboBar;
     @FXML private CategoryAxis dayAxis;
     @FXML private NumberAxis   countAxis;
 
-
+    // kept for compatibility — not used by the current FXML but do not remove
     @FXML private LineChart<String, Number> comparisonLine;
     @FXML private CategoryAxis lineXAxis;
     @FXML private NumberAxis   lineYAxis;
@@ -44,7 +44,7 @@ public class GraphsController {
 
     @FXML
     public void initialize() {
-
+        // If axes didn’t inject (rare), fetch them from the chart safely.
         try {
             if (comboBar != null) {
                 if (dayAxis == null && comboBar.getXAxis() instanceof CategoryAxis ax) dayAxis = ax;
@@ -63,7 +63,7 @@ public class GraphsController {
             return;
         }
 
-        // ---------- Pie---------
+        // ---------- Pie: main distraction tags (ALL-TIME, with %) ----------
         Map<String, Long> causeCounts = loadMainDistractionTagCounts(user);
         long total = causeCounts.values().stream().mapToLong(Long::longValue).sum();
         if (!causeCounts.isEmpty()) {
@@ -81,9 +81,11 @@ public class GraphsController {
             tagPie.setVisible(false);
         }
 
-        // ---------- Counters ----------
-        long disCount = loadDistractionCountLast7Days(user);
-        long accCount = loadAccomplishmentCount(user);
+        // ---------- Bar: 7-day counts ----------
+        // Distractions = count of rows in maindistraction in last 7 days
+        long disCount = loadMainDistractionCountLast7Days(user);
+        // Accomplishments = 7-day if timestamp column exists; else all-time fallback
+        long accCount = loadAccomplishmentCountLast7Days(user);
 
         if (causeCounts.isEmpty() && disCount == 0 && accCount == 0) {
             showEmpty("No data to visualize yet.");
@@ -91,7 +93,6 @@ public class GraphsController {
         }
         if (emptyState != null) emptyState.setVisible(false);
 
-        // ---------- Bar----------
         if (dayAxis != null) {
             dayAxis.getCategories().setAll("Distractions", "Accomplishments");
             dayAxis.setLabel("");
@@ -105,12 +106,16 @@ public class GraphsController {
         comboBar.setAnimated(false);
         comboBar.setLegendVisible(false);
         comboBar.getData().setAll(barSeries);
-        comboBar.setVisible(true);
 
-        addBarValueLabels(barSeries);
+        // slimmer bars
+        comboBar.setCategoryGap(80);
+        comboBar.setBarGap(12);
+
+        comboBar.setVisible(true);
+        addBarValueLabels(barSeries); // labels + tooltips without using protected API
     }
 
-
+    /** Add text labels above bars + tooltips (no protected API used). */
     private void addBarValueLabels(XYChart.Series<String, Number> series) {
         Platform.runLater(() -> {
             for (XYChart.Data<String, Number> d : series.getData()) {
@@ -138,7 +143,9 @@ public class GraphsController {
         });
     }
 
+    // ---------------- data helpers ----------------
 
+    // Pie data (ALL-TIME distribution of causes)
     private Map<String, Long> loadMainDistractionTagCounts(String username) {
         Map<String, Long> out = new LinkedHashMap<>();
         final String sql = """
@@ -161,35 +168,48 @@ public class GraphsController {
         return out;
     }
 
-    private long loadDistractionCountLast7Days(String username) {
-        final String sql = """
-            SELECT COUNT(*) AS cnt
-            FROM timers
-            WHERE username=?
-              AND label NOT IN ('Reset','Pause')
-              AND COALESCE(totalTime,0) > 0
-              AND date(startTime) >= date('now','-6 day')
-        """;
+    // Distractions bar (7-day count from maindistraction)
+    private long loadMainDistractionCountLast7Days(String username) {
+        final String sql =
+                "SELECT COUNT(*) AS cnt " +
+                        "FROM maindistraction " +
+                        "WHERE username=? " +
+                        "AND date(timestamp) >= date('now','-6 day')";
         try (PreparedStatement ps = db.prepareStatement(sql)) {
             ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) { return rs.next() ? rs.getLong("cnt") : 0L; }
-        } catch (SQLException e) { e.printStackTrace(); return 0L; }
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getLong("cnt") : 0L;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0L;
+        }
     }
 
-    private long loadAccomplishmentCount(String username) {
+    // Accomplishments bar (7-day if timestamp column exists; else all-time)
+    private long loadAccomplishmentCountLast7Days(String username) {
         boolean hasTimestamp = false;
         try (PreparedStatement info = db.prepareStatement("PRAGMA table_info(accomplishment)");
              ResultSet rs = info.executeQuery()) {
-            while (rs.next()) if ("timestamp".equalsIgnoreCase(rs.getString("name"))) { hasTimestamp = true; break; }
-        } catch (SQLException ignore) {}
+            while (rs.next()) {
+                if ("timestamp".equalsIgnoreCase(rs.getString("name"))) { hasTimestamp = true; break; }
+            }
+        } catch (SQLException ignored) {}
 
         String sql = hasTimestamp
-                ? "SELECT COUNT(*) AS cnt FROM accomplishment WHERE username=? AND date(timestamp) >= date('now','-6 day')"
-                : "SELECT COUNT(*) AS cnt FROM accomplishment WHERE username=?";
+                ? "SELECT COUNT(*) AS cnt FROM accomplishment " +
+                "WHERE username=? AND date(timestamp) >= date('now','-6 day')"
+                : "SELECT COUNT(*) AS cnt FROM accomplishment WHERE username=?"; // fallback = all-time
+
         try (PreparedStatement ps = db.prepareStatement(sql)) {
             ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) { return rs.next() ? rs.getLong("cnt") : 0L; }
-        } catch (SQLException e) { e.printStackTrace(); return 0L; }
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getLong("cnt") : 0L;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0L;
+        }
     }
 
     private void showEmpty(String msg) {
