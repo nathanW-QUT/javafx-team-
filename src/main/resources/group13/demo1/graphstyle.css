@@ -1,27 +1,42 @@
-/* Plot background & subtle grid */
-.chart-plot-background { -fx-background-color: white; }
-.chart-horizontal-grid-lines, .chart-vertical-grid-lines {
-    -fx-stroke: rgba(0,0,0,0.10);
-    -fx-stroke-dash-array: 4 4;
+/* Transparent chart backgrounds so your app gradient shows */
+.chart, .chart-content, .chart-plot-background {
+    -fx-background-color: transparent;
 }
 
-/* Axis styles (keep your colors if you prefer) */
-.axis .axis-label { -fx-font-size: 16px; -fx-font-weight: 700; }
-.axis { -fx-tick-label-fill: #0f172a; -fx-font-size: 13px; -fx-font-weight: 600; }
-
-/* Scatter points: small, rounded, with soft shadow */
-.chart-symbol {
-    -fx-background-radius: 6px;
-    -fx-padding: 4px; /* point size */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0.2, 0, 1);
+/* Axes */
+.axis {
+    -fx-tick-label-fill: rgba(255,255,255,0.85);
+    -fx-tick-label-font-size: 12px;
+}
+.axis .axis-label {
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.chart-horizontal-grid-lines,
+.chart-vertical-grid-lines {
+    -fx-stroke: rgba(255,255,255,0.18);
 }
 
-/* Legend bubble */
-.chart-legend {
-    -fx-background-color: rgba(255,255,255,0.85);
-    -fx-background-radius: 8px;
-    -fx-padding: 6px 10px;
-    -fx-border-color: rgba(0,0,0,0.06);
-    -fx-border-radius: 8px;
+/* Bar chart bars */
+.chart-bar {
+    -fx-bar-fill: linear-gradient(to bottom, #FFA25B, #FF7C39);
+    -fx-background-radius: 8;
+}
+.chart-bar:hover {
+    -fx-bar-fill: linear-gradient(to bottom, #FFC08A, #FF8F55);
 }
 
+/* Numeric labels above bars */
+.bar-value {
+    -fx-text-fill: rgba(255,255,255,0.97);
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 6, 0.2, 0, 1);
+}
+
+/* Pie chart labels */
+.chart-pie-label {
+    -fx-fill: rgba(255,255,255,0.9);
+    -fx-font-weight: bold;
+}

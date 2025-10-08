@@ -36,9 +36,10 @@ public class TimerController {
     private boolean running = false;
     private long startTime;
     private long elapsedTime = 0;
-
-
     private String activeDistraction = null;
+
+
+
 
     private AnimationTimer timer;
 
@@ -86,33 +87,29 @@ public class TimerController {
 
     @FXML
     public void toggleStartStop(ActionEvent event) {
-        if (!running)
-        {
+        if (!running) {
             startTime = System.currentTimeMillis();
             running = true;
             startStopButton.setText("Pause");
-//            System.out.println("Timer started: " + LocalDateTime.now());
+
             if (pauseStartMillis > 0) {
                 totalPauseMillis += System.currentTimeMillis() - pauseStartMillis;
                 pauseStartMillis = 0;
             }
-        } else
-        {
-
+        } else {
             long endMillis     = System.currentTimeMillis();
             long sessionMillis = endMillis - startTime;
 
             running = false;
             elapsedTime += sessionMillis;
             startStopButton.setText("Start");
-            // Session iterate the pause counter and pausetimer
+
             pauseCount++;
             pauseStartMillis = System.currentTimeMillis();
 
-            long sessionSeconds = Math.max(0, sessionMillis / 1000);
+            long sessionSeconds = Math.max(0, Math.round(sessionMillis / 1000.0));
             LocalDateTime endDateTime   = LocalDateTime.now();
             LocalDateTime startDateTime = endDateTime.minusSeconds(sessionSeconds);
-
 
             String label = (activeDistraction != null && !activeDistraction.isBlank())
                     ? activeDistraction.trim()
@@ -129,32 +126,41 @@ public class TimerController {
             timerDAO.addTimer(record);
 
 
-            activeDistraction = null;
-
             System.out.println("Timer paused at " + sessionSeconds + " seconds, label=" + label);
         }
     }
 
+
     @FXML
     public void resetTimer(ActionEvent event) {
-
         if (running) {
-
             long currentTime = System.currentTimeMillis();
             elapsedTime += (currentTime - startTime);
         }
         running = false;
 
         long durationBeforeReset = elapsedTime;
-        long durationInSeconds = durationBeforeReset / 1000;
-        //reset the timer to 0
-        elapsedTime = 0;
 
+        long durationInSeconds = Math.max(0, Math.round(durationBeforeReset / 1000.0));
+
+        elapsedTime = 0;
         startStopButton.setText("Start");
         timerLabel.setText("00:00");
         System.out.println("Timer reset");
 
         String currentUser = UserSession.getInstance().getUsername();
+
+        if (activeDistraction != null && !activeDistraction.isBlank() && durationInSeconds > 0) {
+            TimerRecord tagMarker = new TimerRecord(
+                    currentUser,
+                    activeDistraction.trim(),
+                    LocalDateTime.now().minusSeconds(1),
+                    LocalDateTime.now(),
+                    0
+            );
+            timerDAO.addTimer(tagMarker);
+        }
+
         TimerRecord record = new TimerRecord(
                 currentUser,
                 "Reset",
@@ -162,21 +168,28 @@ public class TimerController {
                 LocalDateTime.now(),
                 durationInSeconds
         );
-        //Sessions
+        timerDAO.addTimer(record);
+
         try {
             if (currentSession != null) {
                 currentSession.setEndTime(LocalDateTime.now());
-                currentSession.setTotalRunSeconds(durationBeforeReset / 1000);
+                currentSession.setTotalRunSeconds(Math.max(0, Math.round(durationBeforeReset / 1000.0)));
                 currentSession.setTotalPauseSeconds(totalPauseMillis / 1000);
                 currentSession.setPauseCount(pauseCount);
                 sessionDAO.update(currentSession);
-                currentSession = null; // end the session for this session session
+                currentSession = null;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        timerDAO.addTimer(record);
+
+        activeDistraction = null;
+        totalPauseMillis = 0;
+        pauseCount = 0;
+        pauseStartMillis = 0;
     }
+
+
 
     @FXML
     public void showQuickLog() {
