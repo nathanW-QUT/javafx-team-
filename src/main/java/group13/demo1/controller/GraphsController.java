@@ -31,16 +31,19 @@ public class GraphsController {
     // ---- Pie (unchanged) ----
     @FXML private PieChart tagPie;
 
-    // ---- Bar (existing) ----
+    // ---- Combined Bar ----
     @FXML private BarChart<String, Number> dailyBar;
     @FXML private CategoryAxis barXAxis;
     @FXML private NumberAxis   barYAxis;
 
+    // ---- Distractions-only Bar ----
+    @FXML private BarChart<String, Number> disBar;
+    @FXML private CategoryAxis disBarXAxis;
+    @FXML private NumberAxis   disBarYAxis;
 
     @FXML private LineChart<String, Number> comparisonLine;
     @FXML private CategoryAxis lineXAxis;
     @FXML private NumberAxis   lineYAxis;
-
 
     @FXML private GridPane weekHeatmap;
 
@@ -95,7 +98,7 @@ public class GraphsController {
             tagPie.setVisible(false);
         }
 
-        // ---------- Last 7 days + labels ----------
+        // ---------- Last 7 days  ----------
         List<LocalDate> last7 = last7Dates();
         Map<String, String> keyToLabel = new LinkedHashMap<>();
         ObservableList<String> categories = FXCollections.observableArrayList();
@@ -117,7 +120,7 @@ public class GraphsController {
         if (!anyData) { showEmpty("No data to visualize yet."); return; }
         if (emptyState != null) emptyState.setVisible(false);
 
-        // ---------- Bar----------
+        // ---------- Combined Bar ----------
         if (barXAxis != null) { barXAxis.setLabel("Date"); barXAxis.setCategories(categories); }
         if (barYAxis != null) { barYAxis.setLabel("Count"); barYAxis.setForceZeroInRange(true); }
         XYChart.Series<String, Number> sDis = new XYChart.Series<>(); sDis.setName("Distractions");
@@ -138,9 +141,33 @@ public class GraphsController {
                     new Tooltip("Accomplishments\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));});
         });
 
+        // ----------Distractions-only Bar ----------
+        if (disBarXAxis != null) { disBarXAxis.setLabel("Date"); disBarXAxis.setCategories(categories); }
+        if (disBarYAxis != null) { disBarYAxis.setLabel("Count"); disBarYAxis.setForceZeroInRange(true); }
+
+        XYChart.Series<String, Number> sOnlyDis = new XYChart.Series<>();
+        sOnlyDis.setName("Distractions");
+        for (LocalDate d : last7) {
+            String key = d.toString(), label = keyToLabel.get(key);
+            sOnlyDis.getData().add(new XYChart.Data<>(label, disDaily.getOrDefault(key, 0L)));
+        }
+        if (disBar != null) {
+            disBar.setLegendVisible(false);
+            disBar.setAnimated(false);
+            disBar.getData().setAll(sOnlyDis);
+            disBar.setVisible(true);
+            Platform.runLater(() ->
+                    sOnlyDis.getData().forEach(dp -> {
+                        if (dp.getNode()!=null) Tooltip.install(dp.getNode(),
+                                new Tooltip("Distractions\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));
+                    })
+            );
+        }
+
 
         renderWeekHeatmap(last7, disDaily, accDaily);
     }
+
     private void ensureAccomplishmentTimestampColumn() {
         try (PreparedStatement info = db.prepareStatement("PRAGMA table_info(accomplishment)");
              ResultSet rs = info.executeQuery()) {
@@ -161,8 +188,7 @@ public class GraphsController {
                     }
                 }
             }
-        } catch (SQLException ignore) {
-        }
+        } catch (SQLException ignore) { }
     }
 
     private void renderWeekHeatmap(List<LocalDate> last7,
@@ -298,7 +324,6 @@ public class GraphsController {
                 }
             } catch (SQLException e) { e.printStackTrace(); }
         } else {
-
             long totalForUser = 0L;
             try (PreparedStatement ps = db.prepareStatement("SELECT COUNT(*) AS cnt FROM accomplishment WHERE username=?")) {
                 ps.setString(1, username);
@@ -322,6 +347,7 @@ public class GraphsController {
         if (emptyState != null) { emptyState.setText(msg); emptyState.setVisible(true); }
         if (tagPie != null)   tagPie.setVisible(false);
         if (dailyBar != null) dailyBar.setVisible(false);
+        if (disBar != null)   disBar.setVisible(false);
         if (comparisonLine != null) comparisonLine.setVisible(false);
         if (weekHeatmap != null) weekHeatmap.setVisible(false);
     }
