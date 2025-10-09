@@ -13,11 +13,6 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -28,10 +23,10 @@ import java.util.*;
 
 public class GraphsController {
 
-    // ---- Pie (unchanged) ----
+    // ---- Pie  ----
     @FXML private PieChart tagPie;
 
-    // ---- Combined Bar ----
+    // ---- Combined Bar (Distractions vs Accomplishments) ----
     @FXML private BarChart<String, Number> dailyBar;
     @FXML private CategoryAxis barXAxis;
     @FXML private NumberAxis   barYAxis;
@@ -45,8 +40,6 @@ public class GraphsController {
     @FXML private CategoryAxis lineXAxis;
     @FXML private NumberAxis   lineYAxis;
 
-    @FXML private GridPane weekHeatmap;
-
     @FXML private Label  emptyState;
     @FXML private Button backBtn;
 
@@ -54,6 +47,7 @@ public class GraphsController {
 
     @FXML
     public void initialize() {
+        // Reload charts whenever the window regains focus
         Platform.runLater(() -> {
             if (backBtn != null && backBtn.getScene() != null && backBtn.getScene().getWindow() != null) {
                 backBtn.getScene().getWindow().focusedProperty().addListener((obs, was, is) -> {
@@ -98,7 +92,7 @@ public class GraphsController {
             tagPie.setVisible(false);
         }
 
-        // ---------- Last 7 days  ----------
+        // ---------- Last 7 days labels ----------
         List<LocalDate> last7 = last7Dates();
         Map<String, String> keyToLabel = new LinkedHashMap<>();
         ObservableList<String> categories = FXCollections.observableArrayList();
@@ -120,9 +114,10 @@ public class GraphsController {
         if (!anyData) { showEmpty("No data to visualize yet."); return; }
         if (emptyState != null) emptyState.setVisible(false);
 
-        // ---------- Combined Bar ----------
+        // ---------- Combined Bar (Distractions vs Accomplishments) ----------
         if (barXAxis != null) { barXAxis.setLabel("Date"); barXAxis.setCategories(categories); }
         if (barYAxis != null) { barYAxis.setLabel("Count"); barYAxis.setForceZeroInRange(true); }
+
         XYChart.Series<String, Number> sDis = new XYChart.Series<>(); sDis.setName("Distractions");
         XYChart.Series<String, Number> sAcc = new XYChart.Series<>(); sAcc.setName("Accomplishments");
         for (LocalDate d : last7) {
@@ -134,6 +129,7 @@ public class GraphsController {
         dailyBar.setAnimated(false);
         dailyBar.getData().setAll(sDis, sAcc);
         dailyBar.setVisible(true);
+
         Platform.runLater(() -> {
             sDis.getData().forEach(dp -> { if (dp.getNode()!=null) Tooltip.install(dp.getNode(),
                     new Tooltip("Distractions\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));});
@@ -141,31 +137,24 @@ public class GraphsController {
                     new Tooltip("Accomplishments\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));});
         });
 
-        // ----------Distractions-only Bar ----------
+        // ---------- Distractions-only Bar ----------
         if (disBarXAxis != null) { disBarXAxis.setLabel("Date"); disBarXAxis.setCategories(categories); }
         if (disBarYAxis != null) { disBarYAxis.setLabel("Count"); disBarYAxis.setForceZeroInRange(true); }
 
-        XYChart.Series<String, Number> sOnlyDis = new XYChart.Series<>();
-        sOnlyDis.setName("Distractions");
+        XYChart.Series<String, Number> sDisOnly = new XYChart.Series<>();
         for (LocalDate d : last7) {
             String key = d.toString(), label = keyToLabel.get(key);
-            sOnlyDis.getData().add(new XYChart.Data<>(label, disDaily.getOrDefault(key, 0L)));
+            sDisOnly.getData().add(new XYChart.Data<>(label, disDaily.getOrDefault(key, 0L)));
         }
-        if (disBar != null) {
-            disBar.setLegendVisible(false);
-            disBar.setAnimated(false);
-            disBar.getData().setAll(sOnlyDis);
-            disBar.setVisible(true);
-            Platform.runLater(() ->
-                    sOnlyDis.getData().forEach(dp -> {
-                        if (dp.getNode()!=null) Tooltip.install(dp.getNode(),
-                                new Tooltip("Distractions\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));
-                    })
-            );
-        }
+        disBar.setAnimated(false);
+        disBar.setLegendVisible(false);
+        disBar.getData().setAll(sDisOnly);
+        disBar.setVisible(true);
 
-
-        renderWeekHeatmap(last7, disDaily, accDaily);
+        Platform.runLater(() -> {
+            sDisOnly.getData().forEach(dp -> { if (dp.getNode()!=null) Tooltip.install(dp.getNode(),
+                    new Tooltip("Distractions\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));});
+        });
     }
 
     private void ensureAccomplishmentTimestampColumn() {
@@ -188,79 +177,8 @@ public class GraphsController {
                     }
                 }
             }
-        } catch (SQLException ignore) { }
-    }
-
-    private void renderWeekHeatmap(List<LocalDate> last7,
-                                   Map<String, Long> disDaily,
-                                   Map<String, Long> accDaily) {
-        if (weekHeatmap == null) return;
-
-        weekHeatmap.getChildren().clear();
-        weekHeatmap.getColumnConstraints().clear();
-
-        for (int c = 0; c < 7; c++) {
-            ColumnConstraints cc = new ColumnConstraints();
-            cc.setHgrow(Priority.ALWAYS);
-            cc.setPercentWidth(100.0 / 7.0);
-            weekHeatmap.getColumnConstraints().add(cc);
+        } catch (SQLException ignore) {
         }
-
-        long maxTotal = 0;
-        for (LocalDate d : last7) {
-            String k = d.toString();
-            long tot = disDaily.getOrDefault(k, 0L) + accDaily.getOrDefault(k, 0L);
-            if (tot > maxTotal) maxTotal = tot;
-        }
-        if (maxTotal == 0) maxTotal = 1;
-
-        for (int i = 0; i < last7.size(); i++) {
-            LocalDate day = last7.get(i);
-            String key = day.toString();
-
-            long dis = disDaily.getOrDefault(key, 0L);
-            long acc = accDaily.getOrDefault(key, 0L);
-            long tot = dis + acc;
-            long diff = acc - dis;
-
-            double intensity = Math.min(1.0, tot / (double) maxTotal);
-
-            Color accBase = Color.web("#4FC3F7");
-            Color disBase = Color.web("#FF8B3A");
-            Color neutral = Color.web("#3B4C63");
-
-            Color fill;
-            if (tot == 0) {
-                fill = neutral.deriveColor(0, 1, 0.6, 1);
-            } else if (diff >= 0) {
-                fill = accBase.interpolate(Color.web("#0E5A8A"), intensity * 0.85);
-            } else {
-                fill = disBase.interpolate(Color.web("#8A3C0E"), intensity * 0.85);
-            }
-
-            StackPane cell = new StackPane();
-            cell.getStyleClass().add("heat-cell");
-            cell.setPrefSize(48, 48);
-            cell.setMinSize(36, 36);
-            cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            cell.setStyle("-fx-background-color: " + toRgb(fill) + "; -fx-background-radius: 8;");
-
-            String dow = day.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
-            Tooltip.install(cell, new Tooltip(
-                    key + " (" + dow + ")\n"
-                            + "Distractions: " + dis + "\n"
-                            + "Accomplishments: " + acc + "\n"
-                            + "Total: " + tot));
-
-            weekHeatmap.add(cell, i, 0);
-        }
-    }
-
-    private static String toRgb(Color c) {
-        int r = (int)Math.round(c.getRed()*255);
-        int g = (int)Math.round(c.getGreen()*255);
-        int b = (int)Math.round(c.getBlue()*255);
-        return String.format("#%02X%02X%02X", r, g, b);
     }
 
     private Map<String, Long> loadMainDistractionTagCounts(String username) {
@@ -349,7 +267,6 @@ public class GraphsController {
         if (dailyBar != null) dailyBar.setVisible(false);
         if (disBar != null)   disBar.setVisible(false);
         if (comparisonLine != null) comparisonLine.setVisible(false);
-        if (weekHeatmap != null) weekHeatmap.setVisible(false);
     }
 
     @FXML
