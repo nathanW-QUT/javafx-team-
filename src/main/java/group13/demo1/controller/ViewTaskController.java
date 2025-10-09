@@ -1,6 +1,9 @@
 package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
+import group13.demo1.model.IAccomplishmentDAO;
+import group13.demo1.model.SqliteAccomplishmentDAO;
+import group13.demo1.model.Accomplishment;
 import group13.demo1.model.Task;
 import group13.demo1.model.TaskDAO;
 import javafx.collections.FXCollections;
@@ -27,6 +30,8 @@ public class ViewTaskController {
 
     private Task currentTask;
     private final TaskDAO taskDao = new TaskDAO();
+    private final SqliteAccomplishmentDAO accomplishmentDao = new SqliteAccomplishmentDAO();
+
 
 
     public void loadTask(Task task) {
@@ -56,8 +61,21 @@ public class ViewTaskController {
             taskDao.updateSubtaskStatus(currentTask.getId(), checkBox.getText(), checkBox.isSelected());
         }
         updateProgress();
-        taskDao.updateTaskCompletion(currentTask.getId(), (int) (taskProgress.getProgress() * 100));
-        showAlert("Progress Saved", "Task progress updated.");
+        int progress = (int) (taskProgress.getProgress() * 100);
+        taskDao.updateTaskCompletion(currentTask.getId(), progress);
+
+        if (progress == 100) {
+            Accomplishment accomplishment = new Accomplishment(
+                    0,
+                    currentTask.getUsername(),
+                    currentTask.getTitle(),
+                    true
+            );
+            accomplishmentDao.addAccomplishment(accomplishment);
+            showAlert("Task Completed", "Congratulations! You’ve completed the task: " + currentTask.getTitle());
+        } else {
+            showAlert("Progress Saved", "Task progress updated.");
+        }
     }
 
     @FXML
@@ -78,6 +96,7 @@ public class ViewTaskController {
         }
         long completed = subtaskListView.getItems().stream().filter(CheckBox::isSelected).count();
         taskProgress.setProgress((double) completed / total);
+
     }
 
     private void showAlert(String title, String msg) {
