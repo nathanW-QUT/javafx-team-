@@ -26,7 +26,6 @@ public class TimerHistory {
     @FXML private ListView<TimerHistoryLogic.ViewSession> sessionList;
     @FXML private Label totalsession;
     @FXML private Label totalTime;
-
     @FXML private Label session;
 
     @FXML private Label sDateVal, sStartVal, sEndVal, sFocusVal, sPausedVal, sPausesVal;
@@ -40,9 +39,7 @@ public class TimerHistory {
     // ---------- TAB 2 (Main Distraction history) ----------
     @FXML private ListView<MainDistractionRow> mdList;
     @FXML private Label mdTotalLabel;
-
     @FXML private Label mdDetail;
-
 
     @FXML private Label mdReasonVal, mdWhenVal, mdMinutesVal, mdNotesVal;
 
@@ -66,7 +63,6 @@ public class TimerHistory {
 
         public String listTitle(int indexZeroBased) { return "Distraction " + (indexZeroBased + 1) + " — " + reason; }
     }
-
 
     private static final DateTimeFormatter ISO = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -135,8 +131,6 @@ public class TimerHistory {
         return null;
     }
 
-
-
     @FXML
     public void initialize() {
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
@@ -151,10 +145,8 @@ public class TimerHistory {
                 }
             });
             sessionList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, s) -> {
-
                 session.setText(s == null ? "(none)" : logic.selectedViewSessionText(
                         sessionList.getSelectionModel().getSelectedIndex(), s));
-
                 fillSessionCard(s);
             });
         }
@@ -209,7 +201,15 @@ public class TimerHistory {
         sql.append("FROM ").append(spec.table).append(" ");
 
         boolean filterByUser = (spec.colUsername != null && username != null && !username.isBlank());
-        if (filterByUser) sql.append("WHERE ").append(spec.colUsername).append("=? ");
+
+        String nonZeroPredicate = "(COALESCE(" + spec.colRun + ",0) > 0 OR " + " COALESCE(" + spec.colPause + ",0) > 0 OR " + " COALESCE(" + spec.colCount + ",0) > 0)";
+
+        if (filterByUser) {
+            sql.append("WHERE ").append(spec.colUsername).append("=? AND ").append(nonZeroPredicate).append(" ");
+        } else {
+            sql.append("WHERE ").append(nonZeroPredicate).append(" ");
+        }
+
         sql.append("ORDER BY ").append(spec.colStart).append(" DESC");
 
         long totalFocus = 0L;
@@ -295,14 +295,14 @@ public class TimerHistory {
             mdWhenVal.setText("—");
             mdMinutesVal.setText("—");
             mdNotesVal.setText("—");
-            if (mdDetail != null) mdDetail.setText(""); // legacy hidden
+            if (mdDetail != null) mdDetail.setText("");
             return;
         }
         mdReasonVal.setText(row.reason == null ? "—" : row.reason);
         mdWhenVal.setText(row.time_of_occurence == null ? "—" : row.time_of_occurence);
         mdMinutesVal.setText(row.minutes == null ? "—" : row.minutes + "m");
         mdNotesVal.setText(row.notes == null ? "—" : row.notes);
-        if (mdDetail != null) mdDetail.setText(""); // keep legacy invisible
+        if (mdDetail != null) mdDetail.setText("");
     }
 
     private void loadMainDistractions(String username) {
