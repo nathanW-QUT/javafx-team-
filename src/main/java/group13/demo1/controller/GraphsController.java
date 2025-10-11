@@ -23,8 +23,18 @@ import java.util.*;
 
 public class GraphsController {
 
-
+    // ---- Pie  ----
     @FXML private PieChart tagPie;
+
+    // ---- Combined Bar (Distractions vs Accomplishments) ----
+    @FXML private BarChart<String, Number> dailyBar;
+    @FXML private CategoryAxis barXAxis;
+    @FXML private NumberAxis   barYAxis;
+
+    // ---- Distractions-only Bar ----
+    @FXML private BarChart<String, Number> disBar;
+    @FXML private CategoryAxis disBarXAxis;
+    @FXML private NumberAxis   disBarYAxis;
 
     @FXML private LineChart<String, Number> comparisonLine;
     @FXML private CategoryAxis lineXAxis;
@@ -37,21 +47,33 @@ public class GraphsController {
 
     @FXML
     public void initialize() {
-
-        try {
-            if (comparisonLine != null) {
-                if (lineXAxis == null && comparisonLine.getXAxis() instanceof CategoryAxis ax) lineXAxis = ax;
-                if (lineYAxis == null && comparisonLine.getYAxis() instanceof NumberAxis ax)  lineYAxis = ax;
+        // Reload charts whenever the window regains focus
+        Platform.runLater(() -> {
+            if (backBtn != null && backBtn.getScene() != null && backBtn.getScene().getWindow() != null) {
+                backBtn.getScene().getWindow().focusedProperty().addListener((obs, was, is) -> {
+                    if (is) safeReload();
+                });
             }
-        } catch (Exception ignored) {}
+        });
+        safeReload();
+    }
 
-        String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
-        if (user == null || user.isBlank()) {
-            showEmpty("Please log in to view insights.");
-            return;
+    private void safeReload() {
+        try {
+            loadCharts();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showEmpty("Could not load charts.");
         }
+    }
 
-        // ---------- PieChart ----------
+    private void loadCharts() {
+        String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
+        if (user == null || user.isBlank()) { showEmpty("Please log in to view insights."); return; }
+
+        ensureAccomplishmentTimestampColumn();
+
+        // ---------- Pie ----------
         Map<String, Long> causeCounts = loadMainDistractionTagCounts(user);
         long totalCause = causeCounts.values().stream().mapToLong(Long::longValue).sum();
         if (!causeCounts.isEmpty()) {
@@ -70,67 +92,94 @@ public class GraphsController {
             tagPie.setVisible(false);
         }
 
-        // ---------- LineChart ----------
+        // ---------- Last 7 days labels ----------
         List<LocalDate> last7 = last7Dates();
-
         Map<String, String> keyToLabel = new LinkedHashMap<>();
         ObservableList<String> categories = FXCollections.observableArrayList();
         for (LocalDate d : last7) {
-            String key = d.toString(); // yyyy-MM-dd
+            String key = d.toString();
             String dow = d.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
             String label = key + "\n" + dow;
             keyToLabel.put(key, label);
             categories.add(label);
         }
-        if (lineXAxis != null) {
-            lineXAxis.setLabel("Date");
-            lineXAxis.setCategories(categories);
-        }
-        if (lineYAxis != null) {
-            lineYAxis.setLabel("Count");
-            lineYAxis.setForceZeroInRange(true);
-        }
 
+        // ---------- Daily counts ----------
         Map<String, Long> disDaily = loadMainDistractionDailyCounts(user);
-        Map<String, Long> accDaily = loadAccomplishmentDailyCountsFallback(user, last7); //
+        Map<String, Long> accDaily = loadAccomplishmentDailyCounts(user);
 
         boolean anyData = totalCause > 0
                 || disDaily.values().stream().mapToLong(Long::longValue).sum() > 0
                 || accDaily.values().stream().mapToLong(Long::longValue).sum() > 0;
-
-        if (!anyData) {
-            showEmpty("No data to visualize yet.");
-            return;
-        }
+        if (!anyData) { showEmpty("No data to visualize yet."); return; }
         if (emptyState != null) emptyState.setVisible(false);
 
-        XYChart.Series<String, Number> sDis = new XYChart.Series<>();
-        sDis.setName("Distractions");
-        XYChart.Series<String, Number> sAcc = new XYChart.Series<>();
-        sAcc.setName("Accomplishments");
+        // ---------- Combined Bar (Distractions vs Accomplishments) ----------
+        if (barXAxis != null) { barXAxis.setLabel("Date"); barXAxis.setCategories(categories); }
+        if (barYAxis != null) { barYAxis.setLabel("Count"); barYAxis.setForceZeroInRange(true); }
 
+        XYChart.Series<String, Number> sDis = new XYChart.Series<>(); sDis.setName("Distractions");
+        XYChart.Series<String, Number> sAcc = new XYChart.Series<>(); sAcc.setName("Accomplishments");
         for (LocalDate d : last7) {
-            String key = d.toString();
-            String label = keyToLabel.get(key);
+            String key = d.toString(), label = keyToLabel.get(key);
             sDis.getData().add(new XYChart.Data<>(label, disDaily.getOrDefault(key, 0L)));
             sAcc.getData().add(new XYChart.Data<>(label, accDaily.getOrDefault(key, 0L)));
         }
-
-        comparisonLine.setLegendVisible(true);
-        comparisonLine.setCreateSymbols(true);
-        comparisonLine.setAnimated(false);
-        comparisonLine.getData().setAll(sDis, sAcc);
-        comparisonLine.setVisible(true);
-
+        dailyBar.setLegendVisible(true);
+        dailyBar.setAnimated(false);
+        dailyBar.getData().setAll(sDis, sAcc);
+        dailyBar.setVisible(true);
 
         Platform.runLater(() -> {
-            sDis.getData().forEach(d -> Tooltip.install(d.getNode(),
-                    new Tooltip("Distractions\n" + d.getXValue().replace('\n',' ') + " : " + d.getYValue())));
-            sAcc.getData().forEach(d -> Tooltip.install(d.getNode(),
-                    new Tooltip("Accomplishments\n" + d.getXValue().replace('\n',' ') + " : " + d.getYValue())));
+            sDis.getData().forEach(dp -> { if (dp.getNode()!=null) Tooltip.install(dp.getNode(),
+                    new Tooltip("Distractions\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));});
+            sAcc.getData().forEach(dp -> { if (dp.getNode()!=null) Tooltip.install(dp.getNode(),
+                    new Tooltip("Accomplishments\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));});
+        });
+
+        // ---------- Distractions-only Bar ----------
+        if (disBarXAxis != null) { disBarXAxis.setLabel("Date"); disBarXAxis.setCategories(categories); }
+        if (disBarYAxis != null) { disBarYAxis.setLabel("Count"); disBarYAxis.setForceZeroInRange(true); }
+
+        XYChart.Series<String, Number> sDisOnly = new XYChart.Series<>();
+        for (LocalDate d : last7) {
+            String key = d.toString(), label = keyToLabel.get(key);
+            sDisOnly.getData().add(new XYChart.Data<>(label, disDaily.getOrDefault(key, 0L)));
+        }
+        disBar.setAnimated(false);
+        disBar.setLegendVisible(false);
+        disBar.getData().setAll(sDisOnly);
+        disBar.setVisible(true);
+
+        Platform.runLater(() -> {
+            sDisOnly.getData().forEach(dp -> { if (dp.getNode()!=null) Tooltip.install(dp.getNode(),
+                    new Tooltip("Distractions\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));});
         });
     }
 
+    private void ensureAccomplishmentTimestampColumn() {
+        try (PreparedStatement info = db.prepareStatement("PRAGMA table_info(accomplishment)");
+             ResultSet rs = info.executeQuery()) {
+            boolean hasTimestamp = false;
+            boolean hasCreatedAt = false;
+            while (rs.next()) {
+                String name = rs.getString("name");
+                if ("timestamp".equalsIgnoreCase(name)) hasTimestamp = true;
+                if ("created_at".equalsIgnoreCase(name)) hasCreatedAt = true;
+            }
+            if (!hasTimestamp) {
+                try (Statement st = db.createStatement()) {
+                    st.executeUpdate("ALTER TABLE accomplishment ADD COLUMN timestamp DATETIME DEFAULT CURRENT_TIMESTAMP");
+                }
+                if (hasCreatedAt) {
+                    try (Statement st = db.createStatement()) {
+                        st.executeUpdate("UPDATE accomplishment SET timestamp = created_at WHERE timestamp IS NULL AND created_at IS NOT NULL");
+                    }
+                }
+            }
+        } catch (SQLException ignore) {
+        }
+    }
 
     private Map<String, Long> loadMainDistractionTagCounts(String username) {
         Map<String, Long> out = new LinkedHashMap<>();
@@ -144,16 +193,11 @@ public class GraphsController {
         try (PreparedStatement ps = db.prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    String cause = rs.getString("cause");
-                    long cnt = rs.getLong("cnt");
-                    out.put(cause, cnt);
-                }
+                while (rs.next()) out.put(rs.getString("cause"), rs.getLong("cnt"));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return out;
     }
-
 
     private Map<String, Long> loadMainDistractionDailyCounts(String username) {
         Map<String, Long> map = new LinkedHashMap<>();
@@ -167,18 +211,14 @@ public class GraphsController {
         try (PreparedStatement ps = db.prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    map.put(rs.getString("day"), rs.getLong("cnt"));
-                }
+                while (rs.next()) map.put(rs.getString("day"), rs.getLong("cnt"));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return map;
     }
 
-
-    private Map<String, Long> loadAccomplishmentDailyCountsFallback(String username, List<LocalDate> last7) {
+    private Map<String, Long> loadAccomplishmentDailyCounts(String username) {
         Map<String, Long> map = new LinkedHashMap<>();
-
         boolean hasTimestamp = false;
         try (PreparedStatement info = db.prepareStatement("PRAGMA table_info(accomplishment)");
              ResultSet rs = info.executeQuery()) {
@@ -202,7 +242,6 @@ public class GraphsController {
                 }
             } catch (SQLException e) { e.printStackTrace(); }
         } else {
-
             long totalForUser = 0L;
             try (PreparedStatement ps = db.prepareStatement("SELECT COUNT(*) AS cnt FROM accomplishment WHERE username=?")) {
                 ps.setString(1, username);
@@ -210,11 +249,7 @@ public class GraphsController {
                     if (rs.next()) totalForUser = rs.getLong("cnt");
                 }
             } catch (SQLException e) { e.printStackTrace(); }
-
-            if (totalForUser > 0) {
-                String todayKey = LocalDate.now().toString();
-                map.put(todayKey, totalForUser);
-            }
+            if (totalForUser > 0) map.put(LocalDate.now().toString(), totalForUser);
         }
         return map;
     }
@@ -228,7 +263,9 @@ public class GraphsController {
 
     private void showEmpty(String msg) {
         if (emptyState != null) { emptyState.setText(msg); emptyState.setVisible(true); }
-        if (tagPie != null)         tagPie.setVisible(false);
+        if (tagPie != null)   tagPie.setVisible(false);
+        if (dailyBar != null) dailyBar.setVisible(false);
+        if (disBar != null)   disBar.setVisible(false);
         if (comparisonLine != null) comparisonLine.setVisible(false);
     }
 

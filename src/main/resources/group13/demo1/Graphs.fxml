@@ -25,22 +25,37 @@
 
                 <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold;"/>
 
-                <!-- Line chart -->
+                <!-- DISTRACTIONS+ACCOMPLISHMENT BAR CHART -->
                 <VBox spacing="6" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Distractions vs Accomplishments (Last 7 Days)"
                            style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-                    <LineChart fx:id="comparisonLine" legendVisible="true"
-                               prefWidth="1000" prefHeight="280">
+                    <BarChart fx:id="dailyBar" legendVisible="true"
+                              prefWidth="1000" prefHeight="280" animated="false">
                         <xAxis>
-                            <CategoryAxis fx:id="lineXAxis" label="Date"/>
+                            <CategoryAxis fx:id="barXAxis" label="Date"/>
                         </xAxis>
                         <yAxis>
-                            <NumberAxis fx:id="lineYAxis" label="Count" forceZeroInRange="true"/>
+                            <NumberAxis fx:id="barYAxis" label="Count" forceZeroInRange="true"/>
                         </yAxis>
-                    </LineChart>
+                    </BarChart>
                 </VBox>
 
-                <!-- Pie chart-->
+                <!-- DISTRACTIONS-ONLY BAR CHART -->
+                <VBox spacing="6" alignment="TOP_LEFT" prefWidth="1000">
+                    <Label text="Distractions (Last 7 Days)"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <BarChart fx:id="disBar" legendVisible="false"
+                              prefWidth="1000" prefHeight="240" animated="false">
+                        <xAxis>
+                            <CategoryAxis fx:id="disBarXAxis" label="Date"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="disBarYAxis" label="Count" forceZeroInRange="true"/>
+                        </yAxis>
+                    </BarChart>
+                </VBox>
+
+                <!-- PIE CHART-->
                 <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Main Distraction Tags"
                            style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
