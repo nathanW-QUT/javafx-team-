@@ -1,4 +1,4 @@
-/* Transparent chart backgrounds so your app gradient shows */
+/* Transparent chart background */
 .chart, .chart-content, .chart-plot-background {
     -fx-background-color: transparent;
 }
@@ -18,16 +18,27 @@
     -fx-stroke: rgba(255,255,255,0.18);
 }
 
-/* Bar chart bars */
-.chart-bar {
-    -fx-bar-fill: linear-gradient(to bottom, #FFA25B, #FF7C39);
-    -fx-background-radius: 8;
+/* --- Bar chart colors per series ---
+   default-color0 ->(Distractions)
+   default-color1 ->(Accomplishments)
+*/
+.default-color0.chart-bar { /* Distractions */
+    -fx-bar-fill: #FF8B3A;      /* orange */
 }
-.chart-bar:hover {
-    -fx-bar-fill: linear-gradient(to bottom, #FFC08A, #FF8F55);
+.default-color1.chart-bar { /* Accomplishments */
+    -fx-bar-fill: #4FC3F7;      /* light blue */
 }
 
-/* Numeric labels above bars */
+/* hover */
+.default-color0.chart-bar:hover { -fx-bar-fill: #FFAA58; }
+.default-color1.chart-bar:hover { -fx-bar-fill: #7FD3FB; }
+
+/* Rounded corners for bars */
+.chart-bar {
+    -fx-background-radius: 8;
+}
+
+/* numerical label for bars */
 .bar-value {
     -fx-text-fill: rgba(255,255,255,0.97);
     -fx-font-weight: bold;
@@ -40,3 +51,4 @@
     -fx-fill: rgba(255,255,255,0.9);
     -fx-font-weight: bold;
 }
+
