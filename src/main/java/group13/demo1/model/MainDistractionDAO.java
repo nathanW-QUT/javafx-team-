@@ -3,6 +3,7 @@ package group13.demo1.model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class MainDistractionDAO {
 
@@ -51,6 +52,7 @@ public class MainDistractionDAO {
             preparedStatement.setString(2, cause);
             preparedStatement.setInt(3, minutes);
             preparedStatement.setString(4, description);
+            preparedStatement.setString(5, LocalDateTime.now().toString());
             preparedStatement.executeUpdate();
             System.out.println("Main distraction logged for " + username);
         } catch (SQLException e) {

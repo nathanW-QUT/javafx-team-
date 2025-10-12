@@ -1,6 +1,7 @@
 package group13.demo1.model;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class DistractionDAO {
 
@@ -46,6 +47,7 @@ public class DistractionDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, description);
             preparedStatement.setString(2, username);
+            preparedStatement.setString(3, LocalDateTime.now().toString());
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
