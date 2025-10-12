@@ -46,7 +46,7 @@ public class MainDistractionDAO {
      */
 
     public void addMainDistraction(String username, String cause, int minutes, String description) {
-        String sql = "INSERT INTO maindistraction (username, cause, minutes, description) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO maindistraction (username, cause, minutes, description, timestamp) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, cause);
