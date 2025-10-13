@@ -26,12 +26,12 @@ public class GraphsController {
     // ---- Pie  ----
     @FXML private PieChart tagPie;
 
-    // ---- Combined Bar (Distractions vs Accomplishments) ----
+    // ---- Combined Bar Chart (Distractions vs Accomplishments) ----
     @FXML private BarChart<String, Number> dailyBar;
     @FXML private CategoryAxis barXAxis;
     @FXML private NumberAxis   barYAxis;
 
-    // ---- Distractions-only Bar ----
+    // ---- Distractions-only Bar Chart ----
     @FXML private BarChart<String, Number> disBar;
     @FXML private CategoryAxis disBarXAxis;
     @FXML private NumberAxis   disBarYAxis;
@@ -44,7 +44,6 @@ public class GraphsController {
 
     @FXML
     public void initialize() {
-        // Reload charts whenever the window regains focus
         Platform.runLater(() -> {
             if (backButton != null && backButton.getScene() != null && backButton.getScene().getWindow() != null) {
                 backButton.getScene().getWindow().focusedProperty().addListener((obs, was, is) -> {

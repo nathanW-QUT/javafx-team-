@@ -1,6 +1,4 @@
 package group13.demo1.controller;
-
-import group13.demo1.HelloApplication;
 import group13.demo1.model.MainDistractionDAO;
 import group13.demo1.model.MainDistractionHistoryDAO;
 import group13.demo1.model.SqliteConnection;
@@ -8,15 +6,9 @@ import group13.demo1.model.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
