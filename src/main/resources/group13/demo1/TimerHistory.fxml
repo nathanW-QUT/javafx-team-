@@ -7,15 +7,26 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.TimerHistory">
 
+    <!-- Sidebar (restored) -->
+    <left>
+        <fx:include source="Sidebar.fxml"/>
+    </left>
+
     <center>
         <VBox spacing="10" style="-fx-padding: 18;">
-            <TabPane tabClosingPolicy="UNAVAILABLE">
+            <!-- Let TabPane consume all vertical space -->
+            <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
 
                 <!-- TIMER SESSIONS -->
                 <Tab text="Timer sessions">
                     <BorderPane>
+                        <!-- Stretching list -->
                         <left>
-                            <ListView fx:id="sessionList" prefWidth="360"/>
+                            <VBox spacing="0" style="-fx-padding: 0 10 0 0;">
+                                <ListView fx:id="sessionList"
+                                          prefWidth="360"
+                                          VBox.vgrow="ALWAYS"/>
+                            </VBox>
                         </left>
 
                         <center>
@@ -27,13 +38,10 @@
 
                                 <Separator/>
 
-
                                 <Label text="Selected session:"
                                        style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
 
-
                                 <Label fx:id="session" visible="false" managed="false"/>
-
 
                                 <GridPane hgap="16" vgap="10" style="-fx-background-color: rgba(255,255,255,0.08);
                                                                       -fx-padding: 14; -fx-background-radius: 12;">
@@ -73,18 +81,22 @@
                 <!-- DISTRACTION HISTORY -->
                 <Tab text="Distraction history">
                     <BorderPane>
+                        <!-- Stretching list -->
                         <left>
-                            <ListView fx:id="mdList" prefWidth="420"/>
+                            <VBox spacing="0" style="-fx-padding: 0 10 0 0;">
+                                <ListView fx:id="mdList"
+                                          prefWidth="420"
+                                          VBox.vgrow="ALWAYS"/>
+                            </VBox>
                         </left>
+
                         <center>
                             <VBox spacing="12" style="-fx-padding: 10;">
                                 <Label text="Logged Distractions (main)" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
                                 <Label fx:id="mdTotalLabel" text="Total Records: 0"/>
                                 <Separator/>
 
-
                                 <Label fx:id="mdDetail" visible="false" managed="false"/>
-
 
                                 <GridPane hgap="16" vgap="10" style="-fx-background-color: rgba(255,255,255,0.08);
                                                                       -fx-padding: 14; -fx-background-radius: 12;">
@@ -114,10 +126,6 @@
                     </BorderPane>
                 </Tab>
             </TabPane>
-
-            <HBox alignment="CENTER_RIGHT" style="-fx-padding: 6 0 0 0;">
-                <Button text="Back" onAction="#onBackHome"/>
-            </HBox>
         </VBox>
     </center>
 </BorderPane>

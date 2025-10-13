@@ -373,13 +373,4 @@ public class TimerHistory {
     private static String firstNonBlank(String... vals) { for (String v : vals) if (v != null && !v.isBlank()) return v; return null; }
     private static Integer firstNonNullInt(Integer... vals) { for (Integer v : vals) if (v != null) return v; return null; }
 
-    @FXML
-    private void onBackHome() throws IOException {
-        Stage stage = (Stage) (sessionList != null ? sessionList.getScene().getWindow() : mdList.getScene().getWindow());
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
-        stage.setScene(scene);
-        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
-        scene.getStylesheets().add(stylesheet);
-    }
 }
