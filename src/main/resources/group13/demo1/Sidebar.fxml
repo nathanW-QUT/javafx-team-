@@ -8,14 +8,14 @@
 <StackPane xmlns:fx="http://javafx.com/fxml"
            fx:controller="group13.demo1.controller.HelloController" >
     <VBox spacing="40" alignment="TOP_CENTER" fx:id="SideBar">
-        <Button fx:id="nextButton" text="Home" onAction="#onHomeButtonClick"/>
-        <Button text="Distractions" onAction="#onClickGoDistractionPage"/>
-        <Button text="Timer" onAction="#onClickGoTimer"/>
-        <Button text="Countdown" onAction="#onCountdownButtonClicked"/>
-        <Button text="Tasks" onAction="#onClickGoTasks"/>
-        <Button text="Accomplishments" onAction="#onClickGoAccomplishment"/>
-        <Button text="History" onAction="#onClickGoHistory"/>
-        <Button text="Graphs" onAction="#onClickGoGraphs"/>
-        <Button text="Log Out" onAction="#onClickLogOut"/>
+        <Button fx:id="nextButton" text="⌂ Home" onAction="#onHomeButtonClick"/>
+        <Button text="🤷‍♂️ Distractions" onAction="#onClickGoDistractionPage"/>
+        <Button text="✅ Accomplishments" onAction="#onClickGoAccomplishment"/>
+        <Button text="📃 Tasks" onAction="#onClickGoTasks"/>
+        <Button text="🕒 Timer" onAction="#onClickGoTimer"/>
+        <Button text="⌛ Countdown" onAction="#onCountdownButtonClicked"/>
+        <Button text="📔 History" onAction="#onClickGoHistory"/>
+        <Button text="📊 Graphs" onAction="#onClickGoGraphs"/>
+        <Button text="↩ Log Out" onAction="#onClickLogOut"/>
     </VBox>
 </StackPane>
