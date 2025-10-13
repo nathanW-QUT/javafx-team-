@@ -1,6 +1,7 @@
 package group13.demo1.model;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class DistractionDAO {
 
@@ -42,10 +43,11 @@ public class DistractionDAO {
      * @return returns true if the insert succeeds, elsewise false
      */
     public boolean addDistraction(String description, String username) {
-        String query = "INSERT INTO distraction (description, username) VALUES (?, ?)";
+        String query = "INSERT INTO distraction (description, username, timestamp) VALUES (?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, description);
             preparedStatement.setString(2, username);
+            preparedStatement.setString(3, LocalDateTime.now().toString());
             preparedStatement.executeUpdate();
             return true;
         } catch (SQLException e) {

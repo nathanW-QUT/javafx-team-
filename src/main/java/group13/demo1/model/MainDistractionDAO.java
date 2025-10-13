@@ -3,6 +3,7 @@ package group13.demo1.model;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class MainDistractionDAO {
 
@@ -45,12 +46,13 @@ public class MainDistractionDAO {
      */
 
     public void addMainDistraction(String username, String cause, int minutes, String description) {
-        String sql = "INSERT INTO maindistraction (username, cause, minutes, description) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO maindistraction (username, cause, minutes, description, timestamp) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, cause);
             preparedStatement.setInt(3, minutes);
             preparedStatement.setString(4, description);
+            preparedStatement.setString(5, LocalDateTime.now().toString());
             preparedStatement.executeUpdate();
             System.out.println("Main distraction logged for " + username);
         } catch (SQLException e) {
