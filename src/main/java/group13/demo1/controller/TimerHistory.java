@@ -47,23 +47,6 @@ public class TimerHistory {
     private final MainDistractionHistoryDAO mdDAO = new MainDistractionHistoryDAO(SqliteConnection.getInstance());
 
     // ====== DTO for the Distraction tab======
-    public static class MainDistractionRow {
-        public final int id;
-        public final String reason;
-        public final String time_of_occurence;
-        public final Integer minutes;
-        public final String notes;
-
-        public MainDistractionRow(int id, String cause, String when, Integer minutes, String notes) {
-            this.id = id;
-            this.reason = (cause == null || cause.isBlank()) ? "(untitled)" : cause;
-            this.time_of_occurence = (when == null || when.isBlank()) ? null : when;
-            this.minutes = minutes;
-            this.notes = (notes == null || notes.isBlank()) ? null : notes;
-        }
-
-        public String listTitle(int index) { return "Distraction " + (index + 1) + " — " + reason; }
-    }
 
     private static final DateTimeFormatter dt_formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -108,6 +91,24 @@ public class TimerHistory {
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
+    }
+
+    public static class MainDistractionRow {
+        public final int id;
+        public final String reason;
+        public final String time_of_occurence;
+        public final Integer minutes;
+        public final String notes;
+
+        public MainDistractionRow(int id, String cause, String when, Integer minutes, String notes) {
+            this.id = id;
+            this.reason = (cause == null || cause.isBlank()) ? "(untitled)" : cause;
+            this.time_of_occurence = (when == null || when.isBlank()) ? null : when;
+            this.minutes = minutes;
+            this.notes = (notes == null || notes.isBlank()) ? null : notes;
+        }
+
+        public String listTitle(int index) { return "Distraction " + (index + 1) + " — " + reason; }
     }
 
     private static class DistractionTable {
@@ -241,39 +242,6 @@ public class TimerHistory {
         else sessionList.getSelectionModel().select(0);
     }
 
-    private static LocalDateTime TimeParse(String s) {
-        try { return (s == null || s.isBlank()) ? null : LocalDateTime.parse(s, dt_formatter); }
-        catch (Exception e) { return null; }
-    }
-
-    @FXML
-    private void onConfirm() {
-        if (sessionList != null && sessionList.getSelectionModel().getSelectedIndex() >= 0) {
-            sessionList.getSelectionModel().clearSelection();
-            session.setText("(none)");
-            SelectedSessionDisplay(null);
-        }
-    }
-
-    @FXML
-    private void onDelete() {
-        int idx = (sessionList == null) ? -1 : sessionList.getSelectionModel().getSelectedIndex();
-        if (idx < 0) return;
-
-        TimerHistoryLogic.SessionData s = sessions.get(idx);
-
-        DistractionTable spec = SessionTable(db);
-        if (spec == null) return;
-
-        String sql = "DELETE FROM " + spec.table + " WHERE " + spec.colId + "=?";
-        try (PreparedStatement ps = db.prepareStatement(sql)) {
-            ps.setInt(1, s.id);
-            ps.executeUpdate();
-        } catch (SQLException e) { e.printStackTrace(); }
-
-        String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
-        loadSessionsForUser(user);
-    }
 
     // ---------------- Main Distraction ----------------
     private void MainDistractionList() {
@@ -322,4 +290,40 @@ public class TimerHistory {
         if (!mdItems.isEmpty() && mdList != null) mdList.getSelectionModel().select(0);
         else MainDistractionSelectedRecord(null);
     }
+
+    private static LocalDateTime TimeParse(String s) {
+        try { return (s == null || s.isBlank()) ? null : LocalDateTime.parse(s, dt_formatter); }
+        catch (Exception e) { return null; }
+    }
+
+    @FXML
+    private void onConfirm() {
+        if (sessionList != null && sessionList.getSelectionModel().getSelectedIndex() >= 0) {
+            sessionList.getSelectionModel().clearSelection();
+            session.setText("(none)");
+            SelectedSessionDisplay(null);
+        }
+    }
+
+    @FXML
+    private void onDelete() {
+        int idx = (sessionList == null) ? -1 : sessionList.getSelectionModel().getSelectedIndex();
+        if (idx < 0) return;
+
+        TimerHistoryLogic.SessionData s = sessions.get(idx);
+
+        DistractionTable spec = SessionTable(db);
+        if (spec == null) return;
+
+        String sql = "DELETE FROM " + spec.table + " WHERE " + spec.colId + "=?";
+        try (PreparedStatement ps = db.prepareStatement(sql)) {
+            ps.setInt(1, s.id);
+            ps.executeUpdate();
+        } catch (SQLException e) { e.printStackTrace(); }
+
+        String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
+        loadSessionsForUser(user);
+    }
+
+
 }

@@ -13,7 +13,6 @@
         <URL value="@graphstyle.css"/>
     </stylesheets>
 
-    <!-- Sidebar always visible -->
     <left>
         <fx:include source="Sidebar.fxml"/>
     </left>
@@ -70,12 +69,15 @@
                     <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
                               prefWidth="700" prefHeight="360"/>
                 </VBox>
+                <HBox alignment="CENTER_LEFT" prefWidth="1000">
+                    <Button fx:id="backButton" text="Back" onAction="#onBackHome"/>
+                </HBox>
             </VBox>
 
             <!-- Empty state message, styled for light background -->
             <Label fx:id="emptyState"
                    visible="false"
-                   text="No data to visualize yet."
+                   text="No data to graph yet."
                    style="-fx-font-size: 18px; -fx-text-fill: #666666; -fx-font-weight: bold;"/>
         </StackPane>
     </center>
