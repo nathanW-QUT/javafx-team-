@@ -23,6 +23,7 @@
                     <Button fx:id="startStopButton" text="Start" onAction="#toggleStartStop"/>
                     <Button fx:id="resetButton" text="Reset" onAction="#resetTimer"/>
                 </HBox>
+                <Label fx:id="pauseTimeLabel" text="Total Pause: 00:00" style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
             </VBox>
 
             <Button fx:id="addDistractionButton" text="Add Distraction" onAction="#showQuickLog"/>

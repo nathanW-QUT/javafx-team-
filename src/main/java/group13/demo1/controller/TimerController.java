@@ -17,7 +17,8 @@ public class TimerController {
 
     @FXML
     private Label timerLabel;
-
+    @FXML
+    private Label pauseTimeLabel;
     @FXML
     private Button startStopButton;
 
@@ -28,6 +29,10 @@ public class TimerController {
     @FXML private TextField descriptionField;
     @FXML private Label distractionStatus;
     @FXML private VBox distractionBox;
+
+    @FXML
+    private Button resetButton; //  Need for user test result. when clickin reset while paused the timer will not update correctly
+
 
     private final ITimerDAO timerDAO = new SqliteTimerDAO();
     private final QuickLogController quickLogController = new QuickLogController();
@@ -56,6 +61,8 @@ public class TimerController {
      */
     @FXML
     public void initialize() {
+        resetButton.setDisable(true);
+
         timer = new AnimationTimer() {
             @Override public void handle(long now) {
                 long totalElapsed = elapsedTime;
@@ -70,6 +77,7 @@ public class TimerController {
                 } else {
                     timerLabel.setText(String.format("%02d:%02d", minutes, seconds));
                 }
+                updatePauseTimeDisplay();
             }
         };
         timer.start();
@@ -91,6 +99,7 @@ public class TimerController {
             startTime = System.currentTimeMillis();
             running = true;
             startStopButton.setText("Pause");
+            resetButton.setDisable(false);
 
             if (pauseStartMillis > 0) {
                 totalPauseMillis += System.currentTimeMillis() - pauseStartMillis;
@@ -106,6 +115,8 @@ public class TimerController {
 
             pauseCount++;
             pauseStartMillis = System.currentTimeMillis();
+
+            resetButton.setDisable(true); // disable reset when paused
 
             long sessionSeconds = Math.max(0, Math.round(sessionMillis / 1000.0));
             LocalDateTime endDateTime   = LocalDateTime.now();
@@ -146,8 +157,8 @@ public class TimerController {
         elapsedTime = 0;
         startStopButton.setText("Start");
         timerLabel.setText("00:00");
-        System.out.println("Timer reset");
-
+//        System.out.println("Timer reset");
+        pauseTimeLabel.setText("Total Pause: 00:00");
         String currentUser = UserSession.getInstance().getUsername();
 
         if (activeDistraction != null && !activeDistraction.isBlank() && durationInSeconds > 0) {
@@ -187,6 +198,25 @@ public class TimerController {
         totalPauseMillis = 0;
         pauseCount = 0;
         pauseStartMillis = 0;
+    }
+    private void updatePauseTimeDisplay() {
+        long currentPauseTime = totalPauseMillis;
+
+        // If currently paused, add the current pause duration
+        if (pauseStartMillis > 0 && !running) {
+            currentPauseTime += System.currentTimeMillis() - pauseStartMillis;
+        }
+
+        long pauseSeconds = (currentPauseTime / 1000) % 60;
+        long pauseMinutes = (currentPauseTime / (1000 * 60)) % 60;
+        long pauseHours   = currentPauseTime / (1000 * 60 * 60);
+
+        if (pauseHours > 0) {
+            pauseTimeLabel.setText(String.format("Total Pause: %02d:%02d:%02d", pauseHours, pauseMinutes, pauseSeconds));
+        } else {
+            pauseTimeLabel.setText(String.format("Total Pause: %02d:%02d", pauseMinutes, pauseSeconds));
+        }
+//        resetButton.setDisable(true);
     }
 
 
