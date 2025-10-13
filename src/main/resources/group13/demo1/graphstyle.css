@@ -1,62 +1,53 @@
-/* ===== Light theme for charts ===== */
-
-/* Page background (only for Graphs screen) */
-#graphsRoot {
+/* Scope all styles to the graphs page to avoid touching other screens */
+.graphs-page {
     -fx-background-color: white;
 }
 
-/* Chart backgrounds */
-.chart,
-.chart-content,
-.chart-plot-background {
+/* Transparent chart panes on a white page (no grey boxes) */
+.graphs-page .chart,
+.graphs-page .chart-content,
+.graphs-page .chart-plot-background {
     -fx-background-color: white;
 }
 
-/* Axes */
-.axis {
-    -fx-tick-label-fill: #374151;   /* slate-700 */
+/* Axes: darker text for readability on white */
+.graphs-page .axis {
+    -fx-tick-label-fill: #3a3a3a;
     -fx-tick-label-font-size: 12px;
 }
-.axis .axis-label {
-    -fx-text-fill: #111827;         /* gray-900 */
+.graphs-page .axis .axis-label {
+    -fx-text-fill: #2a2a2a;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
 
-/* Grid lines (soft neutral) */
-.chart-horizontal-grid-lines,
-.chart-vertical-grid-lines {
-    -fx-stroke: #e5e7eb;            /* gray-200 */
+/* Grid lines: subtle light grey */
+.graphs-page .chart-horizontal-grid-lines,
+.graphs-page .chart-vertical-grid-lines {
+    -fx-stroke: #e6e6e6;
 }
 
-/* --- Series colors (bars/lines/pie) --- */
-.default-color0.chart-bar,
-.default-color0.chart-series-line {
-    -fx-bar-fill: #f97316;          /* orange-500 */
-    -fx-stroke:   #f97316;
+/* Bar colors (solid) */
+.graphs-page .default-color0.chart-bar { /* Distractions */
+    -fx-bar-fill: #FF8B3A; /* warm orange */
 }
-.default-color1.chart-bar,
-.default-color1.chart-series-line {
-    -fx-bar-fill: #3b82f6;          /* blue-500 */
-    -fx-stroke:   #3b82f6;
+.graphs-page .default-color1.chart-bar { /* Accomplishments */
+    -fx-bar-fill: #3A86FF; /* clear blue */
 }
 
-/* Hover states (slightly darker, no gradients) */
-.default-color0.chart-bar:hover { -fx-bar-fill: #ea580c; } /* orange-600 */
-.default-color1.chart-bar:hover { -fx-bar-fill: #2563eb; } /* blue-600 */
+/* Hover tweaks */
+.graphs-page .default-color0.chart-bar:hover { -fx-bar-fill: #FFAA58; }
+.graphs-page .default-color1.chart-bar:hover { -fx-bar-fill: #669DFF; }
 
-/* Rounded bar corners (where supported) */
-.chart-bar { -fx-background-radius: 8; }
-
-/* Optional numeric labels above bars (if you add) */
-.bar-value {
-    -fx-text-fill: #111827;
+/* Optional: labels above bars, if you add them later */
+.graphs-page .bar-value {
+    -fx-text-fill: #222;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
 }
 
-/* Pie labels */
-.chart-pie-label {
-    -fx-fill: #374151;
+/* Pie chart label color on white */
+.graphs-page .chart-pie-label {
+    -fx-fill: #222222;
     -fx-font-weight: bold;
 }

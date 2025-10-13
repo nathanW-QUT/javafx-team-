@@ -1,5 +1,5 @@
 import group13.demo1.controller.TimerHistoryLogic;
-import group13.demo1.controller.TimerHistoryLogic.ViewSession;
+import group13.demo1.controller.TimerHistoryLogic.SessionData;
 import group13.demo1.model.TimerRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,8 +40,8 @@ public class TimerHistoryLogicTest {
         return new TimerRecord("vijay", label, s, e, secs);
     }
 
-    private ViewSession view(LocalDateTime s, LocalDateTime e, long focus, long paused, int pauseCount) {
-        return new ViewSession(99, "vijay", s, e, focus, paused, pauseCount);
+    private SessionData view(LocalDateTime s, LocalDateTime e, long focus, long paused, int pauseCount) {
+        return new SessionData(99, "vijay", s, e, focus, paused, pauseCount);
     }
 
 
@@ -95,9 +95,9 @@ public class TimerHistoryLogicTest {
 
     @Test
     public void testListRowForViewSession() {
-        ViewSession v = view(START_SAME, END_SAME, 307, 30, 2);
+        SessionData v = view(START_SAME, END_SAME, 307, 30, 2);
 
-        String row = logic.listRowForViewSession(0, v);
+        String row = logic.listForSession(0, v);
 
 
         String expectedDate = DATE_FMT.format(START_SAME);
@@ -110,9 +110,9 @@ public class TimerHistoryLogicTest {
 
     @Test
     public void testSelectedViewSessionText() {
-        ViewSession v = view(START_SAME, END_SAME, 307, 30, 2);
+        SessionData v = view(START_SAME, END_SAME, 307, 30, 2);
 
-        String actual = logic.selectedViewSessionText(2, v);
+        String actual = logic.SelectedSessionText(2, v);
 
         String dateStr = DATE_FMT.format(START_SAME);
         String range   = TIME_FMT.format(START_SAME) + "  \u2192  " + TIME_FMT.format(END_SAME);

@@ -1,6 +1,8 @@
 package group13.demo1.controller;
 
 import group13.demo1.HelloApplication;
+import group13.demo1.model.MainDistractionDAO;
+import group13.demo1.model.MainDistractionHistoryDAO;
 import group13.demo1.model.SqliteConnection;
 import group13.demo1.model.UserSession;
 import javafx.collections.FXCollections;
@@ -23,27 +25,26 @@ import java.util.*;
 public class TimerHistory {
 
     // ---------- TAB 1 (Timer sessions) ----------
-    @FXML private ListView<TimerHistoryLogic.ViewSession> sessionList;
+    @FXML private ListView<TimerHistoryLogic.SessionData> sessionList;
     @FXML private Label totalsession;
     @FXML private Label totalTime;
     @FXML private Label session;
 
-    @FXML private Label sDateVal, sStartVal, sEndVal, sFocusVal, sPausedVal, sPausesVal;
-
-    @FXML private Button deleteBtn;
+    @FXML private Label DateValue, StartValue, EndValue, FocusTimeValue, PausedTimeValue, PauseCountValue;
 
     private final Connection db = SqliteConnection.getInstance();
     private final TimerHistoryLogic logic = new TimerHistoryLogic();
-    private final ObservableList<TimerHistoryLogic.ViewSession> sessions = FXCollections.observableArrayList();
+    private final ObservableList<TimerHistoryLogic.SessionData> sessions = FXCollections.observableArrayList();
 
     // ---------- TAB 2 (Main Distraction history) ----------
     @FXML private ListView<MainDistractionRow> mdList;
     @FXML private Label mdTotalLabel;
     @FXML private Label mdDetail;
 
-    @FXML private Label mdReasonVal, mdWhenVal, mdMinutesVal, mdNotesVal;
+    @FXML private Label mdReason, mdWhenTimeValue, mdMinutesValue, mdNotes;
 
     private final ObservableList<MainDistractionRow> mdItems = FXCollections.observableArrayList();
+    private final MainDistractionHistoryDAO mdDAO = new MainDistractionHistoryDAO(SqliteConnection.getInstance());
 
     // ====== DTO for the Distraction tab======
     public static class MainDistractionRow {
@@ -61,29 +62,12 @@ public class TimerHistory {
             this.notes = (notes == null || notes.isBlank()) ? null : notes;
         }
 
-        public String listTitle(int indexZeroBased) { return "Distraction " + (indexZeroBased + 1) + " — " + reason; }
+        public String listTitle(int index) { return "Distraction " + (index + 1) + " — " + reason; }
     }
 
-    private static final DateTimeFormatter ISO = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private static final DateTimeFormatter dt_formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    private static class TableSpec {
-        final String table;
-        final String colId;
-        final String colUsername;
-        final String colStart;
-        final String colEnd;
-        final String colRun;    // focus time
-        final String colPause;  // paused seconds
-        final String colCount;  // pause count
-        TableSpec(String table, String colId, String colUsername,
-                  String colStart, String colEnd, String colRun, String colPause, String colCount) {
-            this.table = table; this.colId = colId; this.colUsername = colUsername;
-            this.colStart = colStart; this.colEnd = colEnd; this.colRun = colRun;
-            this.colPause = colPause; this.colCount = colCount;
-        }
-    }
-
-    private TableSpec detectSessionTableSpec(Connection db) {
+    private DistractionTable SessionTable(Connection db) {
         List<String> userCols  = List.of("username","user","user_name","userid","user_id");
         List<String> startCols = List.of("startTime","start","started_at","start_time");
         List<String> endCols   = List.of("endTime","end","ended_at","end_time");
@@ -119,11 +103,28 @@ public class TimerHistory {
 
                 if (colStart != null && colRun != null && colPause != null && colCnt != null) {
                     if (colId == null) colId = "rowid";
-                    return new TableSpec(table, colId, colUser, colStart, colEnd, colRun, colPause, colCnt);
+                    return new DistractionTable(table, colId, colUser, colStart, colEnd, colRun, colPause, colCnt);
                 }
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
+    }
+
+    private static class DistractionTable {
+        final String table;
+        final String colId;
+        final String colUsername;
+        final String colStart;
+        final String colEnd;
+        final String colRun;    // focus time
+        final String colPause;  // paused seconds
+        final String colCount;  // pause count
+        DistractionTable(String table, String colId, String colUsername,
+                  String colStart, String colEnd, String colRun, String colPause, String colCount) {
+            this.table = table; this.colId = colId; this.colUsername = colUsername;
+            this.colStart = colStart; this.colEnd = colEnd; this.colRun = colRun;
+            this.colPause = colPause; this.colCount = colCount;
+        }
     }
 
     private static String firstPresent(Map<String,String> present, List<String> candidates) {
@@ -139,52 +140,51 @@ public class TimerHistory {
         if (sessionList != null) {
             sessionList.setItems(sessions);
             sessionList.setCellFactory(lv -> new ListCell<>() {
-                @Override protected void updateItem(TimerHistoryLogic.ViewSession s, boolean empty) {
+                @Override protected void updateItem(TimerHistoryLogic.SessionData s, boolean empty) {
                     super.updateItem(s, empty);
-                    setText(empty || s == null ? null : logic.listRowForViewSession(getIndex(), s));
+                    setText(empty || s == null ? null : logic.listForSession(getIndex(), s));
                 }
             });
             sessionList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, s) -> {
-                session.setText(s == null ? "(none)" : logic.selectedViewSessionText(
+                session.setText(s == null ? "(none)" : logic.SelectedSessionText(
                         sessionList.getSelectionModel().getSelectedIndex(), s));
-                fillSessionCard(s);
+                SelectedSessionDisplay(s);
             });
         }
 
         loadSessionsForUser(user);
-
         // ----- Distraction history -----
-        wireMainDistractionList();
+        MainDistractionList();
         loadMainDistractions(user);
     }
 
-    private void fillSessionCard(TimerHistoryLogic.ViewSession s) {
+    private void SelectedSessionDisplay(TimerHistoryLogic.SessionData s) {
         if (s == null) {
-            sDateVal.setText("—");
-            sStartVal.setText("—");
-            sEndVal.setText("—");
-            sFocusVal.setText("—");
-            sPausedVal.setText("—");
-            sPausesVal.setText("—");
+            DateValue.setText("—");
+            StartValue.setText("—");
+            EndValue.setText("—");
+            FocusTimeValue.setText("—");
+            PausedTimeValue.setText("—");
+            PauseCountValue.setText("—");
             return;
         }
-        sDateVal.setText(s.start == null ? "—" : DateTimeFormatter.ofPattern("MMM d, yyyy").format(s.start));
-        sStartVal.setText(s.start == null ? "—" : DateTimeFormatter.ofPattern("hh:mm:ss a").format(s.start));
-        sEndVal.setText(s.end == null ? "—" : DateTimeFormatter.ofPattern("hh:mm:ss a").format(s.end));
-        sFocusVal.setText(logic.formatElapsedTime(s.focusSeconds));
-        sPausedVal.setText(logic.formatElapsedTime(s.pauseSeconds));
-        sPausesVal.setText(Integer.toString(s.pauseCount));
+        DateValue.setText(s.start == null ? "—" : DateTimeFormatter.ofPattern("MMM d,  yyyy").format(s.start));
+        StartValue.setText(s.start == null ? "—" : DateTimeFormatter.ofPattern("hh:mm:ss a").format(s.start));
+        EndValue.setText(s.end == null ? "—" : DateTimeFormatter.ofPattern("hh:mm:ss a").format(s.end));
+        FocusTimeValue.setText(logic.formatElapsedTime(s.focustime));
+        PausedTimeValue.setText(logic.formatElapsedTime(s.pausetime));
+        PauseCountValue.setText(Integer.toString(s.pausecount));
     }
 
     private void loadSessionsForUser(String username) {
         sessions.clear();
 
-        TableSpec spec = detectSessionTableSpec(db);
+        DistractionTable spec = SessionTable(db);
         if (spec == null) {
             totalsession.setText("Total Sessions: 0");
             totalTime.setText("Total Focus Time: 0s");
             session.setText("(none)");
-            fillSessionCard(null);
+            SelectedSessionDisplay(null);
             return;
         }
 
@@ -213,7 +213,7 @@ public class TimerHistory {
         sql.append("ORDER BY ").append(spec.colStart).append(" DESC");
 
         long totalFocus = 0L;
-        List<TimerHistoryLogic.ViewSession> rows = new ArrayList<>();
+        List<TimerHistoryLogic.SessionData> rows = new ArrayList<>();
 
         try (PreparedStatement ps = db.prepareStatement(sql.toString())) {
             if (filterByUser) ps.setString(1, username);
@@ -221,13 +221,13 @@ public class TimerHistory {
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String userCol = rs.getString("username");
-                    LocalDateTime start = safeParse(rs.getString("startTime"));
-                    LocalDateTime end   = safeParse(rs.getString("endTime"));
+                    LocalDateTime start = TimeParse(rs.getString("startTime"));
+                    LocalDateTime end   = TimeParse(rs.getString("endTime"));
                     long focus  = rs.getLong("runSecs");
                     long paused = rs.getLong("pauseSecs");
                     int pauses  = rs.getInt("pauseCnt");
 
-                    rows.add(new TimerHistoryLogic.ViewSession(id, userCol, start, end, focus, paused, pauses));
+                    rows.add(new TimerHistoryLogic.SessionData(id, userCol, start, end, focus, paused, pauses));
                     totalFocus += focus;
                 }
             }
@@ -237,12 +237,12 @@ public class TimerHistory {
         totalsession.setText("Total Sessions: " + sessions.size());
         totalTime.setText("Total Focus Time: " + logic.formatTotal(totalFocus));
 
-        if (sessions.isEmpty()) { session.setText("(none)"); fillSessionCard(null); }
+        if (sessions.isEmpty()) { session.setText("(none)"); SelectedSessionDisplay(null); }
         else sessionList.getSelectionModel().select(0);
     }
 
-    private static LocalDateTime safeParse(String s) {
-        try { return (s == null || s.isBlank()) ? null : LocalDateTime.parse(s, ISO); }
+    private static LocalDateTime TimeParse(String s) {
+        try { return (s == null || s.isBlank()) ? null : LocalDateTime.parse(s, dt_formatter); }
         catch (Exception e) { return null; }
     }
 
@@ -251,7 +251,7 @@ public class TimerHistory {
         if (sessionList != null && sessionList.getSelectionModel().getSelectedIndex() >= 0) {
             sessionList.getSelectionModel().clearSelection();
             session.setText("(none)");
-            fillSessionCard(null);
+            SelectedSessionDisplay(null);
         }
     }
 
@@ -260,9 +260,9 @@ public class TimerHistory {
         int idx = (sessionList == null) ? -1 : sessionList.getSelectionModel().getSelectedIndex();
         if (idx < 0) return;
 
-        TimerHistoryLogic.ViewSession s = sessions.get(idx);
+        TimerHistoryLogic.SessionData s = sessions.get(idx);
 
-        TableSpec spec = detectSessionTableSpec(db);
+        DistractionTable spec = SessionTable(db);
         if (spec == null) return;
 
         String sql = "DELETE FROM " + spec.table + " WHERE " + spec.colId + "=?";
@@ -276,7 +276,7 @@ public class TimerHistory {
     }
 
     // ---------------- Main Distraction ----------------
-    private void wireMainDistractionList() {
+    private void MainDistractionList() {
         if (mdList == null) return;
 
         mdList.setItems(mdItems);
@@ -286,91 +286,40 @@ public class TimerHistory {
                 setText(empty || row == null ? null : row.listTitle(getIndex()));
             }
         });
-        mdList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, row) -> fillMdCard(row));
+        mdList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, row) -> MainDistractionSelectedRecord(row));
     }
 
-    private void fillMdCard(MainDistractionRow row) {
+    private void MainDistractionSelectedRecord(MainDistractionRow row) {
         if (row == null) {
-            mdReasonVal.setText("—");
-            mdWhenVal.setText("—");
-            mdMinutesVal.setText("—");
-            mdNotesVal.setText("—");
+            mdReason.setText("—");
+            mdWhenTimeValue.setText("—");
+            mdMinutesValue.setText("—");
+            mdNotes.setText("—");
             if (mdDetail != null) mdDetail.setText("");
             return;
         }
-        mdReasonVal.setText(row.reason == null ? "—" : row.reason);
-        mdWhenVal.setText(row.time_of_occurence == null ? "—" : row.time_of_occurence);
-        mdMinutesVal.setText(row.minutes == null ? "—" : row.minutes + "m");
-        mdNotesVal.setText(row.notes == null ? "—" : row.notes);
+        mdReason.setText(row.reason == null ? "—" : row.reason);
+        mdWhenTimeValue.setText(row.time_of_occurence == null ? "—" : row.time_of_occurence);
+        mdMinutesValue.setText(row.minutes == null ? "—" : row.minutes + "m");
+        mdNotes.setText(row.notes == null ? "—" : row.notes);
         if (mdDetail != null) mdDetail.setText("");
     }
 
     private void loadMainDistractions(String username) {
         if (username == null || username.isBlank() || mdItems == null) return;
         mdItems.clear();
-
-        final String sql = "SELECT * FROM maindistraction WHERE username=? ORDER BY id DESC";
-
-        try (PreparedStatement ps = db.prepareStatement(sql)) {
-            ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) {
-                ResultSetMetaData md = rs.getMetaData();
-                while (rs.next()) {
-                    int id = safeGetInt(rs, md, "id", "rowid");
-                    String cause = safeGet(rs, md, "cause", "tag", "title");
-                    String when = firstNonBlank(
-                            safeGet(rs, md, "created_at"),
-                            safeGet(rs, md, "timestamp"),
-                            safeGet(rs, md, "date"),
-                            safeGet(rs, md, "loggedAt"),
-                            safeGet(rs, md, "time")
-                    );
-                    Integer minutes = firstNonNullInt(
-                            safeGetIntNullable(rs, md, "minutes"),
-                            safeGetIntNullable(rs, md, "duration"),
-                            safeGetIntNullable(rs, md, "durationMinutes"),
-                            safeGetIntNullable(rs, md, "duration_min")
-                    );
-                    String notes = firstNonBlank(
-                            safeGet(rs, md, "notes"),
-                            safeGet(rs, md, "note"),
-                            safeGet(rs, md, "description"),
-                            safeGet(rs, md, "details")
-                    );
-                    mdItems.add(new MainDistractionRow(id, cause, when, minutes, notes));
-                }
-            }
-        } catch (SQLException e) { e.printStackTrace(); }
-
+        List<MainDistractionDAO.MainItem> all = mdDAO.getAllForUser(username);
+        for (MainDistractionDAO.MainItem it : all) {
+            mdItems.add(new MainDistractionRow(
+                    it.id,
+                    it.cause,
+                    it.timestamp,
+                    it.minutes,
+                    it.description
+            ));
+        }
         if (mdTotalLabel != null) mdTotalLabel.setText("Total Records: " + mdItems.size());
         if (!mdItems.isEmpty() && mdList != null) mdList.getSelectionModel().select(0);
-        else fillMdCard(null);
+        else MainDistractionSelectedRecord(null);
     }
-
-    private static String safeGet(ResultSet rs, ResultSetMetaData md, String... cols) throws SQLException {
-        for (String c : cols) if (hasColumn(md, c)) {
-            String v = rs.getString(c);
-            if (v != null && !v.isBlank()) return v;
-        }
-        return null;
-    }
-    private static Integer safeGetInt(ResultSet rs, ResultSetMetaData md, String... cols) throws SQLException {
-        for (String c : cols) if (hasColumn(md, c)) { try { return rs.getInt(c); } catch (SQLException ignore) {} }
-        return 0;
-    }
-    private static Integer safeGetIntNullable(ResultSet rs, ResultSetMetaData md, String col) throws SQLException {
-        if (!hasColumn(md, col)) return null;
-        int v = rs.getInt(col);
-        return rs.wasNull() ? null : v;
-    }
-    private static boolean hasColumn(ResultSetMetaData md, String name) throws SQLException {
-        int n = md.getColumnCount();
-        for (int i = 1; i <= n; i++) {
-            if (name.equalsIgnoreCase(md.getColumnLabel(i)) || name.equalsIgnoreCase(md.getColumnName(i))) return true;
-        }
-        return false;
-    }
-    private static String firstNonBlank(String... vals) { for (String v : vals) if (v != null && !v.isBlank()) return v; return null; }
-    private static Integer firstNonNullInt(Integer... vals) { for (Integer v : vals) if (v != null) return v; return null; }
-
 }

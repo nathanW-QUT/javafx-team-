@@ -7,38 +7,30 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="group13.demo1.controller.GraphsController">
+            fx:controller="group13.demo1.controller.GraphsController"
+            styleClass="graphs-page">
     <stylesheets>
         <URL value="@graphstyle.css"/>
     </stylesheets>
 
+    <!-- Sidebar always visible -->
     <left>
         <fx:include source="Sidebar.fxml"/>
     </left>
 
     <center>
-        <!-- white background via #graphsRoot selector in graphstyle.css -->
-        <StackPane fx:id="graphsRoot">
-            <VBox alignment="TOP_CENTER" maxWidth="1100" spacing="0">
+        <StackPane>
+            <VBox spacing="18" alignment="TOP_CENTER" maxWidth="1100">
                 <padding>
                     <Insets top="24" right="24" bottom="24" left="24"/>
                 </padding>
 
-                <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold;">
-                    <!-- Add a little bottom space under the page title -->
-                    <VBox.margin>
-                        <Insets bottom="12"/>
-                    </VBox.margin>
-                </Label>
+                <Label text="Insights" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1f1f1f;"/>
 
-                <!-- SECTION 1: Distractions vs Accomplishments -->
-                <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
-                    <!-- Section-level margin: adds gap AFTER the title+chart block -->
-                    <VBox.margin>
-                        <Insets bottom="26"/>
-                    </VBox.margin>
+                <!-- DISTRACTIONS+ACCOMPLISHMENT BAR CHART -->
+                <VBox spacing="10" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Distractions vs Accomplishments (Last 7 Days)"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #222;"/>
                     <BarChart fx:id="dailyBar" legendVisible="true"
                               prefWidth="1000" prefHeight="280" animated="false">
                         <xAxis>
@@ -50,13 +42,13 @@
                     </BarChart>
                 </VBox>
 
-                <!-- SECTION 2: Distractions-only -->
-                <VBox spacing="8" alignment="TOP_LEFT" prefWidth="1000">
-                    <VBox.margin>
-                        <Insets bottom="26"/>
-                    </VBox.margin>
+                <!-- Spacer between sections (title included) -->
+                <Region prefHeight="4"/>
+
+                <!-- DISTRACTIONS-ONLY BAR CHART -->
+                <VBox spacing="10" alignment="TOP_LEFT" prefWidth="1000">
                     <Label text="Distractions (Last 7 Days)"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #222;"/>
                     <BarChart fx:id="disBar" legendVisible="false"
                               prefWidth="1000" prefHeight="240" animated="false">
                         <xAxis>
@@ -68,26 +60,23 @@
                     </BarChart>
                 </VBox>
 
-                <!-- SECTION 3: Pie -->
+                <!-- Spacer between sections (title included) -->
+                <Region prefHeight="4"/>
+
+                <!-- PIE CHART-->
                 <VBox spacing="10" alignment="TOP_LEFT" prefWidth="1000">
-                    <VBox.margin>
-                        <Insets bottom="26"/>
-                    </VBox.margin>
                     <Label text="Main Distraction Tags"
-                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                           style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #222;"/>
                     <PieChart fx:id="tagPie" legendVisible="false" labelsVisible="true"
                               prefWidth="700" prefHeight="360"/>
                 </VBox>
-
-                <HBox alignment="CENTER_LEFT" prefWidth="1000">
-                    <Button fx:id="backBtn" text="Back" onAction="#onBackHome"/>
-                </HBox>
             </VBox>
 
+            <!-- Empty state message, styled for light background -->
             <Label fx:id="emptyState"
                    visible="false"
                    text="No data to visualize yet."
-                   style="-fx-font-size: 18px; -fx-text-fill: #374151; -fx-opacity: 0.9; -fx-font-weight: bold;"/>
+                   style="-fx-font-size: 18px; -fx-text-fill: #666666; -fx-font-weight: bold;"/>
         </StackPane>
     </center>
 </BorderPane>
