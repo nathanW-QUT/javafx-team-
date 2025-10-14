@@ -68,9 +68,10 @@ public class AccomplishmentController
         accomplishmentLabel.clear();
 
         List<Accomplishment> userAccomplishments = accomplishmentDAO.getAccomplishmentsByUsername(username);
-        if (userAccomplishments.size() >= 5)
+        if (userAccomplishments.size() % 5 == 0)
         {
             showCongratulations(" You've logged " + userAccomplishments.size() + " accomplishments!");
+            statusLabel.setText("Successfully added accomplishment");
         }
         else
         {

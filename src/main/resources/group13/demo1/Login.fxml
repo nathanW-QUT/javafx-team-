@@ -5,6 +5,10 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.Login">
 
+    <top>
+        <Label text="Welcome Back!" styleClass="title-label" BorderPane.alignment="CENTER"/>
+    </top>
+
     <center>
         <VBox spacing="15" alignment="CENTER" maxWidth="300">
             <TextField fx:id="usernameField" promptText="Username" />
@@ -27,5 +31,4 @@
             </right>
         </BorderPane>
     </bottom>
-
 </BorderPane>
