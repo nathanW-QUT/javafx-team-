@@ -21,8 +21,8 @@
             </left>
             <right>
                 <HBox>
-                    <Button text="Change Password" onAction="#onClickEditPassword" />
-                    <Button text="Delete Account" onAction="#onDeleteAccount" fx:id="DeleteAccount" />
+                    <Button text="Change Password" onAction="#onClickEditPassword" style="-fx-border-color: #0078D7  ; -fx-border-radius: 25; "/>
+                    <Button text="Delete Account" onAction="#onDeleteAccount" fx:id="DeleteAccount" style="-fx-border-color: red; -fx-border-radius: 25; -fx-border-width: 1;" />
                 </HBox>
             </right>
         </BorderPane>
