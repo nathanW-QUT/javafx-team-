@@ -29,7 +29,8 @@
                                 <VBox>
                                     <Label text="Log New Distraction" styleClass="subtitle"/>
                                     <Label text="Record New Distraction, add optional notes." styleClass="description"/>
-                                    <Button text="Log New Distraction"
+                                    <Button fx:id="nextButton"
+                                            text="Log New Distraction"
                                             onAction="#onClickLogDistraction"
                                             styleClass="primary-button-long"/>
                                     <Button text="Manage Full Distraction Log"
