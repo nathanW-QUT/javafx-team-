@@ -146,6 +146,19 @@
     -fx-transition: all 0.3s ease-in-out;
 }
 
+.initButtons
+{
+    -fx-background-color: linear-gradient(to top, darkgrey, grey);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(16,24,50,0.3), 6, 0.2, 0, 2);
+    -fx-padding: 10 20;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
 .button:hover
 {
     -fx-background-color: #e5eef8; /*Midnight Blues: 2*/

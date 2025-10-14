@@ -24,8 +24,8 @@
 
         <bottom>
             <HBox spacing="100.0" alignment="CENTER">
-                <Button fx:id="nextButton" text="Login" onAction="#onLoginButtonClicked"/>
-                <Button text="Register" onAction="#onRegisterButtonClicked"/>
+                <Button fx:id="nextButton" text="Login" onAction="#onLoginButtonClicked" styleClass="initButtons"/>
+                <Button text="Register" onAction="#onRegisterButtonClicked" styleClass="initButtons"/>
             </HBox>
         </bottom>
     </BorderPane>

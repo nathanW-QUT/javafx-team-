@@ -11,7 +11,7 @@
 
     <center>
         <VBox spacing="10" alignment="TOP_CENTER">
-            <Label text="Welcome to KeepTrac" alignment="TOP_CENTER" styleClass="title-label"/>
+            <Label text="Welcome to KeepTrack" alignment="TOP_CENTER" styleClass="title-label"/>
             <Label text="The Distraction Logger and productivity app for engineering students." styleClass="subtitle"/>
             <Label text="Here, we keep things simple and don't bury you under needless novelties." styleClass="subtitle"/>
 
