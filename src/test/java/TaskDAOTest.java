@@ -16,13 +16,24 @@ public class TaskDAOTest {
 
     @Test
     void testAddAndGetTasks() {
-        Task t = new Task("bob", "Finish report", "Monthly report", LocalDate.now(), 0);
+        String username = "bob";
+        String title = "Finish report";
+        String description = "Monthly report";
+        LocalDate dueDate = LocalDate.now();
+
+        Task t = new Task(username, title, description, dueDate, 0);
         int id = dao.addTask(t);
         assertTrue(id > 0);
 
-        List<Task> tasks = dao.getTasksForUser("bob");
-        assertEquals(1, tasks.size());
-        assertEquals("Finish report", tasks.get(0).getTitle());
+        List<Task> tasks = dao.getTasksForUser(username);
+
+        boolean taskExists = tasks.stream()
+                .anyMatch(task -> task.getId() == id &&
+                        task.getTitle().equals(title) &&
+                        task.getDescription().equals(description) &&
+                        task.getDueDate().equals(dueDate));
+
+        assertTrue(taskExists);
     }
 
 
