@@ -90,5 +90,4 @@ public class CountdownController {
         long seconds = totalSeconds % 60;
         countdownLabel.setText(String.format("%02d:%02d", minutes, seconds));
     }
-
 }

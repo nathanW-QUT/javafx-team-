@@ -48,7 +48,6 @@ public class GraphsController {
             return;
         }
 
-
         Map<String, Long> tagCounts = dao.getTagCountsForUser(user);          // label -> count
         if (tagCounts != null && !tagCounts.isEmpty()) {
             ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
@@ -59,7 +58,6 @@ public class GraphsController {
         } else {
             tagPie.setVisible(false);
         }
-
 
         Map<String, Long> daily = dao.getDailyDistractionCounts(user);
         if (daily != null && !daily.isEmpty()) {
@@ -74,7 +72,6 @@ public class GraphsController {
         } else {
             trendChart.setVisible(false);
         }
-
 
         List<TimerRecord> timers = dao.getTimersForUser(user);
         if (timers != null && !timers.isEmpty()) {
@@ -91,14 +88,12 @@ public class GraphsController {
                 byTag.computeIfAbsent(tag, k -> new ArrayList<>()).add(hour);
             }
 
-
             timeXAxis.setLabel("Tag");
             timeYAxis.setLabel("Time of day");
             timeYAxis.setAutoRanging(false);
             timeYAxis.setLowerBound(0);
             timeYAxis.setUpperBound(24);
             timeYAxis.setTickUnit(2);
-
 
             timeYAxis.setTickLabelFormatter(new StringConverter<Number>() {
                 @Override public String toString(Number n) {
@@ -111,7 +106,6 @@ public class GraphsController {
                 }
                 @Override public Number fromString(String s) { return 0; }
             });
-
 
             timeChart.getData().clear();
             for (Map.Entry<String, List<Double>> e : byTag.entrySet()) {
@@ -128,7 +122,6 @@ public class GraphsController {
         } else {
             timeChart.setVisible(false);
         }
-
 
         if ((tagCounts == null || tagCounts.isEmpty()) &&
                 (daily == null || daily.isEmpty()) &&

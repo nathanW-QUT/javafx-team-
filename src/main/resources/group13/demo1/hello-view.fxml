@@ -16,7 +16,7 @@
 
     <BorderPane VBox.vgrow="ALWAYS">
         <center>
-            <VBox alignment="CENTER">
+            <VBox styleClass="logoContent-box" alignment="CENTER">
                 <Label text="Welcome to" styleClass="welcome-text"/>
                 <Label fx:id="welcomeText" text="KeepTrack Distraction Logger" styleClass="title-label"/>
             </VBox>

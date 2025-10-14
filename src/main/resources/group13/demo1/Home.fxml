@@ -2,12 +2,17 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.HelloController" >
 
     <top>
-        <Label text="KeepTrack Distraction Logger" styleClass="header-label" BorderPane.alignment="CENTER"/>
+        <HBox styleClass="header-bar" spacing="20" alignment="CENTER_LEFT">
+            <Label text="KeepTrack Distraction Logger" styleClass="header-label" BorderPane.alignment="CENTER"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+        </HBox>
     </top>
 
     <left>
@@ -16,7 +21,8 @@
 
     <center>
         <StackPane>
-            <VBox spacing="20" alignment="TOP_CENTER" styleClass="content-box">
+<!--                content box should have curved edges-->
+            <VBox spacing="25" alignment="TOP_CENTER" styleClass="content-box">
                 <VBox spacing="15">
                     <Label text="Quick Distraction Logging" styleClass="section-title"/>
                         <HBox spacing="30">
@@ -32,15 +38,31 @@
                                             styleClass="secondary-button-long"/>
                                 </VBox>
                             </HBox>
-
-                            <VBox spacing="10">
-                                <Label text="Instant Log" styleClass="subtitle"/>
-                                <Label text="Quickly record a new distraction - No details Needed!" styleClass="description"/>
-                                <Button fx:id="nextButton"
-                                        text="Instant Log"
-                                        styleClass="primary-button"/>
-                            </VBox>
                         </HBox>
+
+                    <HBox spacing="30" alignment="CENTER">
+                        <VBox alignment="CENTER">
+                            <LineChart fx:id="lineChart" maxWidth="400" maxHeight="300">
+                                <xAxis>
+                                    <CategoryAxis fx:id="xAxis1" label="Year"/>
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis fx:id="yAxis1" label="No. Distractions Logged"/>
+                                </yAxis>
+                            </LineChart>
+                        </VBox>
+
+                        <VBox alignment="CENTER">
+                            <BarChart fx:id="barChart" prefWidth="400" prefHeight="300">
+                                <xAxis>
+                                    <CategoryAxis fx:id="xAxis2" label="Day of Week"/>
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis fx:id="yAxis2" label="Accomplishment to Distraction"/>
+                                </yAxis>
+                            </BarChart>
+                        </VBox>
+                    </HBox>
 
                         <VBox spacing="10">
                             <Label text="Recent Distractions" styleClass="section-title"/>

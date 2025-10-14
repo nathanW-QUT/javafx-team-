@@ -8,12 +8,13 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.TimerController">
     <left>
-    <fx:include source="Sidebar.fxml"/>
-</left>
+        <fx:include source="Sidebar.fxml"/>
+    </left>
 
     <!-- Center stopwatch -->
     <center>
         <VBox alignment="CENTER" spacing="20">
+            <Label text="Timer" styleClass="title-label"/>
             <VBox alignment="CENTER" maxWidth="200" styleClass="content-box">
                 <Label fx:id="welcomeText"/>
                 <Label fx:id="timerLabel" text="00:00" style="-fx-font-size: 28px;"/>

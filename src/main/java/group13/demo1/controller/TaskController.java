@@ -83,38 +83,32 @@ private void onCreateTask() {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-}
-
-
-
-@FXML
-private void onCreateTaskPage() throws IOException {
-
-    Stage stage = (Stage) nextButton.getScene().getWindow();
-    FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("CreateTask.fxml"));
-    Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, 640);
-    stage.setScene(scene);
-    String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
-    scene.getStylesheets().add(stylesheet);
-
-
-}
-
-@FXML
-private void onToggleCompletion() {
-    if (currentTask != null) {
-        currentTask.setCompletion(completionCheckBox.isSelected() ? 100 : 0);
-        taskDao.updateTaskCompletion(currentTask.getId(), currentTask.getCompletion());
-        taskCompletionBar.setProgress(currentTask.getCompletion() / 100.0);
     }
-}
-
-private void clearForm() {
-    titleField.clear();
-    descriptionField.clear();
-    dueDatePicker.setValue(null);
-}
 
 
+    @FXML
+    private void onCreateTaskPage() throws IOException
+    {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("CreateTask.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, 640);
+        stage.setScene(scene);
+        String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+        scene.getStylesheets().add(stylesheet);
+    }
+
+    @FXML
+    private void onToggleCompletion() {
+        if (currentTask != null) {
+            currentTask.setCompletion(completionCheckBox.isSelected() ? 100 : 0);
+            taskDao.updateTaskCompletion(currentTask.getId(), currentTask.getCompletion());
+            taskCompletionBar.setProgress(currentTask.getCompletion() / 100.0);
+        }
+    }
+
+    private void clearForm() {
+        titleField.clear();
+        descriptionField.clear();
+        dueDatePicker.setValue(null);
+    }
 }

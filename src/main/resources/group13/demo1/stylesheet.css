@@ -8,7 +8,7 @@
 {
     -fx-font-size: 24px !important;
     -fx-font-weight:bold !important;
-    -fx-text-fill: white !important; /*White*/
+    -fx-text-fill: black !important; /*White*/
     -fx-padding: 30 !important;
     -fx-font-family: "Segoe UI", "Arial", sans-serif !important;
     -fx-alignment: center !important;
@@ -95,7 +95,8 @@
 
 .root
 {
-    -fx-background-color: linear-gradient(to right top, #131e37, #1c2a4b, #131e37); /*Midnight Blues: 5 and 3*/
+    -fx-background-color: white;
+    /*-fx-background-color: linear-gradient(to right top, #131e37, #1c2a4b, #131e37); !*Midnight Blues: 5 and 3*!*/
     -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
@@ -183,11 +184,17 @@
 
 .content-box
 {
-    -fx-background-color: white;
+    -fx-background-color: #dddddd;
     -fx-background-radius: 10;
     -fx-padding: 20;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
     -fx-pref-width: 98%;
+}
+
+.logoContent-box
+{
+    -fx-background-color: #627092; /* Midnight Blue 3*/
+    -fx-background-radius: 10;
 }
 
 #SideBar Button

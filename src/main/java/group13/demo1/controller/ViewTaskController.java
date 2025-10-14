@@ -28,7 +28,6 @@ public class ViewTaskController {
     private Task currentTask;
     private final TaskDAO taskDao = new TaskDAO();
 
-
     public void loadTask(Task task) {
         this.currentTask = task;
         taskTitle.setText(task.getTitle());
@@ -48,7 +47,6 @@ public class ViewTaskController {
 
         subtaskListView.setItems(subtaskItems);
     }
-
 
     @FXML
     public void onSaveProgress() {

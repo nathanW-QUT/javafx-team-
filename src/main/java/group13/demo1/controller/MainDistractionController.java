@@ -111,8 +111,4 @@ public class MainDistractionController {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
-
-
-
-
 }

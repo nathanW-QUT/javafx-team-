@@ -17,13 +17,11 @@ public class TimerHistoryLogic {
         rows.sort((a, b) -> b.getStartTime().compareTo(a.getStartTime()));
     }
 
-
     public String Row(int indexZeroBased, TimerRecord t)
     {
         int n = indexZeroBased + 1;
         return "Timer " + n + "  -  " + t.getLabel();
     }
-
 
     public String SelectedSessionText(int indexZeroBased, TimerRecord t)
     {
@@ -32,7 +30,6 @@ public class TimerHistoryLogic {
         String range = formatRange(t);
         return "Timer " + n + "  -  " + t.getLabel() + "  -  " + range + "  -  " + formatElapsedTime(secs);
     }
-
 
     public String formatRange(TimerRecord t)
     {
@@ -48,13 +45,11 @@ public class TimerHistoryLogic {
         }
     }
 
-
     public long elapsedTimeFromTimerRecord(TimerRecord t)
     {
         long secs = Duration.between(t.getStartTime(), t.getEndTime()).getSeconds();
         return Math.max(0, secs);
     }
-
 
     public String formatElapsedTime(long seconds)
     {
@@ -69,7 +64,6 @@ public class TimerHistoryLogic {
         return String.format("%02dh:%02dm:%02ds", h, m, s);
     }
 
-
     public String formatTotal(long seconds)
     {
         long h = seconds / 3600;
@@ -80,7 +74,6 @@ public class TimerHistoryLogic {
         return String.format("%ds", s);
     }
 
-
     public long TotalSeconds(List<TimerRecord> items)
     {
         long totalSecs = 0L;
@@ -88,10 +81,8 @@ public class TimerHistoryLogic {
         return totalSecs;
     }
 
-
     public String totalsHeaderInitial(int count) { return "Total Timer Sessions: " + count; }
     public String totalsHeaderOnChange(int count) { return "Total Timers: " + count; }
-
 
     public int nextIndexAfterDelete(int deletedIndex, int sizeAfterRemoval)
     {

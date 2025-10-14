@@ -88,6 +88,7 @@ public class HelloController  {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
+
     @FXML
     private void onClickGoGraphs() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
@@ -107,6 +108,7 @@ public class HelloController  {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
+
     @FXML
     protected void onRegisterButtonClicked() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
@@ -116,6 +118,7 @@ public class HelloController  {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
+
     @FXML
     protected void onCountdownButtonClicked() throws IOException {
         Stage stage = (Stage) nextButton.getScene().getWindow();
@@ -135,5 +138,4 @@ public class HelloController  {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
-
 }

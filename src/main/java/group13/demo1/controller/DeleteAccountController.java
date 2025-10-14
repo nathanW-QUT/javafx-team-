@@ -30,7 +30,6 @@ public class DeleteAccountController {
             return;
         }
 
-
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                 "Are you sure you want to delete this account?",
                 ButtonType.YES, ButtonType.NO);
@@ -54,15 +53,10 @@ public class DeleteAccountController {
             } else {
                 new Alert(Alert.AlertType.ERROR, "Invalid credentials or account not found.").showAndWait();
             }
-
         }
-
     }
     @FXML
     private void onClickback() throws IOException {
-
-
-
         Stage stage = (Stage) nextButton.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
@@ -70,6 +64,4 @@ public class DeleteAccountController {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
-
-
 }

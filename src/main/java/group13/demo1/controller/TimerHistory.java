@@ -58,14 +58,11 @@ public class TimerHistory {
         list.setItems(items);
         list.setPlaceholder(new Label("No timer sessions yet."));
 
-
         totalsession.setText(logic.totalsHeaderInitial(items.size()));
         items.addListener((ListChangeListener<TimerRecord>) c -> totalsession.setText(logic.totalsHeaderOnChange(items.size())));
 
-
         updateTotal();
         items.addListener((ListChangeListener<TimerRecord>) c -> updateTotal());
-
 
         list.getSelectionModel().selectedItemProperty().addListener((obs, oldV, t) -> {
             if (t == null)

@@ -68,9 +68,6 @@ public class CreateTaskController {
         List<String> subtasks = List.of("Subtask 1", "Subtask 2", "Subtask 3");
 
         taskDao.addSubtasks(taskId, subtasks);
-
-
-
     }
 
     @FXML
