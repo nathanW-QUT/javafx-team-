@@ -10,22 +10,23 @@
 
 <VBox fx:id="helloView" alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="group13.demo1.controller.HelloController" >
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+    <!--    <padding>-->
+    <!--        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>-->
+    <!--    </padding>-->
 
-    <BorderPane VBox.vgrow="ALWAYS">
+    <BorderPane VBox.vgrow="ALWAYS" styleClass="logoContent-box">
         <center>
             <VBox alignment="CENTER">
                 <Label text="Welcome to" styleClass="welcome-text"/>
                 <Label fx:id="welcomeText" text="KeepTrack Distraction Logger" styleClass="title-label"/>
             </VBox>
         </center>
+
+        <bottom>
+            <HBox spacing="100.0" alignment="CENTER">
+                <Button fx:id="nextButton" text="Login" onAction="#onLoginButtonClicked" styleClass="initButtons"/>
+                <Button text="Register" onAction="#onRegisterButtonClicked" styleClass="initButtons"/>
+            </HBox>
+        </bottom>
     </BorderPane>
-
-    <HBox spacing="100.0" alignment="CENTER">
-        <Button fx:id="nextButton" text="Login" onAction="#onLoginButtonClicked"/>
-        <Button text="Register" onAction="#onRegisterButtonClicked"/>
-    </HBox>
-
 </VBox>
