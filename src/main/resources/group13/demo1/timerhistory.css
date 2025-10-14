@@ -1,0 +1,44 @@
+
+.history-page .tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: linear-gradient(#142a4e, #102444);
+}
+
+.history-page .tab-pane .headers-region {
+    -fx-background-color: transparent;
+}
+
+
+.history-page .tab-pane .tab {
+    -fx-background-color: rgba(255,255,255,0.10);
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+}
+
+.history-page .tab-pane .tab:hover {
+    -fx-background-color: rgba(255,255,255,0.16);
+}
+
+.history-page .tab-pane .tab:selected {
+    -fx-background-color: rgba(255,255,255,0.22);
+}
+
+
+.history-page .tab-pane .tab .tab-label {
+    -fx-text-fill: #e9edf7;
+    -fx-font-weight: 600;
+}
+
+.history-page .tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #ffffff;
+}
+
+.history-page .tab-pane > .tab-content-area .label {
+    -fx-text-fill: white;
+    -fx-opacity: 1.0;
+}
+
+.history-page .tab-pane > .tab-content-area .label:disabled {
+    -fx-text-fill: white;
+    -fx-opacity: 1.0;
+}

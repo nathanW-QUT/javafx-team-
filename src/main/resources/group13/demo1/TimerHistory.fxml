@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import java.net.URL?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="group13.demo1.controller.TimerHistory">
+            fx:controller="group13.demo1.controller.TimerHistory"
+            styleClass="history-page">
+
+    <!-- Page-scoped stylesheet (doesn't touch global stylesheet.css) -->
+    <stylesheets>
+        <URL value="@timerhistory.css"/>
+    </stylesheets>
 
     <!-- Sidebar stays visible -->
     <left>
@@ -26,20 +33,19 @@
 
                     <center>
                         <VBox spacing="12" style="-fx-padding: 10;">
-                            <Label text="Timer Sessions" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                            <Label text="Timer Sessions" styleClass="heading"/>
 
                             <Label fx:id="totalsession" text="Total Sessions: 0"/>
                             <Label fx:id="totalTime" text="Total Focus Time: 0s"/>
 
                             <Separator/>
 
-                            <Label text="Selected session:" style="-fx-font-size: 12px; -fx-text-fill: -fx-accent;"/>
+                            <Label text="Selected session:"/>
 
                             <!-- Keep hidden legacy label to preserve controller vars -->
                             <Label fx:id="session" visible="false" managed="false"/>
 
-                            <GridPane hgap="16" vgap="10" style="-fx-background-color: rgba(0,0,0,0.03);
-                                                                  -fx-padding: 14; -fx-background-radius: 12;">
+                            <GridPane hgap="16" vgap="10" styleClass="info-card">
                                 <columnConstraints>
                                     <ColumnConstraints minWidth="120" halignment="RIGHT"/>
                                     <ColumnConstraints hgrow="ALWAYS"/>
@@ -83,15 +89,14 @@
 
                     <center>
                         <VBox spacing="12" style="-fx-padding: 10;">
-                            <Label text="Logged Distractions (main)" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                            <Label text="Logged Distractions (main)" styleClass="heading"/>
                             <Label fx:id="mdTotalLabel" text="Total Records: 0"/>
                             <Separator/>
 
                             <!-- Keep hidden legacy label -->
                             <Label fx:id="mdDetail" visible="false" managed="false"/>
 
-                            <GridPane hgap="16" vgap="10" style="-fx-background-color: rgba(0,0,0,0.03);
-                                                                  -fx-padding: 14; -fx-background-radius: 12;">
+                            <GridPane hgap="16" vgap="10" styleClass="info-card">
                                 <columnConstraints>
                                     <ColumnConstraints minWidth="140" halignment="RIGHT"/>
                                     <ColumnConstraints hgrow="ALWAYS"/>
