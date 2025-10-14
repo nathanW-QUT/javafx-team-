@@ -65,9 +65,11 @@ public class CreateTaskController {
         stage.setScene(scene);
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
-        List<String> subtasks = List.of("Subtask 1", "Subtask 2", "Subtask 3");
+
 
         taskDao.addSubtasks(taskId, subtasks);
+
+
 
 
 

@@ -56,7 +56,13 @@ private void onCreateTask() {
         tasksTilePane.getChildren().clear();
         List<Task> tasks = taskDao.getTasksForUser(UserSession.getInstance().getUsername());
         for (Task task : tasks) {
-            Button taskButton = new Button(task.getTitle());
+            String displayText = String.format(
+                    "%s\nDue: %s\nCompletion: %d%%",
+                    task.getTitle(),
+                    task.getDueDate(),
+                    task.getCompletion()
+            );
+            Button taskButton = new Button(displayText);
             taskButton.setPrefWidth(250);
             taskButton.setOnAction(e -> openViewTaskPage(task));
             tasksTilePane.getChildren().add(taskButton);
