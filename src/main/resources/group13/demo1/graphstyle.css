@@ -1,56 +1,53 @@
-/* Transparent chart backgrounds so your app gradient shows */
-.chart, .chart-content, .chart-plot-background {
-    -fx-background-color: transparent;
+/* Scope all styles to the graphs page to avoid touching other screens */
+.graphs-page {
+    -fx-background-color: white;
 }
 
-/* Axes */
-.axis {
-    -fx-tick-label-fill: rgba(255,255,255,0.85);
+/* Transparent chart panes on a white page (no grey boxes) */
+.graphs-page .chart,
+.graphs-page .chart-content,
+.graphs-page .chart-plot-background {
+    -fx-background-color: white;
+}
+
+/* Axes: darker text for readability on white */
+.graphs-page .axis {
+    -fx-tick-label-fill: #3a3a3a;
     -fx-tick-label-font-size: 12px;
 }
-.axis .axis-label {
-    -fx-text-fill: rgba(255,255,255,0.9);
+.graphs-page .axis .axis-label {
+    -fx-text-fill: #2a2a2a;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
-.chart-horizontal-grid-lines,
-.chart-vertical-grid-lines {
-    -fx-stroke: rgba(255,255,255,0.18);
+
+/* Grid lines: subtle light grey */
+.graphs-page .chart-horizontal-grid-lines,
+.graphs-page .chart-vertical-grid-lines {
+    -fx-stroke: #e6e6e6;
 }
 
-/* --- Bar chart colors per series ---
-   default-color0 -> Series 0 (Distractions)
-   default-color1 -> Series 1 (Accomplishments)
-   Use solid fills to avoid Modena gradient cast warnings.
-*/
-.default-color0.chart-bar { /* Distractions */
-    -fx-bar-fill: #FF8B3A;      /* orange */
+/* Bar colors (solid) */
+.graphs-page .default-color0.chart-bar { /* Distractions */
+    -fx-bar-fill: #FF8B3A; /* warm orange */
 }
-.default-color1.chart-bar { /* Accomplishments */
-    -fx-bar-fill: #4FC3F7;      /* light blue */
+.graphs-page .default-color1.chart-bar { /* Accomplishments */
+    -fx-bar-fill: #3A86FF; /* clear blue */
 }
 
-/* Subtle hover (solid, no gradients) */
-.default-color0.chart-bar:hover { -fx-bar-fill: #FFAA58; }
-.default-color1.chart-bar:hover { -fx-bar-fill: #7FD3FB; }
+/* Hover tweaks */
+.graphs-page .default-color0.chart-bar:hover { -fx-bar-fill: #FFAA58; }
+.graphs-page .default-color1.chart-bar:hover { -fx-bar-fill: #669DFF; }
 
-/* Rounded corners (applies to bars that support it) */
-.chart-bar {
-    -fx-background-radius: 8;
-}
-
-/* Numeric labels above bars (if you add them) */
-.bar-value {
-    -fx-text-fill: rgba(255,255,255,0.97);
+/* Optional: labels above bars, if you add them later */
+.graphs-page .bar-value {
+    -fx-text-fill: #222;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 6, 0.2, 0, 1);
 }
 
-/* Pie chart labels */
-.chart-pie-label {
-    -fx-fill: rgba(255,255,255,0.9);
+/* Pie chart label color on white */
+.graphs-page .chart-pie-label {
+    -fx-fill: #222222;
     -fx-font-weight: bold;
 }
-
-
