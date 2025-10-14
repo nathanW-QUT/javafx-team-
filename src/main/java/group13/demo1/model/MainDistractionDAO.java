@@ -65,7 +65,6 @@ public class MainDistractionDAO {
         public final String description;
         public final String timestamp;
 
-
         /**
          * Creates a new main item
          * @param id a unique database id
@@ -81,7 +80,6 @@ public class MainDistractionDAO {
             this.description = description;
             this.timestamp = timestamp;
         }
-
     }
 
     /**
@@ -117,7 +115,4 @@ public class MainDistractionDAO {
         }
         return rows;
     }
-
-
-
 }

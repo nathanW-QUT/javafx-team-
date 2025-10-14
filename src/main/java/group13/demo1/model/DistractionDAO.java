@@ -15,7 +15,6 @@ public class DistractionDAO {
         createQuickLogTable();
     }
 
-
     /**
      * Creates the quick log distraction table if the table does not yet exist in the database
      */
