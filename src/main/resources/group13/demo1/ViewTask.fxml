@@ -11,13 +11,13 @@
     </left>
 
     <center>
-        <VBox spacing="20" alignment="CENTER" maxWidth="500">
+        <VBox spacing="20" alignment="CENTER" maxWidth="500" >
             <Label fx:id="taskTitle" styleClass="title-label"/>
             <Label fx:id="taskDescription" wrapText="true"/>
             <Label fx:id="taskDueDate"/>
             <ProgressBar fx:id="taskProgress" prefWidth="300"/>
 
-            <VBox fx:id="subtaskContainer" spacing="5" alignment="CENTER_LEFT">
+            <VBox fx:id="subtaskContainer" spacing="5" alignment="CENTER_LEFT" style="-fx-text-fill: white;">
                 <Label text="Subtasks:"/>
                 <ListView fx:id="subtaskListView"/>
             </VBox>
@@ -25,6 +25,7 @@
             <HBox spacing="20" alignment="CENTER">
                 <Button fx:id="nextButton" text="Save Progress" onAction="#onSaveProgress"/>
                 <Button text="Back" onAction="#onBack"/>
+                <Button text="Delete Task"  onAction="#onDeleteTask"/>
             </HBox>
         </VBox>
     </center>
