@@ -38,10 +38,16 @@
 
 .header-label
 {
-    -fx-background-color: #627092;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-padding: 10px;
+}
+
+.header-bar
+{
+    -fx-background-color: #627092;
+    -fx-background-radius: 8;
+    -fx-pref-width: 98%
 }
 
 .section-title

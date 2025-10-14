@@ -21,7 +21,6 @@
 
     <center>
         <StackPane>
-<!--                content box should have curved edges-->
             <VBox spacing="25" alignment="TOP_CENTER" styleClass="content-box">
                 <VBox spacing="15">
                     <Label text="Quick Distraction Logging" styleClass="section-title"/>
