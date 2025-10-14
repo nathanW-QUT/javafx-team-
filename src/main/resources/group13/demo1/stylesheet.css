@@ -194,7 +194,9 @@
 .logoContent-box
 {
     -fx-background-color: #627092; /* Midnight Blue 3*/
+    -fx-padding: 20 20 0 20;
     -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
 }
 
 #SideBar Button

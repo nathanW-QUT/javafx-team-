@@ -7,17 +7,22 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-
-            fx:controller="group13.demo1.controller.RegisterController" >
+            fx:controller="group13.demo1.controller.RegisterController">
 
     <center>
-        <VBox spacing="15" alignment="CENTER" maxWidth="300">
-            <TextField fx:id="usernameField" promptText="Username" />
-            <PasswordField fx:id="passwordField" promptText="Password" />
-            <Label fx:id="statusLabel"/>
+        <VBox alignment="CENTER">
+            <Label text="Welcome to KeepTrac" alignment="TOP_CENTER" styleClass="title-label"/>
+
+            <Label text="The Distraction Logger and productivity app for engineering students." styleClass="subtitle"/>
+            <Label text="Here, we keep things simple and don't bury you under needless novelties." styleClass="subtitle"/>
+            <Region prefHeight="10"/>
+            <VBox spacing="15" alignment="CENTER" maxWidth="300" styleClass="logoContent-box">
+                <TextField fx:id="usernameField" promptText="Username" />
+                <PasswordField fx:id="passwordField" promptText="Password" />
+                <Label fx:id="statusLabel"/>
+            </VBox>
         </VBox>
     </center>
-
 
     <bottom>
         <BorderPane >
@@ -29,6 +34,5 @@
             </center>
         </BorderPane>
     </bottom>
-
 
 </BorderPane>
