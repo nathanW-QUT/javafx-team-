@@ -3,9 +3,6 @@
     -fx-background-color: linear-gradient(#142a4e, #102444);
 }
 
-.history-page .tab-pane .headers-region {
-    -fx-background-color: transparent;
-}
 
 
 .history-page .tab-pane .tab {
