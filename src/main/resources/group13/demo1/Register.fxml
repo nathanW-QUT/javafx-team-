@@ -10,15 +10,18 @@
             fx:controller="group13.demo1.controller.RegisterController">
 
     <center>
-        <VBox alignment="CENTER">
+        <VBox spacing="10" alignment="TOP_CENTER">
             <Label text="Welcome to KeepTrac" alignment="TOP_CENTER" styleClass="title-label"/>
-
             <Label text="The Distraction Logger and productivity app for engineering students." styleClass="subtitle"/>
             <Label text="Here, we keep things simple and don't bury you under needless novelties." styleClass="subtitle"/>
-            <Region prefHeight="10"/>
-            <VBox spacing="15" alignment="CENTER" maxWidth="300" styleClass="logoContent-box">
-                <TextField fx:id="usernameField" promptText="Username" />
-                <PasswordField fx:id="passwordField" promptText="Password" />
+
+            <VBox spacing="5" alignment="CENTER" maxWidth="500" styleClass="logoContent-box">
+                <Label text="Sign up and get started to take your learning and productivity to the next level!" styleClass="whiteSubtitle">
+                </Label>
+                <Label text="Please enter a username:" styleClass="whiteDescription"/>
+                <TextField fx:id="usernameField" promptText="Username" maxWidth="300"/>
+                <Label text="Please enter a password:" styleClass="whiteDescription"/>
+                <PasswordField fx:id="passwordField" promptText="Password" maxWidth="300" />
                 <Label fx:id="statusLabel"/>
             </VBox>
         </VBox>
