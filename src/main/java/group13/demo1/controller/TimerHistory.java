@@ -47,7 +47,7 @@ public class TimerHistory {
     private final ObservableList<MainDistractionRow> mdItems = FXCollections.observableArrayList();
     private final MainDistractionHistoryDAO mdDAO = new MainDistractionHistoryDAO(SqliteConnection.getInstance());
 
-    // ====== DTO for the Distraction tab======
+    // DTO for the Distraction tab
     public static class MainDistractionRow {
         public final int id;
         public final String reason;
@@ -130,7 +130,7 @@ public class TimerHistory {
         try {
             List<SessionModel> all = new SessionDAO(db).getAll();
 
-            // filter by user and ignore all-zero rows (keeps your previous behavior)
+
             List<SessionModel> mine = new ArrayList<>();
             for (SessionModel m : all) {
                 if (m == null) continue;
@@ -239,7 +239,7 @@ public class TimerHistory {
 
         TimerHistoryLogic.SessionData s = sessions.get(idx);
 
-        // Use direct SQL DELETE against the known "sessions" table used by SessionDAO.
+
         String sql = "DELETE FROM sessions WHERE id=?";
         try (PreparedStatement ps = db.prepareStatement(sql)) {
             ps.setInt(1, s.id);
