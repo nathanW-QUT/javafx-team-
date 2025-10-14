@@ -1,6 +1,9 @@
 package group13.demo1.controller;
+
 import group13.demo1.model.MainDistractionDAO;
 import group13.demo1.model.MainDistractionHistoryDAO;
+import group13.demo1.model.SessionDAO;
+import group13.demo1.model.SessionModel;
 import group13.demo1.model.SqliteConnection;
 import group13.demo1.model.UserSession;
 import javafx.collections.FXCollections;
@@ -9,10 +12,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class TimerHistory {
 
@@ -39,52 +48,6 @@ public class TimerHistory {
     private final MainDistractionHistoryDAO mdDAO = new MainDistractionHistoryDAO(SqliteConnection.getInstance());
 
     // ====== DTO for the Distraction tab======
-
-    private static final DateTimeFormatter dt_formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-
-    private DistractionTable SessionTable(Connection db) {
-        List<String> userCols  = List.of("username","user","user_name","userid","user_id");
-        List<String> startCols = List.of("startTime","start","started_at","start_time");
-        List<String> endCols   = List.of("endTime","end","ended_at","end_time");
-        List<String> runCols   = List.of("totalRunSeconds","runSeconds","focusSeconds","total_run_seconds","elapsedSeconds");
-        List<String> pauseCols = List.of("totalPauseSeconds","pauseSeconds","total_pause_seconds");
-        List<String> cntCols   = List.of("pauseCount","pauses","pause_count");
-        List<String> preferredTables = List.of("sessions","session","timerSessions","timer_sessions","timers");
-
-        try (Statement st = db.createStatement();
-             ResultSet rs = st.executeQuery("SELECT name FROM sqlite_master WHERE type='table'")) {
-            Set<String> allTables = new LinkedHashSet<>();
-            while (rs.next()) allTables.add(rs.getString(1));
-
-            List<String> ordered = new ArrayList<>(preferredTables);
-            for (String t : allTables) if (!ordered.contains(t)) ordered.add(t);
-
-            for (String table : ordered) {
-                if (!allTables.contains(table)) continue;
-
-                Map<String,String> present = new HashMap<>();
-                try (Statement st2 = db.createStatement();
-                     ResultSet ti = st2.executeQuery("PRAGMA table_info(" + table + ")")) {
-                    while (ti.next()) present.put(ti.getString("name").toLowerCase(Locale.ROOT), ti.getString("name"));
-                }
-
-                String colId = present.getOrDefault("id", present.getOrDefault("rowid", null));
-                String colUser  = firstPresent(present, userCols);
-                String colStart = firstPresent(present, startCols);
-                String colEnd   = firstPresent(present, endCols);
-                String colRun   = firstPresent(present, runCols);
-                String colPause = firstPresent(present, pauseCols);
-                String colCnt   = firstPresent(present, cntCols);
-
-                if (colStart != null && colRun != null && colPause != null && colCnt != null) {
-                    if (colId == null) colId = "rowid";
-                    return new DistractionTable(table, colId, colUser, colStart, colEnd, colRun, colPause, colCnt);
-                }
-            }
-        } catch (SQLException e) { e.printStackTrace(); }
-        return null;
-    }
-
     public static class MainDistractionRow {
         public final int id;
         public final String reason;
@@ -103,27 +66,7 @@ public class TimerHistory {
         public String listTitle(int index) { return "Distraction " + (index + 1) + " — " + reason; }
     }
 
-    private static class DistractionTable {
-        final String table;
-        final String colId;
-        final String colUsername;
-        final String colStart;
-        final String colEnd;
-        final String colRun;    // focus time
-        final String colPause;  // paused seconds
-        final String colCount;  // pause count
-        DistractionTable(String table, String colId, String colUsername,
-                  String colStart, String colEnd, String colRun, String colPause, String colCount) {
-            this.table = table; this.colId = colId; this.colUsername = colUsername;
-            this.colStart = colStart; this.colEnd = colEnd; this.colRun = colRun;
-            this.colPause = colPause; this.colCount = colCount;
-        }
-    }
-
-    private static String firstPresent(Map<String,String> present, List<String> candidates) {
-        for (String c : candidates) { String hit = present.get(c.toLowerCase(Locale.ROOT)); if (hit != null) return hit; }
-        return null;
-    }
+    private static final DateTimeFormatter dt_formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     @FXML
     public void initialize() {
@@ -146,6 +89,7 @@ public class TimerHistory {
         }
 
         loadSessionsForUser(user);
+
         // ----- Distraction history -----
         MainDistractionList();
         loadMainDistractions(user);
@@ -172,8 +116,7 @@ public class TimerHistory {
     private void loadSessionsForUser(String username) {
         sessions.clear();
 
-        DistractionTable spec = SessionTable(db);
-        if (spec == null) {
+        if (username == null || username.isBlank()) {
             totalsession.setText("Total Sessions: 0");
             totalTime.setText("Total Focus Time: 0s");
             session.setText("(none)");
@@ -181,50 +124,48 @@ public class TimerHistory {
             return;
         }
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("SELECT ")
-                .append(spec.colId).append(" AS id, ")
-                .append(spec.colStart).append(" AS startTime, ")
-                .append(spec.colEnd).append(" AS endTime, ")
-                .append("COALESCE(").append(spec.colRun).append(",0)  AS runSecs, ")
-                .append("COALESCE(").append(spec.colPause).append(",0) AS pauseSecs, ")
-                .append("COALESCE(").append(spec.colCount).append(",0) AS pauseCnt ");
-        if (spec.colUsername != null) sql.append(", ").append(spec.colUsername).append(" AS username ");
-        else sql.append(", '' AS username ");
-        sql.append("FROM ").append(spec.table).append(" ");
-
-        boolean filterByUser = (spec.colUsername != null && username != null && !username.isBlank());
-
-        String nonZeroPredicate = "(COALESCE(" + spec.colRun + ",0) > 0 OR " + " COALESCE(" + spec.colPause + ",0) > 0 OR " + " COALESCE(" + spec.colCount + ",0) > 0)";
-
-        if (filterByUser) {
-            sql.append("WHERE ").append(spec.colUsername).append("=? AND ").append(nonZeroPredicate).append(" ");
-        } else {
-            sql.append("WHERE ").append(nonZeroPredicate).append(" ");
-        }
-
-        sql.append("ORDER BY ").append(spec.colStart).append(" DESC");
-
-        long totalFocus = 0L;
         List<TimerHistoryLogic.SessionData> rows = new ArrayList<>();
+        long totalFocus = 0L;
 
-        try (PreparedStatement ps = db.prepareStatement(sql.toString())) {
-            if (filterByUser) ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    int id = rs.getInt("id");
-                    String userCol = rs.getString("username");
-                    LocalDateTime start = TimeParse(rs.getString("startTime"));
-                    LocalDateTime end   = TimeParse(rs.getString("endTime"));
-                    long focus  = rs.getLong("runSecs");
-                    long paused = rs.getLong("pauseSecs");
-                    int pauses  = rs.getInt("pauseCnt");
+        try {
+            List<SessionModel> all = new SessionDAO(db).getAll();
 
-                    rows.add(new TimerHistoryLogic.SessionData(id, userCol, start, end, focus, paused, pauses));
-                    totalFocus += focus;
-                }
+            // filter by user and ignore all-zero rows (keeps your previous behavior)
+            List<SessionModel> mine = new ArrayList<>();
+            for (SessionModel m : all) {
+                if (m == null) continue;
+                if (!username.equals(m.getUsername())) continue;
+                boolean nonZero = (m.getTotalRunSeconds() > 0) ||
+                        (m.getTotalPauseSeconds() > 0) ||
+                        (m.getPauseCount() > 0);
+                if (nonZero) mine.add(m);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+
+            // newest first by startTime
+            mine.sort(Comparator.comparing(SessionModel::getStartTime,
+                    (a, b) -> {
+                        if (a == null && b == null) return 0;
+                        if (a == null) return 1;
+                        if (b == null) return -1;
+                        return b.compareTo(a);
+                    }));
+
+            for (SessionModel m : mine) {
+                TimerHistoryLogic.SessionData s = new TimerHistoryLogic.SessionData(
+                        m.getId(),
+                        m.getUsername(),
+                        m.getStartTime(),
+                        m.getEndTime(),
+                        m.getTotalRunSeconds(),
+                        m.getTotalPauseSeconds(),
+                        m.getPauseCount()
+                );
+                rows.add(s);
+                totalFocus += m.getTotalRunSeconds();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         sessions.setAll(rows);
         totalsession.setText("Total Sessions: " + sessions.size());
@@ -233,7 +174,6 @@ public class TimerHistory {
         if (sessions.isEmpty()) { session.setText("(none)"); SelectedSessionDisplay(null); }
         else sessionList.getSelectionModel().select(0);
     }
-
 
     // ---------------- Main Distraction ----------------
     private void MainDistractionList() {
@@ -283,11 +223,6 @@ public class TimerHistory {
         else MainDistractionSelectedRecord(null);
     }
 
-    private static LocalDateTime TimeParse(String s) {
-        try { return (s == null || s.isBlank()) ? null : LocalDateTime.parse(s, dt_formatter); }
-        catch (Exception e) { return null; }
-    }
-
     @FXML
     private void onConfirm() {
         if (sessionList != null && sessionList.getSelectionModel().getSelectedIndex() >= 0) {
@@ -304,18 +239,16 @@ public class TimerHistory {
 
         TimerHistoryLogic.SessionData s = sessions.get(idx);
 
-        DistractionTable spec = SessionTable(db);
-        if (spec == null) return;
-
-        String sql = "DELETE FROM " + spec.table + " WHERE " + spec.colId + "=?";
+        // Use direct SQL DELETE against the known "sessions" table used by SessionDAO.
+        String sql = "DELETE FROM sessions WHERE id=?";
         try (PreparedStatement ps = db.prepareStatement(sql)) {
             ps.setInt(1, s.id);
             ps.executeUpdate();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
         loadSessionsForUser(user);
     }
-
-
 }
