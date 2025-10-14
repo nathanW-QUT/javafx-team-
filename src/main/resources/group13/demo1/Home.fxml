@@ -66,29 +66,26 @@
 
                         <VBox spacing="10">
                             <Label text="Recent Distractions" styleClass="section-title"/>
-
-                            <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="300">
-                                <VBox spacing="5">
-                                    <!-- Example Distraction Items: import from DB later -->
-                                    <VBox styleClass="distraction-item" spacing="5">
-                                        <Label text="Tags" styleClass="tag-label"/>
-                                        <Label text="Description"/>
-                                        <Label text="Time" styleClass="time-label"/>
-                                    </VBox>
-
-                                    <VBox styleClass="distraction-item" spacing="5">
-                                        <Label text="Tags" styleClass="tag-label"/>
-                                        <Label text="Description"/>
-                                        <Label text="Time" styleClass="time-label"/>
-                                    </VBox>
-
-                                    <VBox styleClass="distraction-item" spacing="5">
-                                        <Label text="Tags" styleClass="tag-label"/>
-                                        <Label text="Description"/>
-                                        <Label text="Time" styleClass="time-label"/>
-                                    </VBox>
+                            <HBox spacing="20">
+                                <!-- Example Distraction Items: import from DB later -->
+                                <VBox styleClass="distraction-item" spacing="5">
+                                    <Label text="Tags" styleClass="tag-label"/>
+                                    <Label text="Description"/>
+                                    <Label text="Time" styleClass="time-label"/>
                                 </VBox>
-                            </ScrollPane>
+
+                                <VBox styleClass="distraction-item" spacing="5">
+                                    <Label text="Tags" styleClass="tag-label"/>
+                                    <Label text="Description"/>
+                                    <Label text="Time" styleClass="time-label"/>
+                                </VBox>
+
+                                <VBox styleClass="distraction-item" spacing="5">
+                                    <Label text="Tags" styleClass="tag-label"/>
+                                    <Label text="Description"/>
+                                    <Label text="Time" styleClass="time-label"/>
+                                </VBox>
+                            </HBox>
                         </VBox>
                 </VBox>
             </VBox>
