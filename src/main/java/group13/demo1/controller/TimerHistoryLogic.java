@@ -6,10 +6,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-/**
- * Lightweight formatting/presentation helpers for the Timer History screen.
- * NOTE: Method and field names preserved to avoid breaking existing code.
- */
+
 public class TimerHistoryLogic {
 
     // ---------- Formatting ----------

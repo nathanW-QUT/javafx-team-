@@ -36,7 +36,6 @@ public class GraphsController {
     @FXML private CategoryAxis disBarXAxis;
     @FXML private NumberAxis   disBarYAxis;
 
-
     @FXML private Label  emptyState;
     @FXML private Button backButton;
 
@@ -44,13 +43,6 @@ public class GraphsController {
 
     @FXML
     public void initialize() {
-        Platform.runLater(() -> {
-            if (backButton != null && backButton.getScene() != null && backButton.getScene().getWindow() != null) {
-                backButton.getScene().getWindow().focusedProperty().addListener((obs, was, is) -> {
-                    if (is) ReloadGraph();
-                });
-            }
-        });
         ReloadGraph();
     }
 
@@ -60,31 +52,6 @@ public class GraphsController {
         } catch (Exception e) {
             e.printStackTrace();
             showEmpty("Could not load charts.");
-        }
-    }
-
-
-    private void ensureAccomplishmentTimestampColumn() {
-        try (PreparedStatement info = db.prepareStatement("PRAGMA table_info(accomplishment)");
-             ResultSet rs = info.executeQuery()) {
-            boolean hasTimestamp = false;
-            boolean hasCreatedAt = false;
-            while (rs.next()) {
-                String name = rs.getString("name");
-                if ("timestamp".equalsIgnoreCase(name)) hasTimestamp = true;
-                if ("created_at".equalsIgnoreCase(name)) hasCreatedAt = true;
-            }
-            if (!hasTimestamp) {
-                try (Statement st = db.createStatement()) {
-                    st.executeUpdate("ALTER TABLE accomplishment ADD COLUMN timestamp DATETIME DEFAULT CURRENT_TIMESTAMP");
-                }
-                if (hasCreatedAt) {
-                    try (Statement st = db.createStatement()) {
-                        st.executeUpdate("UPDATE accomplishment SET timestamp = created_at WHERE timestamp IS NULL AND created_at IS NOT NULL");
-                    }
-                }
-            }
-        } catch (SQLException ignore) {
         }
     }
 
@@ -188,7 +155,6 @@ public class GraphsController {
     private void loadCharts() {
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
         if (user == null || user.isBlank()) { showEmpty("Please log in to view insights."); return; }
-        ensureAccomplishmentTimestampColumn();
 
         // ---------- Pie ----------
         Map<String, Long> DistractionCounts = loadMainDistractionCounts(user);
