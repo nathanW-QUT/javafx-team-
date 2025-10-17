@@ -87,9 +87,9 @@ public class Login {
 
     private void playShakeAnimation(Node node)
     {
-        TranslateTransition shake = new TranslateTransition(Duration.seconds(0.8), node);
+        TranslateTransition shake = new TranslateTransition(Duration.seconds(0.08), node);
         shake.setFromX(0);
-        shake.setToX(10);
+        shake.setToX(8);
         shake.setCycleCount(6);
         shake.setAutoReverse(true);
         shake.play();
