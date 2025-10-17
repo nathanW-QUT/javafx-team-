@@ -253,3 +253,57 @@
     -fx-pref-Height: 40px;
 }
 
+
+.graphs-page {
+    -fx-background-color: white;
+}
+
+/* Transparent chart on a white background */
+.graphs-page .chart,
+.graphs-page .chart-content,
+.graphs-page .chart-plot-background {
+    -fx-background-color: white;
+}
+
+/* Axes: darker text  */
+.graphs-page .axis {
+    -fx-tick-label-fill: #3a3a3a;
+    -fx-tick-label-font-size: 12px;
+}
+.graphs-page .axis .axis-label {
+    -fx-text-fill: #2a2a2a;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* Grid lines: subtle light grey */
+.graphs-page .chart-horizontal-grid-lines,
+.graphs-page .chart-vertical-grid-lines {
+    -fx-stroke: #e6e6e6;
+}
+
+/* Bar colors  */
+.graphs-page .default-color0.chart-bar { /* Distractions */
+    -fx-bar-fill: #FF8B3A; /* warm orange */
+}
+.graphs-page .default-color1.chart-bar { /* Accomplishments */
+    -fx-bar-fill: #3A86FF; /* clear blue */
+}
+
+/* Hover*/
+.graphs-page .default-color0.chart-bar:hover { -fx-bar-fill: #FFAA58; }
+.graphs-page .default-color1.chart-bar:hover { -fx-bar-fill: #669DFF; }
+
+
+.graphs-page .bar-value {
+    -fx-text-fill: #222;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+/* Pie chart color */
+.graphs-page .chart-pie-label {
+    -fx-fill: #222222;
+    -fx-font-weight: bold;
+}
+

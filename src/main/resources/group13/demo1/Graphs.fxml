@@ -10,7 +10,7 @@
             fx:controller="group13.demo1.controller.GraphsController"
             styleClass="graphs-page">
     <stylesheets>
-        <URL value="@graphstyle.css"/>
+        <URL value="@stylesheet.css"/>
     </stylesheets>
 
     <left>
