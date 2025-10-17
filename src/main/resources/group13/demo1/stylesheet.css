@@ -245,7 +245,6 @@
 .logoContent-box
 {
     -fx-background-color: linear-gradient(to right top, #131e37, #627092, #131e37); /*Midnight Blues: 5-3*/
-    /*-fx-background-color: #627092; !* Midnight Blue 3*!*/
     -fx-padding: 20 20 0 20;
     -fx-background-radius: 10;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
@@ -256,7 +255,6 @@
     -fx-background-color: #c8d5ea;
     -fx-background-radius: 15;
     -fx-padding: 30 40 30 40;
-    -fx-spacing: 15;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
 }
 
