@@ -10,8 +10,10 @@
     </top>
 
     <center>
-        <VBox spacing="15" alignment="CENTER" maxWidth="300" maxHeight="300" styleClass="login-box">
-            <TextField fx:id="usernameField" promptText="Username" />
+        <VBox spacing="15" alignment="CENTER" maxWidth="300" maxHeight="400" styleClass="login-box">
+            <Label text="Please enter your username:" styleClass="description"/>
+            <TextField fx:id="usernameField" promptText="Username"/>
+            <Label text="Please enter your password:" styleClass="description"/>
             <PasswordField fx:id="passwordField" promptText="Password" />
             <Label fx:id="statusLabel"/>
             <Button text="Login" onAction="#handleLogin" />

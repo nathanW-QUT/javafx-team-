@@ -71,12 +71,12 @@
 
 .description
 {
-    -fx-font-size: 12px !important;
+    -fx-font-size: 14px !important;
 }
 
 .whiteDescription
 {
-    -fx-font-size: 12px !important;
+    -fx-font-size: 14px !important;
     -fx-text-fill: white !important;
 }
 
