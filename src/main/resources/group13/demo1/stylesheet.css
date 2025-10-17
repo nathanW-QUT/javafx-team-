@@ -144,6 +144,7 @@
 #helloView Button {
     -fx-pref-height: 45px;
     -fx-pref-width: 250px;
+    -fx-padding: 5;
 }
 
 .button
@@ -188,6 +189,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
     -fx-translate-x: -150; /* push left/right */
     -fx-translate-y: -100; /* push up/down */
+    -fx-padding: 5;
 }
 
 .floating-button:hover
