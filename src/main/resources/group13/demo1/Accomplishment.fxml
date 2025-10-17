@@ -19,15 +19,24 @@
 
             <Label text="Manage your Accomplishments" styleClass="title-label"/>
 
-            <HBox spacing="10">
-                <TextField fx:id="accomplishmentLabel" promptText="Enter Accomplishment"/>
-                <Button text="Add" onAction="#addAccomplishment"/>
-                <Button text="Update" onAction="#updateAccomplishment"/>
-                <Button text="Delete" onAction="#deleteAccomplishment"/>
-            </HBox>
+            <VBox spacing="10" alignment="CENTER" styleClass="input-section">
+                <HBox spacing="10">
+                    <TextField fx:id="accomplishmentLabel" promptText="Enter a new accomplishment" prefWidth="300"/>
+                    <Button text="Add" onAction="#addAccomplishment" styleClass="primary-button"/>
+                </HBox>
 
-            <Label fx:id="statusLabel" style="-fx-text-fill: green"/>
-            <ListView fx:id="accomplishmentList" prefHeight="200" prefWidth="400" VBox.vgrow="ALWAYS"/>
+                <HBox spacing="10">
+                    <Button text="Update" onAction="#updateAccomplishment" styleClass="secondary-button"/>
+                    <Button text="Delete" onAction="#deleteAccomplishment" styleClass="secondary-button"/>
+                </HBox>
+
+                <Label fx:id="statusLabel" style="-fx-text-fill: green"/>
+            </VBox>
+
+            <VBox spacing="10" alignment="CENTER" VBox.vgrow="ALWAYS">
+                <Label text="Recent Entries" styleClass="section-title"/>
+                <ListView fx:id="accomplishmentList" prefHeight="200" prefWidth="400" styleClass="accomplishment-list" VBox.vgrow="ALWAYS"/>
+            </VBox>
 
         </VBox>
     </center>

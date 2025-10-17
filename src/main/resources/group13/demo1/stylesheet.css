@@ -86,12 +86,25 @@
     -fx-text-fill: #131e37 /*Midnight Blues: 5*/
 }
 
+.input-section
+{
+    -fx-background-color: #c8d5ea;
+    -fx-background-radius: 10;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
+}
+
 .distraction-item
 {
     -fx-background-color: #e5eef8;
     -fx-border-radius: 10;
     -fx-bacground-radius: 20;
     -fx-padding:10;
+}
+
+.status-label
+{
+    -fx-font-style: italic;
 }
 
 .tag-label
@@ -131,6 +144,7 @@
 #helloView Button {
     -fx-pref-height: 45px;
     -fx-pref-width: 250px;
+    -fx-padding: 5;
 }
 
 .button
@@ -175,6 +189,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
     -fx-translate-x: -150; /* push left/right */
     -fx-translate-y: -100; /* push up/down */
+    -fx-padding: 5;
 }
 
 .floating-button:hover
@@ -187,19 +202,28 @@
 {
     -fx-background-color: #be9b7b; /*Cappuccino 1*/
     -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
 }
 
 .primary-button-long
 {
     -fx-background-color: #be9b7b; /*Cappuccino 1*/
-    -fx-padding: 10 20 10 20;
     -fx-max-width: 250;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover,
+.secondary-button:hover
+{
+    -fx-opacity:0.9;
 }
 
 .secondary-button
 {
     -fx-background-color: #627092; /* Midnight Blue 3*/
     -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
 }
 
 .secondary-button-long
@@ -221,9 +245,16 @@
 .logoContent-box
 {
     -fx-background-color: linear-gradient(to right top, #131e37, #627092, #131e37); /*Midnight Blues: 5-3*/
-    /*-fx-background-color: #627092; !* Midnight Blue 3*!*/
     -fx-padding: 20 20 0 20;
     -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
+}
+
+.login-box
+{
+    -fx-background-color: #c8d5ea;
+    -fx-background-radius: 15;
+    -fx-padding: 30 40 30 40;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
 }
 
@@ -251,5 +282,13 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
     -fx-pref-width: 100px;
     -fx-pref-Height: 40px;
+}
+
+.accomplishment-list
+{
+    -fx-background-color: white;
+    -fx-border-color: #131e37;
+    -fx-border-radius: 8;
+    -fx-padding: 5;
 }
 
