@@ -84,7 +84,7 @@
 
                     <center>
                         <VBox spacing="12" style="-fx-padding: 10;">
-                            <Label text="Logged Distractions (main)" styleClass="heading"/>
+                            <Label text="Logged Distractions" styleClass="heading"/>
                             <Label fx:id="mdTotalLabel" text="Total Records: 0"/>
                             <Separator/>
 
