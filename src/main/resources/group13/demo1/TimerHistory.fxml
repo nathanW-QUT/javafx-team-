@@ -9,24 +9,20 @@
             fx:controller="group13.demo1.controller.TimerHistory"
             styleClass="history-page">
 
-    <!-- Page-scoped stylesheet (doesn't touch global stylesheet.css) -->
-    <stylesheets>
-        <URL value="@timerhistory.css"/>
-    </stylesheets>
 
-    <!-- Sidebar stays visible -->
+
     <left>
         <fx:include source="Sidebar.fxml"/>
     </left>
 
-    <!-- TabPane fills the whole center so lists reach the bottom -->
+
     <center>
         <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
 
             <!-- TIMER SESSIONS -->
             <Tab text="Timer sessions">
                 <BorderPane>
-                    <!-- List fills height -->
+
                     <left>
                         <ListView fx:id="sessionList" prefWidth="360" BorderPane.alignment="CENTER"/>
                     </left>
@@ -42,7 +38,6 @@
 
                             <Label text="Selected session:"/>
 
-                            <!-- Keep hidden legacy label to preserve controller vars -->
                             <Label fx:id="session" visible="false" managed="false"/>
 
                             <GridPane hgap="16" vgap="10" styleClass="info-card">
@@ -82,7 +77,7 @@
             <!-- DISTRACTION HISTORY -->
             <Tab text="Distraction history">
                 <BorderPane>
-                    <!-- List fills height -->
+
                     <left>
                         <ListView fx:id="mdList" prefWidth="420" BorderPane.alignment="CENTER"/>
                     </left>
@@ -93,7 +88,6 @@
                             <Label fx:id="mdTotalLabel" text="Total Records: 0"/>
                             <Separator/>
 
-                            <!-- Keep hidden legacy label -->
                             <Label fx:id="mdDetail" visible="false" managed="false"/>
 
                             <GridPane hgap="16" vgap="10" styleClass="info-card">

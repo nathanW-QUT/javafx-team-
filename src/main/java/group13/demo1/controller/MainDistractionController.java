@@ -4,15 +4,24 @@ import group13.demo1.HelloApplication;
 import group13.demo1.model.MainDistractionDAO;
 import group13.demo1.model.SqliteConnection;
 import group13.demo1.model.UserSession;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 
 import java.io.IOException;
+import java.util.Map;
 
 public class MainDistractionController {
     @FXML
@@ -24,7 +33,7 @@ public class MainDistractionController {
     @FXML
     private Button logButton;
     @FXML private ListView<MainDistractionDAO.MainItem> recentMainDistractions;
-
+    @FXML private PieChart tagPie;
     private final MainDistractionDAO mainDistractionDAO = new MainDistractionDAO(SqliteConnection.getInstance());
 
     /**
@@ -65,6 +74,7 @@ public class MainDistractionController {
         if (recentMainDistractions != null) {
             loadRecentDistractions();
         }
+        setupTagPie();
     }
 
     /**
@@ -111,6 +121,61 @@ public class MainDistractionController {
         stage.setScene(scene);
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
+    }
+
+    private void setupTagPie() {
+        if (tagPie == null) return;
+
+        String user = (UserSession.getInstance() == null)
+                ? null : UserSession.getInstance().getUsername();
+        if (user == null || user.isBlank()) {
+            tagPie.setData(FXCollections.observableArrayList());
+            tagPie.setVisible(false);
+            return;
+        }
+
+        Map<String, Long> counts = loadMainDistractionCounts(user);
+        long total = counts.values().stream().mapToLong(Long::longValue).sum();
+
+        if (counts.isEmpty() || total == 0) {
+            tagPie.setData(FXCollections.observableArrayList());
+            tagPie.setVisible(false);
+            return;
+        }
+
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        counts.forEach((cause, cnt) -> {
+            String name = (cause == null || cause.isBlank()) ? "(untitled)" : cause;
+            long pct = Math.round((cnt * 100.0) / total);
+            data.add(new PieChart.Data(name + " — " + pct + "%", cnt));
+        });
+
+        tagPie.setData(data);
+        tagPie.setLegendVisible(false);
+        tagPie.setLabelsVisible(true);
+        tagPie.setVisible(true);
+    }
+
+
+    private Map<String, Long> loadMainDistractionCounts(String username) {
+        Map<String, Long> out = new LinkedHashMap<>();
+        final String sql =
+                "SELECT cause, COUNT(*) AS cnt " +
+                        "FROM maindistraction " +
+                        "WHERE username=? " +
+                        "GROUP BY cause " +
+                        "ORDER BY cnt DESC";
+        try (PreparedStatement ps = SqliteConnection.getInstance().prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    out.put(rs.getString("cause"), rs.getLong("cnt"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return out;
     }
 
 
