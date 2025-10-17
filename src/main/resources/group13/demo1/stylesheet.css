@@ -251,6 +251,15 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
 }
 
+.login-box
+{
+    -fx-background-color: #c8d5ea;
+    -fx-background-radius: 15;
+    -fx-padding: 30 40 30 40;
+    -fx-spacing: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
+}
+
 #SideBar Button
 {
     -fx-background-color: #1c2a4b; /*Midnight Blues: 4*/
