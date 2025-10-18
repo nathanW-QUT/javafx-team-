@@ -3,7 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.Login">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
 
     <center>
         <VBox spacing="15" alignment="CENTER" maxWidth="300">
@@ -20,7 +24,8 @@
                 <Button fx:id="nextButton" text="Back" onAction="#onClickLogOut" />
             </left>
             <right>
-                <HBox>
+                <HBox >
+
                     <Button text="Change Password" onAction="#onClickEditPassword" />
                     <Button text="Delete Account" onAction="#onDeleteAccount" fx:id="DeleteAccount" />
                 </HBox>

@@ -127,7 +127,7 @@
     -fx-background-radius: 25;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0.2, 0, 2);
-    -fx-padding: 8 16;
+    -fx-padding: 8 16 8 16;
     -fx-transition: all 0.3s ease-in-out;
 }
 
