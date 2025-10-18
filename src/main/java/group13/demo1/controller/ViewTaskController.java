@@ -106,4 +106,22 @@ public class ViewTaskController {
         alert.setContentText(msg);
         alert.showAndWait();
     }
+    @FXML
+    public void onDeleteTask() {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Task");
+        confirm.setHeaderText("Are you sure you want to delete this task?");
+        confirm.setContentText("This action cannot be undone.");
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                taskDao.deleteTask(currentTask.getId());
+                showAlert("Task Deleted", "The task \"" + currentTask.getTitle() + "\" has been deleted.");
+                try {
+                    onBack();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 }

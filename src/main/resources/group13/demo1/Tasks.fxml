@@ -14,7 +14,7 @@
         <VBox spacing="20" alignment="TOP_CENTER">
             <HBox spacing="10" alignment="CENTER" prefWidth="600">
                 <Label text="Tasks" styleClass="title-label" HBox.hgrow="ALWAYS"/>
-                <Button fx:id="nextButton" text="+ Create Task" onAction="#onCreateTaskPage" prefWidth="120" />
+                <Button fx:id="nextButton" text="+ Create Task" onAction="#onCreateTaskPage" />
             </HBox>
 
             <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
