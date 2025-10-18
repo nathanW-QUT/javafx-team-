@@ -13,27 +13,46 @@
 
     <!-- Center stopwatch -->
     <center>
-        <VBox alignment="CENTER" spacing="20">
-            <VBox alignment="CENTER" maxWidth="200" styleClass="content-box">
-                <Label fx:id="welcomeText"/>
-                <Label fx:id="timerLabel" text="00:00" style="-fx-font-size: 28px;"/>
+        <VBox alignment="CENTER" spacing="30" styleClass="colorBackground">
 
+        <!-- Header Section -->
+        <HBox alignment="CENTER" styleClass="header-bar">
+            <Label text="Timer Dashboard" styleClass="title-label"/>
+        </HBox>
 
-                <HBox alignment="CENTER" spacing="15">
-                    <Button fx:id="startStopButton" text="Start" onAction="#toggleStartStop"/>
-                    <Button fx:id="resetButton" text="Reset" onAction="#resetTimer"/>
-                </HBox>
-                <Label fx:id="pauseTimeLabel" text="Total Pause: 00:00" style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
-            </VBox>
+        <!-- Stopwatch Section -->
+        <VBox alignment="CENTER" spacing="20" styleClass="content-box" maxWidth="300">
 
-            <Button fx:id="addDistractionButton" text="Add Distraction" onAction="#showQuickLog"/>
-            <VBox fx:id="distractionBox" visible="false" managed="false" spacing="5" alignment="CENTER">
-                <TextField fx:id="descriptionField" promptText="Enter distraction description"/>
-                <Button fx:id="QuickButton" text="Log Distraction" onAction="#onClickLogDistraction"/>
-                <Label fx:id="distractionStatus" text=""/>
-            </VBox>
+            <!-- Welcome Text -->
+            <HBox alignment="CENTER">
+                <Label fx:id="welcomeText" styleClass="welcome-text"/>
+            </HBox>
 
+            <!-- Timer Display -->
+            <HBox alignment="CENTER">
+                <Label fx:id="timerLabel" text="00:00" style="-fx-font-size: 28px;" styleClass="section-title"/>
+            </HBox>
 
+            <!-- Control Buttons -->
+            <HBox alignment="CENTER" spacing="15">
+                <Button fx:id="startStopButton" text="Start" onAction="#toggleStartStop" styleClass="button"/>
+                <Button fx:id="resetButton" text="Reset" onAction="#resetTimer" styleClass="button"/>
+            </HBox>
+
+            <!-- Pause Info -->
+            <HBox alignment="CENTER">
+                <Label fx:id="pauseTimeLabel" text="Total Pause: 00:00" styleClass="label"/>
+            </HBox>
+
+            <!--The Quick Distraction feature from Must Haves has been removed based on negative user feedback on multiple 'Distraction-logging-mechanics'-->
+<!--            <Button fx:id="addDistractionButton" text="Add Distraction" onAction="#showQuickLog"/>-->
+<!--            <VBox fx:id="distractionBox" visible="false" managed="false" spacing="5" alignment="CENTER">-->
+<!--                <TextField fx:id="descriptionField" promptText="Enter distraction description"/>-->
+<!--                <Button fx:id="QuickButton" text="Log Distraction" onAction="#onClickLogDistraction"/>-->
+<!--                <Label fx:id="distractionStatus" text=""/>-->
+<!--            </VBox>-->
+
+        </VBox>
         </VBox>
     </center>
 </BorderPane>
