@@ -292,3 +292,148 @@
     -fx-padding: 5;
 }
 
+
+.graphs-page {
+    -fx-background-color: white;
+}
+
+/* Transparent chart on a white background */
+.graphs-page .chart,
+.graphs-page .chart-content,
+.graphs-page .chart-plot-background {
+    -fx-background-color: white;
+}
+
+/* Axes: darker text  */
+.graphs-page .axis {
+    -fx-tick-label-fill: #3a3a3a;
+    -fx-tick-label-font-size: 12px;
+}
+.graphs-page .axis .axis-label {
+    -fx-text-fill: #2a2a2a;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* Grid lines: subtle light grey */
+.graphs-page .chart-horizontal-grid-lines,
+.graphs-page .chart-vertical-grid-lines {
+    -fx-stroke: #e6e6e6;
+}
+
+/* Bar colors  */
+.graphs-page .default-color0.chart-bar { /* Distractions */
+    -fx-bar-fill: #FF8B3A; /* warm orange */
+}
+.graphs-page .default-color1.chart-bar { /* Accomplishments */
+    -fx-bar-fill: #3A86FF; /* clear blue */
+}
+
+/* Hover*/
+.graphs-page .default-color0.chart-bar:hover { -fx-bar-fill: #FFAA58; }
+.graphs-page .default-color1.chart-bar:hover { -fx-bar-fill: #669DFF; }
+
+
+.graphs-page .bar-value {
+    -fx-text-fill: #222;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+/* Pie chart color */
+.graphs-page .chart-pie-label {
+    -fx-fill: #222222;
+    -fx-font-weight: bold;
+}
+
+.history-page {
+    -fx-background-color: white;
+}
+
+/* Make all labels readable on white */
+.history-page .label {
+    -fx-text-fill: #1c2a4b;
+}
+
+/* Section headings */
+.history-page .heading {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1c2a4b;
+}
+
+/* List styling*/
+.history-page .list-view {
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-padding: 6 0 6 6;
+}
+.history-page .list-view .list-cell {
+    -fx-text-fill: #1c2a4b;
+    -fx-padding: 8 12;
+}
+.history-page .list-view .list-cell:empty {
+    -fx-background-color: transparent;
+}
+.history-page .list-view .list-cell:hover {
+    -fx-background-color: #EEF3FF;
+}
+.history-page .list-view:focused .list-cell:filled:selected {
+    -fx-background-color: #D7E3FF;
+    -fx-text-fill: #0f204a;
+}
+
+/* Details card */
+.history-page .info-card {
+    -fx-background-color: #f6f8fc;
+    -fx-border-color: #e5e9f2;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0.2, 0, 2);
+}
+.history-page .info-card .label {
+    -fx-text-fill: #1c2a4b;
+}
+
+/* Tab header: dark bar + readable labels */
+.history-page .tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: linear-gradient(#122544, #0f2240);
+}
+.history-page .tab-pane .tab {
+    -fx-background-color: rgba(255,255,255,0.12);
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+}
+.history-page .tab-pane .tab:hover {
+    -fx-background-color: rgba(255,255,255,0.16);
+}
+.history-page .tab-pane .tab:selected {
+    -fx-background-color: rgba(255,255,255,0.22);
+}
+.history-page .tab-pane .tab .tab-label {
+    -fx-text-fill: #e9edf7;
+    -fx-font-weight: 600;
+}
+.history-page .tab-pane .tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+
+
+
+/* tooltips graphs*/
+.tooltip {
+    -fx-background-color: rgba(16,24,50,0.94);
+    -fx-text-fill: white;
+    -fx-padding: 6 10;
+    -fx-background-radius: 6;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 8, 0.2, 0, 2);
+}
+
+.button:focused, .text-field:focused, .combo-box:focused, .list-view:focused {
+    -fx-effect: dropshadow(gaussian, rgba(59,130,246,0.35), 10, 0.3, 0, 0);
+}
+

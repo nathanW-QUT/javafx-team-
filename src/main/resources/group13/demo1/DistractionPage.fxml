@@ -1,36 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.MainDistractionController">
+
+<?import javafx.scene.chart.PieChart?>
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.MainDistractionController">
 
     <left>
         <fx:include source="Sidebar.fxml"/>
     </left>
 
     <center>
-        <VBox spacing="16" alignment="TOP_CENTER" style="-fx-padding: 20;">
+        <StackPane>
+            <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 20;">
 
-        <Label text="Recent Distractions (last 4)"
-               style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
-        <ListView fx:id="recentMainDistractions"
-                  maxHeight="150"
-                  style="-fx-fixed-cell-size: 28;"
-                  prefWidth="500"/>
+                <Button text="Log a Distraction"
+                        onAction="#onClickGoToLogger"
+                        style="-fx-padding: 10 18; -fx-font-weight: bold;"/>
 
+                <VBox spacing="8" alignment="CENTER">
+                    <Label text="Recent Distractions (last 4)"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <ListView fx:id="recentMainDistractions"
+                              maxHeight="170"
+                              prefWidth="720"
+                              style="-fx-fixed-cell-size: 28;"/>
+                </VBox>
 
+                <VBox spacing="8" alignment="CENTER">
+                    <Label text="Main Distraction Tags"
+                           style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <PieChart fx:id="tagPie"
+                              legendVisible="false"
+                              labelsVisible="true"
+                              prefWidth="700"
+                              prefHeight="360"/>
+                </VBox>
 
-        <HBox alignment="CENTER_LEFT" style="-fx-padding: 8 0 0 0;">
-            <Button text="Log a Distraction"
-                    onAction="#onClickGoToLogger"
-                    style="-fx-padding: 8 16;"/>
-        </HBox>
-    </VBox>
+            </VBox>
+        </StackPane>
     </center>
-
-
-
 </BorderPane>
-
-
-
-
