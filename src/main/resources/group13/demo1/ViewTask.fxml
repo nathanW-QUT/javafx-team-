@@ -25,6 +25,7 @@
             <HBox spacing="20" alignment="CENTER">
                 <Button fx:id="nextButton" text="Save Progress" onAction="#onSaveProgress"/>
                 <Button text="Back" onAction="#onBack"/>
+                <Button text="Delete Task"  onAction="#onDeleteTask"/>
             </HBox>
         </VBox>
     </center>
