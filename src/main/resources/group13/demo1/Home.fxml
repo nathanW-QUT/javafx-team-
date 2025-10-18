@@ -3,11 +3,22 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.image.ImageView?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.HelloController" >
 
     <top>
-        <Label text="KeepTrack Distraction Logger" styleClass="header-label" BorderPane.alignment="CENTER"/>
+        <HBox>
+            <Label text="KeepTrack Distraction Logger" styleClass="header-label" BorderPane.alignment="CENTER"/>
+            <Button fx:id="profileButton" onAction="#onClickProfile">
+                <graphic>
+                    <ImageView fitHeight="28" fitWidth="28"
+                           pickOnBounds="true"
+                           preserveRatio="true"
+                           image="@/group13/demo1/images/user.png"/>
+                </graphic>
+            </Button>
+        </HBox>
     </top>
 
     <left>

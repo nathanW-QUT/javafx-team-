@@ -117,6 +117,14 @@
     -fx-pref-height: 45px;
     -fx-pref-width: 250px;
 }
+#ViewTask Label{
+    -fx-text-fill: white;
+
+}
+#Task Label{
+    -fx-text-fill: white;
+
+}
 
 .button
 {
