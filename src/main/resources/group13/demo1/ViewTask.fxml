@@ -6,9 +6,7 @@
 <?import javafx.geometry.Insets?>
 <BorderPane fx:id="ViewTask" xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.ViewTaskController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+
 
     <left>
         <fx:include source="Sidebar.fxml"/>
@@ -27,6 +25,9 @@
             </VBox>
 
             <HBox spacing="20" alignment="CENTER">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                </padding>
                 <Button fx:id="nextButton" text="Save Progress" onAction="#onSaveProgress"/>
                 <Button text="Back" onAction="#onBack"/>
                 <Button text="Delete Task"  onAction="#onDeleteTask"/>

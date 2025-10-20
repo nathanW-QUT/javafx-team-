@@ -8,7 +8,10 @@
             fx:controller="group13.demo1.controller.HelloController" >
 
     <top>
-        <Label text="KeepTrack Distraction Logger" styleClass="header-label" BorderPane.alignment="CENTER"/>
+        <StackPane style="-fx-padding: 10;">
+            <Label text="KeepTrack Distraction Logger" styleClass="header-label" StackPane.alignment="CENTER" maxWidth="300" minWidth="300" alignment="CENTER"/>
+            <Button text="Account" StackPane.alignment="TOP_RIGHT" onAction="#onClickAccount"/>
+        </StackPane>
     </top>
 
     <left>

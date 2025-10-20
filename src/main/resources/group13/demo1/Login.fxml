@@ -27,7 +27,6 @@
                 <HBox >
 
                     <Button text="Change Password" onAction="#onClickEditPassword" />
-                    <Button text="Delete Account" onAction="#onDeleteAccount" fx:id="DeleteAccount" />
                 </HBox>
             </right>
         </BorderPane>
