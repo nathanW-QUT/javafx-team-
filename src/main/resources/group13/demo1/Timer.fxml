@@ -45,6 +45,7 @@
             </HBox>
 
             <!--The Quick Distraction feature from Must Haves has been removed based on negative user feedback on multiple 'Distraction-logging-mechanics'-->
+
 <!--            <Button fx:id="addDistractionButton" text="Add Distraction" onAction="#showQuickLog"/>-->
 <!--            <VBox fx:id="distractionBox" visible="false" managed="false" spacing="5" alignment="CENTER">-->
 <!--                <TextField fx:id="descriptionField" promptText="Enter distraction description"/>-->
