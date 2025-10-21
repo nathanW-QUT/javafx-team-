@@ -16,6 +16,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 
@@ -37,6 +39,7 @@ public class HelloController  {
     private Label welcomeText;
     @FXML
     private Button nextButton;
+
 
 
     @FXML private BarChart<String, Number> homeDisBar;
@@ -169,6 +172,16 @@ public class HelloController  {
         String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
         scene.getStylesheets().add(stylesheet);
     }
+    @FXML
+    private void onClickAccount() throws IOException {
+            Stage stage = (Stage) nextButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Account.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+            stage.setScene(scene);
+            String stylesheet = HelloApplication.class.getResource("stylesheet.css").toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+    }
+
 
 
     private void initializeHomeDistractionsChart() {

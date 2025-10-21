@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="group13.demo1.controller.AccountController">
+
+    <top>
+        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20;">
+            <Label text="Account Settings" style="-fx-text-fill: white;"/>
+            <Separator/>
+        </VBox>
+    </top>
+
+
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+
+            <Label fx:id="usernameLabel"
+                   text="Logged in as: User123"
+                   styleClass="username-label"/>
+
+
+            <Button fx:id="nextButton"
+                    text="Change Password"
+                    styleClass="change-password-button"
+                    onAction="#onClickEditPassword"/>
+
+            <Button fx:id="deleteAccountButton"
+                    text="Delete Account"
+                    styleClass="delete-account-button"
+                    onAction="#onDeleteAccount"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <BorderPane>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
+            <left>
+                <Button text="Back" onAction="#onHomeButtonClick"/>
+            </left>
+        </BorderPane>
+
+    </bottom>
+
+</BorderPane>

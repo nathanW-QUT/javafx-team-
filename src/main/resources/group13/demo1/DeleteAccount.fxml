@@ -9,7 +9,7 @@
 
     <center>
         <VBox alignment="CENTER" spacing="15">
-            <Label text="Delete Account" />
+            <Label text="Delete Account" style="-fx-text-fill: white;" />
 
             <TextField fx:id="usernameField" promptText="Username" maxWidth="250"/>
             <PasswordField fx:id="passwordField" promptText="Password" maxWidth="250"/>
@@ -19,7 +19,11 @@
     </center>
     <bottom>
         <BorderPane>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </padding>
             <left>
+
                 <Button text="Back" onAction="#onClickback" maxWidth="250"/>
             </left>
         </BorderPane>

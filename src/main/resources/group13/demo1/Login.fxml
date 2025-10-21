@@ -3,7 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="group13.demo1.controller.Login">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
 
     <top>
         <Label text="Welcome Back!" styleClass="title-label" BorderPane.alignment="CENTER"/>
@@ -15,7 +19,7 @@
             <TextField fx:id="usernameField" promptText="Username"/>
             <Label text="Please enter your password:" styleClass="description"/>
             <PasswordField fx:id="passwordField" promptText="Password" />
-            <Label fx:id="statusLabel"/>
+            <Label fx:id="statusLabel" style="-fx-text-fill: white;"/>
             <Button text="Login" onAction="#handleLogin" />
         </VBox>
     </center>
@@ -29,6 +33,10 @@
                 <HBox>
                     <Button text="Change Password" onAction="#onClickEditPassword" style="-fx-border-color: #0078D7; -fx-border-radius: 25;"/>
                     <Button text="Delete Account" onAction="#onDeleteAccount" fx:id="DeleteAccount" style="-fx-border-color: red; -fx-border-radius: 25; -fx-border-width: 1;" />
+                </HBox >
+                <HBox >
+
+                    <Button text="Change Password" onAction="#onClickEditPassword" />
                 </HBox>
             </right>
         </BorderPane>

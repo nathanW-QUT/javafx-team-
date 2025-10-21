@@ -5,10 +5,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.*?>
 
+<?import javafx.scene.image.ImageView?>
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="group13.demo1.controller.HelloController" >
 
     <top>
+        <StackPane style="-fx-padding: 10;">
+            <Label text="KeepTrack Distraction Logger" styleClass="header-label" StackPane.alignment="CENTER" maxWidth="300" minWidth="300" alignment="CENTER"/>
+            <Button text="Account" StackPane.alignment="TOP_RIGHT" onAction="#onClickAccount"/>
+        </StackPane>
         <HBox styleClass="header-bar" spacing="20" alignment="CENTER_LEFT">
             <Label text="KeepTrack Distraction Logger" styleClass="header-label" BorderPane.alignment="CENTER"/>
             <Pane HBox.hgrow="ALWAYS"/>
@@ -56,36 +61,36 @@
                         </VBox>
                     </HBox>
 
-                    <VBox spacing="10">
-                        <Label text="Recent Distractions" styleClass="section-title"/>
-                        <HBox spacing="20">
+<!--                    <VBox spacing="10">-->
+<!--                        <Label text="Recent Distractions" styleClass="section-title"/>-->
+<!--                        <HBox spacing="20">-->
                             <!-- Example Distraction Items: import from DB later -->
-                            <VBox fx:id="recentDistractions" styleClass="distraction-item" spacing="5">
-                                <Label text="Tags" styleClass="tag-label"/>
-                                <Label text="Description"/>
-                                <Label text="Time" styleClass="time-label"/>
-                            </VBox>
+<!--                            <VBox fx:id="recentDistractions" styleClass="distraction-item" spacing="5">-->
+<!--                                <Label text="Tags" styleClass="tag-label"/>-->
+<!--                                <Label text="Description"/>-->
+<!--                                <Label text="Time" styleClass="time-label"/>-->
+<!--                            </VBox>-->
 
-                            <VBox styleClass="distraction-item" spacing="5">
-                                <Label text="Tags" styleClass="tag-label"/>
-                                <Label text="Description"/>
-                                <Label text="Time" styleClass="time-label"/>
-                            </VBox>
+<!--                            <VBox styleClass="distraction-item" spacing="5">-->
+<!--                                <Label text="Tags" styleClass="tag-label"/>-->
+<!--                                <Label text="Description"/>-->
+<!--                                <Label text="Time" styleClass="time-label"/>-->
+<!--                            </VBox>-->
 
-                            <VBox styleClass="distraction-item" spacing="5">
-                                <Label text="Tags" styleClass="tag-label"/>
-                                <Label text="Description"/>
-                                <Label text="Time" styleClass="time-label"/>
-                            </VBox>
+<!--                            <VBox styleClass="distraction-item" spacing="5">-->
+<!--                                <Label text="Tags" styleClass="tag-label"/>-->
+<!--                                <Label text="Description"/>-->
+<!--                                <Label text="Time" styleClass="time-label"/>-->
+<!--                            </VBox>-->
 
-                            <VBox styleClass="distraction-item" spacing="5">
-                                <Label text="Tags" styleClass="tag-label"/>
-                                <Label text="Description"/>
-                                <Label text="Time" styleClass="time-label"/>
-                            </VBox>
-                        </HBox>
-                    </VBox>
-                </VBox>
+<!--                            <VBox styleClass="distraction-item" spacing="5">-->
+<!--                                <Label text="Tags" styleClass="tag-label"/>-->
+<!--                                <Label text="Description"/>-->
+<!--                                <Label text="Time" styleClass="time-label"/>-->
+<!--                            </VBox>-->
+<!--                        </HBox>-->
+<!--                    </VBox>-->
+<!--                </VBox>-->
             </VBox>
         </StackPane>
     </center>
