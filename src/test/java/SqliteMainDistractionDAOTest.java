@@ -104,4 +104,24 @@ class SqliteMainDistractionDAOTest {
         assertEquals("A3", last4.get(2).cause);
         assertEquals("A2", last4.get(3).cause);
     }
+
+    @Test
+    void testDeleteMainDistraction() {
+        String user = "DeleteTest";
+
+        // Add two distractions
+        dao.addMainDistraction(user, "Test1", 1, "Delete this one");
+        dao.addMainDistraction(user, "Test2", 2, "Keep this one");
+
+        List<MainDistractionDAO.MainItem> listBefore = dao.getRecentForUser(user, 10);
+        assertEquals(2, listBefore.size());
+
+        int idToDelete = listBefore.get(1).id; // delete the older one
+        boolean deleted = dao.deleteMainDistraction(idToDelete);
+        assertTrue(deleted, "Expected the deletion to succeed");
+
+        List<MainDistractionDAO.MainItem> listAfter = dao.getRecentForUser(user, 10);
+        assertEquals(1, listAfter.size());
+        assertEquals("Test2", listAfter.get(0).cause, "Remaining record should be Test2");
+    }
 }

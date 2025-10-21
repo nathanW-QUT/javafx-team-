@@ -87,6 +87,23 @@ public class MainDistractionDAO {
     }
 
     /**
+     * This function lets the user delete entries from the main distractions
+     * @param id The ID of the distraction row to delete
+     * @return true if a row was removed, false otherwise
+     */
+    public boolean deleteMainDistraction(int id) {
+        String sql = "DELETE FROM maindistraction WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            int affected = ps.executeUpdate();
+            return affected > 0;
+        } catch (SQLException e) {
+            System.out.println("Delete main distraction failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * This function returns the four most recent distractions logged by the user
      * @param username the username filter
      * @param limit the maximum number of allowed records to be returned
