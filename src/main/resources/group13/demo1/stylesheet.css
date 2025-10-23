@@ -1,6 +1,9 @@
 .colorBackground
 {
-    -fx-background-color: #fff4e6;
+    -fx-padding: 20px;
+
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0.2, 0, 2);
 }
 
 .title-label
@@ -31,9 +34,11 @@
 
 .welcome-text
 {
-    -fx-font-size: 18px !important;
-    -fx-text-fill: white !important;
+    -fx-font-size: 20px !important;
+    -fx-text-fill: black !important;
     -fx-alignment: center;
+    -fx-font-weight: bold;
+
 }
 
 .header-label
