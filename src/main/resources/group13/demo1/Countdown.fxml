@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import group13.demo1.controller.CountdownController?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -12,22 +13,44 @@
     </left>
 
     <center>
-        <VBox alignment="CENTER" spacing="20">
-            <Label text="Countdown Timer" style="-fx-font-size:20px;"/>
+        <VBox alignment="CENTER" spacing="30" styleClass="colorBackground">
 
-            <!-- input fields for minutes / seconds -->
-            <HBox alignment="CENTER" spacing="10">
-                <TextField fx:id="inputMinutes" promptText="Minutes" prefWidth="80"/>
-                <TextField fx:id="inputSeconds" promptText="Seconds" prefWidth="80"/>
+            <!-- Header Section -->
+            <HBox alignment="CENTER" styleClass="header-bar">
+                <Label text="Countdown Dashboard" styleClass="title-label"/>
             </HBox>
 
-            <Label fx:id="countdownLabel" text="00:00" style="-fx-font-size:28px;"/>
+            <!-- Countdown Section -->
+            <VBox alignment="CENTER" spacing="20" styleClass="content-box" maxWidth="300">
 
-            <!-- buttons -->
-            <HBox alignment="CENTER" spacing="15">
-                <Button fx:id="startPauseButton" text="Start" onAction="#startPause"/>
-                <Button fx:id="resetButton" text="Reset" onAction="#reset"/>
-            </HBox>
+                <!-- Welcome Text -->
+                <HBox alignment="CENTER">
+                    <Label fx:id="welcomeText" text="Set your countdown below" styleClass="welcome-text"/>
+                </HBox>
+
+                <!-- Input Fields -->
+                <HBox alignment="CENTER" spacing="10">
+                    <TextField fx:id="inputMinutes" promptText="Minutes" prefWidth="80" styleClass="input-field"/>
+                    <TextField fx:id="inputSeconds" promptText="Seconds" prefWidth="80" styleClass="input-field"/>
+                </HBox>
+
+                <!-- Countdown Display -->
+                <HBox alignment="CENTER">
+                    <Label fx:id="countdownLabel" text="00:00" style="-fx-font-size: 28px;" styleClass="section-title"/>
+                </HBox>
+
+                <!-- Control Buttons -->
+                <HBox alignment="CENTER" spacing="15">
+                    <Button fx:id="startPauseButton" text="Start" onAction="#startPause" styleClass="button"/>
+                    <Button fx:id="resetButton" text="Reset" onAction="#reset" styleClass="button"/>
+                </HBox>
+
+                <!-- Status Info -->
+                <HBox alignment="CENTER">
+                    <Label fx:id="statusLabel" text="" styleClass="label"/>
+                </HBox>
+
+            </VBox>
         </VBox>
     </center>
 </BorderPane>
