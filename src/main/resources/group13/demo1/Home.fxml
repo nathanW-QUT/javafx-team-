@@ -12,10 +12,10 @@
     <top>
         <StackPane style="-fx-padding: 10;">
             <Label text="KeepTrack Distraction Logger" styleClass="header-label" StackPane.alignment="CENTER" maxWidth="300" minWidth="300" alignment="CENTER"/>
-            <Button text="Account" StackPane.alignment="TOP_RIGHT" onAction="#onClickAccount"/>
         </StackPane>
         <HBox styleClass="header-bar" spacing="20" alignment="CENTER_LEFT">
             <Label text="KeepTrack Distraction Logger" styleClass="header-label" BorderPane.alignment="CENTER"/>
+            <Button text="Account" StackPane.alignment="TOP_RIGHT" onAction="#onClickAccount"/>
             <Pane HBox.hgrow="ALWAYS"/>
         </HBox>
     </top>
