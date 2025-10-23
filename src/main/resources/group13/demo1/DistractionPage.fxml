@@ -25,7 +25,12 @@
                               maxHeight="170"
                               prefWidth="720"
                               style="-fx-fixed-cell-size: 28;"/>
+                    <Button text="Delete Selected"
+                            onAction="#onClickDeleteDistraction"
+                            style="-fx-padding: 6 14; -fx-font-weight: bold;"/>
                 </VBox>
+
+
 
                 <VBox spacing="8" alignment="CENTER">
                     <Label text="Main Distraction Tags"

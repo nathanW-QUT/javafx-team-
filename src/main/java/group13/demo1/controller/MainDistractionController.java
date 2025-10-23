@@ -179,6 +179,36 @@ public class MainDistractionController {
     }
 
 
+    @FXML
+    private void onClickDeleteDistraction() {
+        MainDistractionDAO.MainItem selected = recentMainDistractions.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Select a distraction to delete first.", ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
+
+        /**
+         * Deletes the selected main distraction from the database
+         */
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Are you sure you want to delete this distraction?",
+                ButtonType.YES, ButtonType.NO);
+        confirm.setHeaderText("Confirm Delete");
+        confirm.showAndWait();
+
+        if (confirm.getResult() == ButtonType.YES) {
+            boolean deleted = mainDistractionDAO.deleteMainDistraction(selected.id);
+            if (deleted) {
+                recentMainDistractions.getItems().remove(selected);
+                System.out.println("Deleted distraction ID: " + selected.id);
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Delete failed. Please try again.", ButtonType.OK).showAndWait();
+            }
+        }
+    }
+
+
 
 
 }
