@@ -92,6 +92,7 @@
 <!--                    </VBox>-->
 <!--                </VBox>-->
             </VBox>
+            </VBox>
         </StackPane>
     </center>
 </BorderPane>
