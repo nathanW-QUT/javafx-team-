@@ -43,7 +43,6 @@ public class TimerHistoryLogic {
     }
 
     /** To build the row text for displaying in the timer history session list. */
-    // displayed row text for list in timer history(session)
     public String listForSession(int index, SessionData s)
     {
         int n = index + 1;
@@ -53,7 +52,6 @@ public class TimerHistoryLogic {
     }
 
     /** to show the full description of the selected session row*/
-    // session description for the selected row
     public String SelectedSessionText(int index, SessionData s)
     {
         int n = index + 1;
@@ -65,7 +63,6 @@ public class TimerHistoryLogic {
     }
 
     /** to format the start and end time range and make sure to add time even if it crosses midnight */
-    // to format time into a more readable format
     public String formatRange(LocalDateTime start, LocalDateTime end)
     {
         if (start == null || end == null) return "(no range)";
