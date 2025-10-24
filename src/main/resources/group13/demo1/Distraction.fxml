@@ -16,7 +16,6 @@
     </left>
 
     <center>
-        <!-- Single container to avoid overlapping children -->
         <VBox alignment="TOP_LEFT" spacing="12" style="-fx-padding: 20;">
             <Label text="Distraction Logger" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
             <Label fx:id="descript" text="Please log your distraction in detail using the set tags or by adding your own in the text boxes"/>
