@@ -27,15 +27,15 @@ import java.util.*;
 
 public class GraphsController {
 
-    //Pie
+    //Pie chart label
     @FXML private PieChart tagPie;
 
-    //Combined bar chart (distractions vs accomplishments)
+    //Combined bar chart (distractions vs accomplishments) labels
     @FXML private BarChart<String, Number> dailyBar;
     @FXML private CategoryAxis barXAxis;
     @FXML private NumberAxis   barYAxis;
 
-    //Distractions-only bar chart
+    //Distractions-only bar chart labels
     @FXML private BarChart<String, Number> disBar;
     @FXML private CategoryAxis disBarXAxis;
     @FXML private NumberAxis   disBarYAxis;
