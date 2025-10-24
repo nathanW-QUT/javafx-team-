@@ -6,7 +6,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-
+/**
+ * Logic controller to format the data used by timer history(session data)
+ * dto's used by timer history
+ */
 public class TimerHistoryLogic {
 
     // Formatting tools
@@ -23,6 +26,9 @@ public class TimerHistoryLogic {
         public final long pausetime;   // totalPauseSeconds
         public final int pausecount;      // pauseCount
 
+        /**
+         data mapped from session database
+         */
         public SessionData(int id, String username, LocalDateTime start, LocalDateTime end,
                            long focusSeconds, long pauseSeconds, int pauseCount)
         {
@@ -36,6 +42,7 @@ public class TimerHistoryLogic {
         }
     }
 
+    /** To build the row text for displaying in the timer history session list. */
     // displayed row text for list in timer history(session)
     public String listForSession(int index, SessionData s)
     {
@@ -45,6 +52,7 @@ public class TimerHistoryLogic {
         return "Session " + n + "  —  " + date + "  —  " + focus;
     }
 
+    /** to show the full description of the selected session row*/
     // session description for the selected row
     public String SelectedSessionText(int index, SessionData s)
     {
@@ -56,6 +64,7 @@ public class TimerHistoryLogic {
         return "Session " + n + "  —  " + date + "  —  " + range + "  —  Focus: " + focus + "  —  Paused: " + paused + "  —  Pauses: " + s.pausecount;
     }
 
+    /** to format the start and end time range and make sure to add time even if it crosses midnight */
     // to format time into a more readable format
     public String formatRange(LocalDateTime start, LocalDateTime end)
     {
@@ -68,6 +77,7 @@ public class TimerHistoryLogic {
         return dateformatted.format(start) + " " + timeformatted.format(start) + "  →  " + dateformatted.format(end) + " " + timeformatted.format(end);
     }
 
+    /** to format elapsed time as HH:MM:SS */
     public String formatElapsedTime(long seconds)
     {
         long h = seconds / 3600;
@@ -78,6 +88,7 @@ public class TimerHistoryLogic {
         return String.format("%02ds", s);
     }
 
+    /** to format total seconds in a more readable way (e.g-"1h 07m 08s") */
     public String formatTotal(long seconds)
     {
         long h = seconds / 3600;
@@ -88,6 +99,7 @@ public class TimerHistoryLogic {
         return String.format("%ds", s);
     }
 
+    /** to sort the timer session row by newest first */
     public void sortNewestFirst(List<TimerRecord> rows)
     {
         if (rows == null) return;
@@ -101,6 +113,7 @@ public class TimerHistoryLogic {
         });
     }
 
+    /** to get total session time across all the recorded session  */
     public long TotalSeconds(List<TimerRecord> items)
     {
         if (items == null) return 0L;
