@@ -19,10 +19,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
+/** controller for history page with two tabs
+ * 1st : timer history - displays the timer session data
+ * 2nd : distraction history - displays the main distraction history */
 public class TimerHistory {
 
-    // Timer sessions
+    // Timer sessions labels
     @FXML private ListView<TimerHistoryLogic.SessionData> sessionList;
     @FXML private Label totalsession;
     @FXML private Label totalTime;
@@ -34,7 +36,7 @@ public class TimerHistory {
     private final TimerHistoryLogic logic = new TimerHistoryLogic();
     private final ObservableList<TimerHistoryLogic.SessionData> sessions = FXCollections.observableArrayList();
 
-    //Main Distraction history
+    //Main Distraction history labels
     @FXML private ListView<MainDistractionRow> mdList;
     @FXML private Label mdTotalLabel;
     @FXML private Label mdDetail;
@@ -66,6 +68,7 @@ public class TimerHistory {
 
     private static final DateTimeFormatter dt_formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
+    /** initialises the lists and loads sessions and history data */
     @FXML
     public void initialize() {
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
@@ -94,6 +97,9 @@ public class TimerHistory {
         loadMainDistractions(user);
     }
 
+    /**
+     * to update the description panel of the selected session row in timer history(session)
+     */
     private void SelectedSessionDisplay(TimerHistoryLogic.SessionData s) {
         if (s == null) {
             DateValue.setText("—");
@@ -112,6 +118,10 @@ public class TimerHistory {
         PauseCountValue.setText(Integer.toString(s.pausecount));
     }
 
+    /**
+     *to load all the users session data and check null row values
+     * sorts the newest row first and updates the header total values
+     */
     private void loadSessionsForUser(String username) {
         sessions.clear();
 
@@ -176,6 +186,9 @@ public class TimerHistory {
         else sessionList.getSelectionModel().select(0);
     }
 
+    /**
+     * to wire the listview to main distraction and its selection listener
+     */
     //Main distraction
     private void MainDistractionList()
     {
@@ -191,6 +204,10 @@ public class TimerHistory {
         mdList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, row) -> MainDistractionSelectedRecord(row));
     }
 
+    /**
+     * to update the description of selected main-distraction row
+     * if null value shows "_"
+     */
     private void MainDistractionSelectedRecord(MainDistractionRow row)
     {
         if (row == null)
@@ -209,6 +226,9 @@ public class TimerHistory {
         if (mdDetail != null) mdDetail.setText("");
     }
 
+    /**
+     * loads all the distraction for the username and updates the list and header counts
+     */
     private void loadMainDistractions(String username)
     {
         if (username == null || username.isBlank() || mdItems == null) return;
