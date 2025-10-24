@@ -18,6 +18,12 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.*;
+/**
+ * Controller for Insights page
+ * gives bar chart for Distraction Vs Accomplishment,Distraction only bar chart and pie chart
+ * for distraction tags
+ * when there is no data it shows an empty state("No data to graph yet.")
+ */
 
 public class GraphsController {
 
@@ -37,13 +43,16 @@ public class GraphsController {
     @FXML private Label  emptyState;
     @FXML private Button backButton;
 
+    /** JDBC connection to SQlite */
     private final Connection db = SqliteConnection.getInstance();
+
 
     @FXML
     public void initialize() {
         ReloadGraph();
     }
 
+    /** To reload the graph each time the page refreshes*/
     private void ReloadGraph()
     {
         try
@@ -56,6 +65,7 @@ public class GraphsController {
         }
     }
 
+    /** return count of distraction for a user per cause*/
     private Map<String, Long> loadMainDistractionCounts(String username)
     {
         Map<String, Long> out = new LinkedHashMap<>();
@@ -77,6 +87,7 @@ public class GraphsController {
         return out;
     }
 
+    /** return count of distraction for a user for the particular day (last 7 days)*/
     private Map<String, Long> loadMainDistractionDailyCounts(String username)
     {
         Map<String, Long> map = new LinkedHashMap<>();
@@ -98,6 +109,7 @@ public class GraphsController {
         return map;
     }
 
+    /** return count of accomplishment for a user per day for last 7 days*/
     private Map<String, Long> loadAccomplishmentDailyCounts(String username)
     {
         Map<String, Long> map = new LinkedHashMap<>();
@@ -144,6 +156,7 @@ public class GraphsController {
         return map;
     }
 
+    /** gives a list of local-date for the last 7 days*/
     private List<LocalDate> last7Dates()
     {
         List<LocalDate> out = new ArrayList<>(7);
@@ -152,6 +165,7 @@ public class GraphsController {
         return out;
     }
 
+    /** empty state to show when there is no data*/
     private void showEmpty(String msg)
     {
         if (emptyState != null) { emptyState.setText(msg); emptyState.setVisible(true); }
@@ -171,6 +185,7 @@ public class GraphsController {
         scene.getStylesheets().add(css);
     }
 
+    /** to read the current user and load data to configure axes(labels), tooltips and charts*/
     private void loadCharts()
     {
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
