@@ -4,11 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Read-only DAO for History: returns all main distractions for a user,
- * newest first. Uses existing "maindistraction" table and the
- * MainDistractionDAO.MainItem DTO.
- */
 public class MainDistractionHistoryDAO {
     private final Connection connection;
 
@@ -19,16 +14,20 @@ public class MainDistractionHistoryDAO {
         this.connection = connection;
     }
 
-    public List<MainDistractionDAO.MainItem> getAllForUser(String username) {
+    public List<MainDistractionDAO.MainItem> getAllForUser(String username)
+    {
         List<MainDistractionDAO.MainItem> rows = new ArrayList<>();
         final String sql =
                 "SELECT id, cause, minutes, description, timestamp " +
                         "FROM maindistraction WHERE username=? " +
                         "ORDER BY datetime(timestamp) DESC";
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+        try (PreparedStatement ps = connection.prepareStatement(sql))
+        {
             ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
+            try (ResultSet rs = ps.executeQuery())
+            {
+                while (rs.next())
+                {
                     rows.add(new MainDistractionDAO.MainItem(
                             rs.getInt("id"),
                             rs.getString("cause"),
@@ -38,7 +37,8 @@ public class MainDistractionHistoryDAO {
                     ));
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return rows;

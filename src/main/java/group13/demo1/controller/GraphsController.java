@@ -1,5 +1,4 @@
 package group13.demo1.controller;
-
 import group13.demo1.HelloApplication;
 import group13.demo1.model.SqliteConnection;
 import group13.demo1.model.UserSession;
@@ -14,7 +13,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
@@ -23,15 +21,15 @@ import java.util.*;
 
 public class GraphsController {
 
-    // ---- Pie  ----
+    //Pie
     @FXML private PieChart tagPie;
 
-    // ---- Combined Bar Chart (Distractions vs Accomplishments) ----
+    //Combined bar chart (distractions vs accomplishments)
     @FXML private BarChart<String, Number> dailyBar;
     @FXML private CategoryAxis barXAxis;
     @FXML private NumberAxis   barYAxis;
 
-    // ---- Distractions-only Bar Chart ----
+    //Distractions-only bar chart
     @FXML private BarChart<String, Number> disBar;
     @FXML private CategoryAxis disBarXAxis;
     @FXML private NumberAxis   disBarYAxis;
@@ -46,16 +44,20 @@ public class GraphsController {
         ReloadGraph();
     }
 
-    private void ReloadGraph() {
-        try {
+    private void ReloadGraph()
+    {
+        try
+        {
             loadCharts();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
             showEmpty("Could not load charts.");
         }
     }
 
-    private Map<String, Long> loadMainDistractionCounts(String username) {
+    private Map<String, Long> loadMainDistractionCounts(String username)
+    {
         Map<String, Long> out = new LinkedHashMap<>();
         final String sql = """
             SELECT cause, COUNT(*) AS cnt
@@ -64,16 +66,19 @@ public class GraphsController {
             GROUP BY cause
             ORDER BY cnt DESC
         """;
-        try (PreparedStatement ps = db.prepareStatement(sql)) {
+        try (PreparedStatement ps = db.prepareStatement(sql))
+        {
             ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery())
+            {
                 while (rs.next()) out.put(rs.getString("cause"), rs.getLong("cnt"));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return out;
     }
 
-    private Map<String, Long> loadMainDistractionDailyCounts(String username) {
+    private Map<String, Long> loadMainDistractionDailyCounts(String username)
+    {
         Map<String, Long> map = new LinkedHashMap<>();
         final String sql = """
             SELECT date(timestamp) AS day, COUNT(*) AS cnt
@@ -82,26 +87,32 @@ public class GraphsController {
             GROUP BY day
             ORDER BY day
         """;
-        try (PreparedStatement ps = db.prepareStatement(sql)) {
+        try (PreparedStatement ps = db.prepareStatement(sql))
+        {
             ps.setString(1, username);
-            try (ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery())
+            {
                 while (rs.next()) map.put(rs.getString("day"), rs.getLong("cnt"));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return map;
     }
 
-    private Map<String, Long> loadAccomplishmentDailyCounts(String username) {
+    private Map<String, Long> loadAccomplishmentDailyCounts(String username)
+    {
         Map<String, Long> map = new LinkedHashMap<>();
         boolean hasTimestamp = false;
         try (PreparedStatement info = db.prepareStatement("PRAGMA table_info(accomplishment)");
-             ResultSet rs = info.executeQuery()) {
-            while (rs.next()) {
+             ResultSet rs = info.executeQuery())
+        {
+            while (rs.next())
+            {
                 if ("timestamp".equalsIgnoreCase(rs.getString("name"))) { hasTimestamp = true; break; }
             }
         } catch (SQLException ignored) {}
 
-        if (hasTimestamp) {
+        if (hasTimestamp)
+        {
             final String sql = """
                 SELECT date(timestamp) AS day, COUNT(*) AS cnt
                 FROM accomplishment
@@ -109,17 +120,22 @@ public class GraphsController {
                 GROUP BY day
                 ORDER BY day
             """;
-            try (PreparedStatement ps = db.prepareStatement(sql)) {
+            try (PreparedStatement ps = db.prepareStatement(sql))
+            {
                 ps.setString(1, username);
-                try (ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery())
+                {
                     while (rs.next()) map.put(rs.getString("day"), rs.getLong("cnt"));
                 }
             } catch (SQLException e) { e.printStackTrace(); }
-        } else {
+        } else
+        {
             long totalForUser = 0L;
-            try (PreparedStatement ps = db.prepareStatement("SELECT COUNT(*) AS cnt FROM accomplishment WHERE username=?")) {
+            try (PreparedStatement ps = db.prepareStatement("SELECT COUNT(*) AS cnt FROM accomplishment WHERE username=?"))
+            {
                 ps.setString(1, username);
-                try (ResultSet rs = ps.executeQuery()) {
+                try (ResultSet rs = ps.executeQuery())
+                {
                     if (rs.next()) totalForUser = rs.getLong("cnt");
                 }
             } catch (SQLException e) { e.printStackTrace(); }
@@ -128,14 +144,16 @@ public class GraphsController {
         return map;
     }
 
-    private List<LocalDate> last7Dates() {
+    private List<LocalDate> last7Dates()
+    {
         List<LocalDate> out = new ArrayList<>(7);
         LocalDate today = LocalDate.now();
         for (int i = 6; i >= 0; i--) out.add(today.minusDays(i));
         return out;
     }
 
-    private void showEmpty(String msg) {
+    private void showEmpty(String msg)
+    {
         if (emptyState != null) { emptyState.setText(msg); emptyState.setVisible(true); }
         if (tagPie != null)   tagPie.setVisible(false);
         if (dailyBar != null) dailyBar.setVisible(false);
@@ -143,7 +161,8 @@ public class GraphsController {
     }
 
     @FXML
-    private void onBackHome() throws IOException {
+    private void onBackHome() throws IOException
+    {
         Stage stage = (Stage) backButton.getScene().getWindow();
         FXMLLoader fxml = new FXMLLoader(HelloApplication.class.getResource("Home.fxml"));
         Scene scene = new Scene(fxml.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
@@ -152,15 +171,17 @@ public class GraphsController {
         scene.getStylesheets().add(css);
     }
 
-    private void loadCharts() {
+    private void loadCharts()
+    {
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
         if (user == null || user.isBlank()) { showEmpty("Please log in to view insights."); return; }
 
-        // ---------- Pie ----------
+        // Pie
         Map<String, Long> DistractionCounts = loadMainDistractionCounts(user);
         long totalCounts = DistractionCounts.values().stream().mapToLong(Long::longValue).sum();
 
-        if (!DistractionCounts.isEmpty()) {
+        if (!DistractionCounts.isEmpty())
+        {
             ObservableList<PieChart.Data> pie = FXCollections.observableArrayList();
             DistractionCounts.forEach((cause, cnt) -> {
                 String name = (cause == null || cause.isBlank()) ? "(untitled)" : cause;
@@ -171,16 +192,18 @@ public class GraphsController {
             tagPie.setLegendVisible(false);
             tagPie.setLabelsVisible(true);
             tagPie.setVisible(true);
-        } else {
+        } else
+        {
             tagPie.setData(FXCollections.observableArrayList());
             tagPie.setVisible(false);
         }
 
-        // ---------- Last 7 days labels ----------
+        // Last 7 days labels
         List<LocalDate> last7 = last7Dates();
         Map<String, String> Label = new LinkedHashMap<>();
         ObservableList<String> categories = FXCollections.observableArrayList();
-        for (LocalDate d : last7) {
+        for (LocalDate d : last7)
+        {
             String date = d.toString();
             String day = d.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.getDefault());
             String label = date + "\n" + day;
@@ -188,7 +211,7 @@ public class GraphsController {
             categories.add(label);
         }
 
-        // ---------- Daily counts ----------
+        // to map daily counts
         Map<String, Long> distractionDaily = loadMainDistractionDailyCounts(user);
         Map<String, Long> accomplishmentsDaily = loadAccomplishmentDailyCounts(user);
 
@@ -198,14 +221,15 @@ public class GraphsController {
         if (!anyData) { showEmpty("No data to graph yet."); return; }
         if (emptyState != null) emptyState.setVisible(false);
 
-        // ---------- Combined Bar (Distractions vs Accomplishments) ----------
+        // Distractions vs Accomplishments
         if (barXAxis != null) { barXAxis.setLabel("Date"); barXAxis.setCategories(categories); }
         if (barYAxis != null) { barYAxis.setLabel("Count"); barYAxis.setForceZeroInRange(true); }
 
         XYChart.Series<String, Number> Distraction = new XYChart.Series<>(); Distraction.setName("Distractions");
         XYChart.Series<String, Number> Accomplishment = new XYChart.Series<>(); Accomplishment.setName("Accomplishments");
 
-        for (LocalDate d : last7) {
+        for (LocalDate d : last7)
+        {
             String date = d.toString(), label = Label.get(date);
             Distraction.getData().add(new XYChart.Data<>(label, distractionDaily.getOrDefault(date, 0L)));
             Accomplishment.getData().add(new XYChart.Data<>(label, accomplishmentsDaily.getOrDefault(date, 0L)));
@@ -223,12 +247,13 @@ public class GraphsController {
                     new Tooltip("Accomplishments\n" + dp.getXValue().replace('\n',' ') + " : " + dp.getYValue()));});
         });
 
-        // ---------- Distractions-only Bar ----------
+        // Distractions-only Bar
         if (disBarXAxis != null) { disBarXAxis.setLabel("Date"); disBarXAxis.setCategories(categories); }
         if (disBarYAxis != null) { disBarYAxis.setLabel("Count"); disBarYAxis.setForceZeroInRange(true); }
 
         XYChart.Series<String, Number> sDisOnly = new XYChart.Series<>();
-        for (LocalDate d : last7) {
+        for (LocalDate d : last7)
+        {
             String date = d.toString(), label = Label.get(date);
             sDisOnly.getData().add(new XYChart.Data<>(label, distractionDaily.getOrDefault(date, 0L)));
         }

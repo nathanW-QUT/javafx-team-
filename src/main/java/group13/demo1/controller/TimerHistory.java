@@ -12,20 +12,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class TimerHistory {
 
-    // ---------- TAB 1 (Timer sessions) ----------
+    // Timer sessions
     @FXML private ListView<TimerHistoryLogic.SessionData> sessionList;
     @FXML private Label totalsession;
     @FXML private Label totalTime;
@@ -37,7 +34,7 @@ public class TimerHistory {
     private final TimerHistoryLogic logic = new TimerHistoryLogic();
     private final ObservableList<TimerHistoryLogic.SessionData> sessions = FXCollections.observableArrayList();
 
-    // ---------- TAB 2 (Main Distraction history) ----------
+    //Main Distraction history
     @FXML private ListView<MainDistractionRow> mdList;
     @FXML private Label mdTotalLabel;
     @FXML private Label mdDetail;
@@ -47,7 +44,7 @@ public class TimerHistory {
     private final ObservableList<MainDistractionRow> mdItems = FXCollections.observableArrayList();
     private final MainDistractionHistoryDAO mdDAO = new MainDistractionHistoryDAO(SqliteConnection.getInstance());
 
-    // DTO for the Distraction tab
+    // distraction tab dto
     public static class MainDistractionRow {
         public final int id;
         public final String reason;
@@ -55,7 +52,8 @@ public class TimerHistory {
         public final Integer minutes;
         public final String notes;
 
-        public MainDistractionRow(int id, String cause, String when, Integer minutes, String notes) {
+        public MainDistractionRow(int id, String cause, String when, Integer minutes, String notes)
+        {
             this.id = id;
             this.reason = (cause == null || cause.isBlank()) ? "(untitled)" : cause;
             this.time_of_occurence = (when == null || when.isBlank()) ? null : when;
@@ -72,8 +70,9 @@ public class TimerHistory {
     public void initialize() {
         String user = (UserSession.getInstance() == null) ? null : UserSession.getInstance().getUsername();
 
-        // ----- Timer sessions -----
-        if (sessionList != null) {
+        // Timer sessions
+        if (sessionList != null)
+        {
             sessionList.setItems(sessions);
             sessionList.setCellFactory(lv -> new ListCell<>() {
                 @Override protected void updateItem(TimerHistoryLogic.SessionData s, boolean empty) {
@@ -90,7 +89,7 @@ public class TimerHistory {
 
         loadSessionsForUser(user);
 
-        // ----- Distraction history -----
+        //Distraction history
         MainDistractionList();
         loadMainDistractions(user);
     }
@@ -116,7 +115,8 @@ public class TimerHistory {
     private void loadSessionsForUser(String username) {
         sessions.clear();
 
-        if (username == null || username.isBlank()) {
+        if (username == null || username.isBlank())
+        {
             totalsession.setText("Total Sessions: 0");
             totalTime.setText("Total Focus Time: 0s");
             session.setText("(none)");
@@ -132,7 +132,8 @@ public class TimerHistory {
 
 
             List<SessionModel> mine = new ArrayList<>();
-            for (SessionModel m : all) {
+            for (SessionModel m : all)
+            {
                 if (m == null) continue;
                 if (!username.equals(m.getUsername())) continue;
                 boolean nonZero = (m.getTotalRunSeconds() > 0) ||
@@ -140,8 +141,6 @@ public class TimerHistory {
                         (m.getPauseCount() > 0);
                 if (nonZero) mine.add(m);
             }
-
-            // newest first by startTime
             mine.sort(Comparator.comparing(SessionModel::getStartTime,
                     (a, b) -> {
                         if (a == null && b == null) return 0;
@@ -150,7 +149,8 @@ public class TimerHistory {
                         return b.compareTo(a);
                     }));
 
-            for (SessionModel m : mine) {
+            for (SessionModel m : mine)
+            {
                 TimerHistoryLogic.SessionData s = new TimerHistoryLogic.SessionData(
                         m.getId(),
                         m.getUsername(),
@@ -163,7 +163,8 @@ public class TimerHistory {
                 rows.add(s);
                 totalFocus += m.getTotalRunSeconds();
             }
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
 
@@ -175,8 +176,9 @@ public class TimerHistory {
         else sessionList.getSelectionModel().select(0);
     }
 
-    // ---------------- Main Distraction ----------------
-    private void MainDistractionList() {
+    //Main distraction
+    private void MainDistractionList()
+    {
         if (mdList == null) return;
 
         mdList.setItems(mdItems);
@@ -189,8 +191,10 @@ public class TimerHistory {
         mdList.getSelectionModel().selectedItemProperty().addListener((obs, oldV, row) -> MainDistractionSelectedRecord(row));
     }
 
-    private void MainDistractionSelectedRecord(MainDistractionRow row) {
-        if (row == null) {
+    private void MainDistractionSelectedRecord(MainDistractionRow row)
+    {
+        if (row == null)
+        {
             mdReason.setText("—");
             mdWhenTimeValue.setText("—");
             mdMinutesValue.setText("—");
@@ -205,11 +209,13 @@ public class TimerHistory {
         if (mdDetail != null) mdDetail.setText("");
     }
 
-    private void loadMainDistractions(String username) {
+    private void loadMainDistractions(String username)
+    {
         if (username == null || username.isBlank() || mdItems == null) return;
         mdItems.clear();
         List<MainDistractionDAO.MainItem> all = mdDAO.getAllForUser(username);
-        for (MainDistractionDAO.MainItem it : all) {
+        for (MainDistractionDAO.MainItem it : all)
+        {
             mdItems.add(new MainDistractionRow(
                     it.id,
                     it.cause,
@@ -224,8 +230,10 @@ public class TimerHistory {
     }
 
     @FXML
-    private void onConfirm() {
-        if (sessionList != null && sessionList.getSelectionModel().getSelectedIndex() >= 0) {
+    private void onConfirm()
+    {
+        if (sessionList != null && sessionList.getSelectionModel().getSelectedIndex() >= 0)
+        {
             sessionList.getSelectionModel().clearSelection();
             session.setText("(none)");
             SelectedSessionDisplay(null);
@@ -236,15 +244,14 @@ public class TimerHistory {
     private void onDelete() {
         int idx = (sessionList == null) ? -1 : sessionList.getSelectionModel().getSelectedIndex();
         if (idx < 0) return;
-
         TimerHistoryLogic.SessionData s = sessions.get(idx);
-
-
         String sql = "DELETE FROM sessions WHERE id=?";
-        try (PreparedStatement ps = db.prepareStatement(sql)) {
+        try (PreparedStatement ps = db.prepareStatement(sql))
+        {
             ps.setInt(1, s.id);
             ps.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
 

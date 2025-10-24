@@ -9,22 +9,23 @@ import java.util.*;
 
 public class TimerHistoryLogic {
 
-    // ---------- Formatting ----------
+    // Formatting tools
     private final DateTimeFormatter dateformatted = DateTimeFormatter.ofPattern("MMM d, yyyy");
     private final DateTimeFormatter timeformatted = DateTimeFormatter.ofPattern("hh:mm:ss a");
 
-    // ---------- DTO straight from DB ----------
+    // dto from th the sessiondata database
     public static class SessionData {
         public final int id;
         public final String username;
         public final LocalDateTime start;
         public final LocalDateTime end;
-        public final long focustime;   // totalRunSeconds from DB
-        public final long pausetime;   // totalPauseSeconds from DB
-        public final int pausecount;      // pauseCount from DB
+        public final long focustime;   // totalRunSeconds
+        public final long pausetime;   // totalPauseSeconds
+        public final int pausecount;      // pauseCount
 
         public SessionData(int id, String username, LocalDateTime start, LocalDateTime end,
-                           long focusSeconds, long pauseSeconds, int pauseCount) {
+                           long focusSeconds, long pauseSeconds, int pauseCount)
+        {
             this.id = id;
             this.username = (username == null) ? "" : username;
             this.start = start;
@@ -35,16 +36,18 @@ public class TimerHistoryLogic {
         }
     }
 
-    // ---------- Row text for the session list ----------
-    public String listForSession(int index, SessionData s) {
+    // displayed row text for list in timer history(session)
+    public String listForSession(int index, SessionData s)
+    {
         int n = index + 1;
         String date = (s.start == null) ? "" : dateformatted.format(s.start);
         String focus = formatTotal(s.focustime);
         return "Session " + n + "  —  " + date + "  —  " + focus;
     }
 
-    // ---------- Selected row summary ----------
-    public String SelectedSessionText(int index, SessionData s) {
+    // session description for the selected row
+    public String SelectedSessionText(int index, SessionData s)
+    {
         int n = index + 1;
         String date = (s.start == null) ? "" : dateformatted.format(s.start);
         String range = formatRange(s.start, s.end);
@@ -53,17 +56,20 @@ public class TimerHistoryLogic {
         return "Session " + n + "  —  " + date + "  —  " + range + "  —  Focus: " + focus + "  —  Paused: " + paused + "  —  Pauses: " + s.pausecount;
     }
 
-    // ---------- Time formatting helpers ----------
-    public String formatRange(LocalDateTime start, LocalDateTime end) {
+    // to format time into a more readable format
+    public String formatRange(LocalDateTime start, LocalDateTime end)
+    {
         if (start == null || end == null) return "(no range)";
         boolean sameDay = start.toLocalDate().equals(end.toLocalDate());
-        if (sameDay) {
+        if (sameDay)
+        {
             return timeformatted.format(start) + "  →  " + timeformatted.format(end);
         }
         return dateformatted.format(start) + " " + timeformatted.format(start) + "  →  " + dateformatted.format(end) + " " + timeformatted.format(end);
     }
 
-    public String formatElapsedTime(long seconds) {
+    public String formatElapsedTime(long seconds)
+    {
         long h = seconds / 3600;
         long m = (seconds / 60) % 60;
         long s = seconds % 60;
@@ -72,7 +78,8 @@ public class TimerHistoryLogic {
         return String.format("%02ds", s);
     }
 
-    public String formatTotal(long seconds) {
+    public String formatTotal(long seconds)
+    {
         long h = seconds / 3600;
         long m = (seconds % 3600) / 60;
         long s = seconds % 60;
@@ -81,7 +88,8 @@ public class TimerHistoryLogic {
         return String.format("%ds", s);
     }
 
-    public void sortNewestFirst(List<TimerRecord> rows) {
+    public void sortNewestFirst(List<TimerRecord> rows)
+    {
         if (rows == null) return;
         rows.sort((a, b) -> {
             LocalDateTime sa = (a == null) ? null : a.getStartTime();
@@ -93,10 +101,12 @@ public class TimerHistoryLogic {
         });
     }
 
-    public long TotalSeconds(List<TimerRecord> items) {
+    public long TotalSeconds(List<TimerRecord> items)
+    {
         if (items == null) return 0L;
         long totalSecs = 0L;
-        for (TimerRecord r : items) {
+        for (TimerRecord r : items)
+        {
             if (r != null) totalSecs += Math.max(0, r.getElapsedSeconds());
         }
         return totalSecs;
